@@ -22,40 +22,37 @@ class TeacherProfileController extends Controller
 
 	public function __construct()
     {
-        $user = Auth::user();
-        $teacher = Teacher::where('user_id', $user->id)->first();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->teacher = Auth::user()->getTeacher();
 
+            return $next($request);
+        });
         $current_time = Carbon\Carbon::now('Asia/Manila');
-        $today = date("Y-m-d H:i" , strtotime($current_time));
-        $pending_evaluation_classes = ClassPeriod::where('teacher' , $teacher->id )
-        ->where('status' , '<>', 'CANCELLED')
-        ->where('status' , '<>', 'COMPLETED')
-        ->where('start' , '<=', $today)
-        ->get();
-
+    
         $this->params = array(
             'msg' => '',
             'page' =>'',
-            'user' => $user,
-            'teacher'=> $teacher,
-            'pending_evaluation_classes'=> $pending_evaluation_classes,
         );
     }
+
     public function index(){
 
-    	$user = Auth::user();
+    	$teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
 
-        $today = date("Y-m-d");
-        $until = Date("Y-m-d +1 day");
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = date("Y-m-d", strtotime($current_time));
+        $until = date("Y-m-d" ,strtotime($today."+1 day"));
 
         $classes = ClassPeriod::where('teacher' , $this->params['teacher']->id)
         ->where('start' , '<=', $today)
         ->where('end' , '>=', $until)
         ->get();
         $this->params['classes_today'] = $classes;
-
-    	$this->params['user'] = $user;
-    	$this->params['teacher'] = Teacher::where('user_id', $user->id)->first();
 
     	return view('teacher.profile')->with($this->params);
     }
@@ -90,7 +87,7 @@ class TeacherProfileController extends Controller
            
             $path = url('uploads/' . $image_name);
 
-            $user = User::find($this->params['user']->id);
+            $user = User::find($this->user->id);
             $user->user_image = 'uploads/' . $image_name;
             $user->save();
 
@@ -109,7 +106,7 @@ class TeacherProfileController extends Controller
     public function update($id, Request $request){
 
 
-        if( $id == $this->params['teacher']->id ){
+        if( $id == $this->teacher->id){
 
             $teacher = Teacher::find($id);
 
@@ -144,7 +141,7 @@ class TeacherProfileController extends Controller
 
     public function edit_desc(Request $request){
 
-        $teacher = Teacher::find($this->params['teacher']->id);
+        $teacher = Teacher::find($this->teacher->id);
         $desc = $request->get('desc');
 
         $teacher->desc      = $desc;
@@ -156,7 +153,7 @@ class TeacherProfileController extends Controller
 
     public function recording(Request $request){
 
-        $teacher = Teacher::find($this->params['teacher']->id);
+        $teacher = Teacher::find($this->teacher->id);
         // Get uploaded file
         $file = $request->file('recording');
         // Generate name

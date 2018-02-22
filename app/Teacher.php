@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\TeacherSchedule;
 
+use Carbon;
+
 class Teacher extends Model
 {
     //
@@ -62,6 +64,37 @@ class Teacher extends Model
     }
     public function getTrialClassesCountByStudentId($student_id){
         return count($this->hasMany('App\ClassPeriod', 'teacher')->where('status','COMPLETED')->where('student', $student_id)->where('type','TRIAL')->get());
+    }
+
+    // Added version 2
+
+    public function getPendingEvaluationClasses(){
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = date("Y-m-d H:i" , strtotime($current_time));
+        $pending_evaluation_classes = ClassPeriod::where('teacher' , $this->id )
+        ->where('status' , '<>', 'CANCELLED')
+        ->where('status' , '<>', 'COMPLETED')
+        ->where('start' , '<=', $today)
+        ->get();
+
+        return $pending_evaluation_classes;
+
+    }
+
+    public function getClassesToday(){
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = Date("Y-m-d", strtotime($current_time));
+        $until = Date("Y-m-d", strtotime($today. '+1 day'));
+
+        $classes = ClassPeriod::where('teacher' , $this->id )
+        ->where('start' , '>=', $today)
+        ->where('end' , '<=', $until)
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
     }
 
 }

@@ -659,7 +659,7 @@
                     var data = $('#antoform').serialize();
                     $.post(url,data)
                     .done(function(response){   
-
+                        // console.log(response);
                         if(response.error == false){
                             calendar.fullCalendar('renderEvent', {
                                     title: 'OPEN',

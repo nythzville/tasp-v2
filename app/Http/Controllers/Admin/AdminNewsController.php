@@ -17,11 +17,15 @@ class AdminNewsController extends Controller
 
 	public function __construct()
     {
-        $user = Auth::user();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->student = Auth::user()->getStudent();
+
+            return $next($request);
+        });
         $this->params = array(
             'msg' => '',
             'error' => false,
-            'user' => $user,
         );
     }
     public function index()
@@ -69,7 +73,7 @@ class AdminNewsController extends Controller
         $news->status = ($request->get('active') == "on" )? "Active" : "Inactive" ;
         $news->title = $request->get('title');
         $news->content = $request->get('content');
-        $news->author = $this->params['user']->id;
+        $news->author = $this->user->id;
 
         $news->save();
 
@@ -121,5 +125,12 @@ class AdminNewsController extends Controller
 
         return redirect('admin/news')->with($this->params);
         
+    }
+
+    public function destroy($id){
+
+        $news = News::find($id);
+        $news->delete();
+        return redirect('admin/news')->withSuccess('New successfully delete!');
     }
 }

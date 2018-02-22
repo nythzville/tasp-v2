@@ -61,6 +61,8 @@ class AdminTeacherController extends Controller
             'email'                     => 'required|unique:users|max:255',
             'password'                  => 'required|min:6|confirmed',
 
+            'teacher_id'                 => 'required|min:1',
+
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
             'gender'              		=> 'required|min:1',            
@@ -88,6 +90,7 @@ class AdminTeacherController extends Controller
         // continue if no error occur
     	$teacher = new Teacher();
         $teacher->user_id               = $new_user->id;
+        $teacher->teacher_id            = $request->get('teacher_id');
         $teacher->dob                   = $request->get('dob');
         $teacher->gender                = $request->get('gender');
     	$teacher->lastname				= $request->get('lastname');
@@ -114,6 +117,8 @@ class AdminTeacherController extends Controller
     {
     	// Define Teacher fields rules
         $rules = array(
+            'teacher_id'                 => 'required|min:1',
+
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
             'gender'              		=> 'required|min:1',            
@@ -131,6 +136,8 @@ class AdminTeacherController extends Controller
 
         // continue if no error occur
     	$teacher = Teacher::find($id);
+        $teacher->teacher_id            = $request->get('teacher_id');
+        
         $teacher->dob                   = $request->get('dob');
     	$teacher->lastname				= $request->get('lastname');
     	$teacher->firstname				= $request->get('firstname');

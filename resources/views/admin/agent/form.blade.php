@@ -31,6 +31,19 @@
                         {!! Form::open(array('action' => 'Admin\AdminAgentController@store', 'id' => 'frm-agent', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
 
                         @endif    
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agent_id">Agent ID <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="agent_id" name="agent_id" required="required" class="form-control col-md-7 col-xs-12"
+                                    @if(isset($agent->id))
+                                        value="{{ $agent->agent_id }}"
+                                    @else
+                                        value="{{ old('agent_id') }}"
+                                    @endif
+                                    >
+                                </div>
+                            </div>
                             
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastname">Last Name <span class="required">*</span>
@@ -45,6 +58,7 @@
                                     >
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="firstname">First Name <span class="required">*</span>
                                 </label>

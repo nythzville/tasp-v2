@@ -23,15 +23,18 @@ class AgentStudentController extends Controller
     //
     public function __construct()
     {
-        $user = Auth::user();
-        $agent = Agent::where('user_id', $user->id)->first();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->agent = Auth::user()->getAgent();
+
+            return $next($request);
+        });
+
         $current_time = Carbon\Carbon::now('Asia/Manila');
 
         $this->params = array(
             'msg' => '',
             'page' => '',
-            'user' => $user,
-            'agent' => $agent,
             'current_time' => $current_time,
 
         );
@@ -39,15 +42,16 @@ class AgentStudentController extends Controller
 
     public function index()
     {
-
-    	$students = Student::where('agent_id', $this->params['agent']->id)->get();
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
+    	$students = Student::where('agent_id', $this->agent->id)->get();
     	$this->params['students'] = $students;
-
     	return view('agent.student-list')->with($this->params);
 
     }
     public function show($id)
     {
+        $agent = Agent::find($this->agent->id);
         $student = Student::find($id);
 
         if (!$student) {
@@ -55,7 +59,7 @@ class AgentStudentController extends Controller
             return redirect('agent/student')->with($this->params);
         }
 
-        if ($student->agent_id != $this->params['agent']->id) {
+        if ($student->agent_id != $this->agent->id) {
             $this->params['msg'] = 'Cannot Access Specific Student!';
             return redirect('agent/student')->with($this->params);
         }
@@ -82,6 +86,8 @@ class AgentStudentController extends Controller
     public function create()
     {
         $courses = Course::all();
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
         $this->params['courses'] = $courses;
         $this->params['teachers'] = Teacher::all();
         $this->params['student'] = new Student;
@@ -111,7 +117,7 @@ class AgentStudentController extends Controller
         // Validate data
         $validator = Validator::make( $request->all(), $rules );
         if ( $validator->fails() ) {
-            return redirect('agent/student/create')
+            return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
         }
@@ -128,7 +134,7 @@ class AgentStudentController extends Controller
     	$student = new Student();
         $student->user_id               = $new_user->id;
         $student->student_id            = $request->get('student_id');
-        $student->agent_id              = $this->params['agent']->id;
+        $student->agent_id              = $this->agent->id;
 
 
     	$student->lastname				= $request->get('lastname');
@@ -151,10 +157,13 @@ class AgentStudentController extends Controller
         $course->save();
 
         // return redirect('agent/student/'.$student->id.'/trial_class')->with($this->params);
-        return redirect('agent/student/'.$student->id)->with($this->params);
+        return redirect('agent/student/'.$student->id)->withSuccess('Successfully Added Student!');
     }
 
     public function student_trial_class_teacher($id){
+
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
 
         $this->params['student'] = Student::find($id);
         $this->params['teachers'] = Teacher::all();
@@ -164,6 +173,8 @@ class AgentStudentController extends Controller
 
     public function trial_class(Request $request, $student_id, $teacher_id)
     {
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
 
         $week = $request->get('week');
         if($week){
@@ -204,6 +215,8 @@ class AgentStudentController extends Controller
     // Book A Trial Class
     public function book_trial_class(Request $request, $student_id, $teacher_id)
     {
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
 
         $student = Student::find($student_id);
         if(!$student){
@@ -252,6 +265,8 @@ class AgentStudentController extends Controller
     }
 
     public function get_teacher_sched($id, Request $request){
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
 
         $week = $request->get('week');
         if($week){
@@ -295,6 +310,8 @@ class AgentStudentController extends Controller
     */
     // Book Regular Class
     public function book($id){
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
 
         $this->params['student'] = Student::find($id);
         $this->params['teachers'] = Teacher::all();
@@ -304,6 +321,8 @@ class AgentStudentController extends Controller
 
     public function book_by_teacher(Request $request, $student_id, $teacher_id)
     {
+        $agent = Agent::find($this->agent->id);
+
 
         $week = $request->get('week');
         if($week){
@@ -344,7 +363,7 @@ class AgentStudentController extends Controller
      // Book A Class
     public function book_regular_class(Request $request, $student_id, $teacher_id)
     {
-
+        $agent = Agent::find($this->agent->id);
         $student = Student::find($student_id);
         if(!$student){
             return redirect('agent/student')->with($this->params);
@@ -410,7 +429,7 @@ class AgentStudentController extends Controller
         }
 
         $classPeriod = new ClassPeriod;
-        $classPeriod->author = $this->params['user']->id;
+        $classPeriod->author = $this->user->id;
         $classPeriod->student = $student->id;
         $classPeriod->teacher = $teacher_id;
         $classPeriod->course = $student->getCourse()->id;

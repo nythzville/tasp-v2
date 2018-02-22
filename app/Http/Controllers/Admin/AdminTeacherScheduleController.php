@@ -14,18 +14,27 @@ use App\User;
 
 use Auth;
 use Validator;
+use Carbon;
 
 class AdminTeacherScheduleController extends Controller
 {
     
     public function __construct()
     {
-        $user = Auth::user();
+        // $user = Auth::user();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
 
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+        
         $this->params = array(
             'msg' => '',
             'error' => false,
-            'current_user' => $user,
+            'current_time' => $current_time,
+
+            // 'current_user' => $user,
         );
     }
 
@@ -65,6 +74,13 @@ class AdminTeacherScheduleController extends Controller
             'msg' => "Teacher not found!"));
         }
 
+        if(date(strtotime($this->params['current_time'])) > date(strtotime(($request->get('schedule-date'). " " .$request->get('from-time'))) )){
+
+            return response()->json(array('error'=> true,
+            'msg' => 'Cannot open schedule with date and time already passed!'));
+            // return redirect()->back()->withErrors('Cannot open schedule with date and time already passed!');
+        }
+
         $start = date("Y-m-d H:i", strtotime($request->get('schedule-date'). " " .$request->get('from-time')));
         $end = date("Y-m-d H:i", strtotime($request->get('schedule-date'). " " .$request->get('to-time')));
         $conflict = TeacherSchedule::where('teacher_id',$teacher->id)->where(function($q) use ($start, $end) {
@@ -90,7 +106,7 @@ class AdminTeacherScheduleController extends Controller
 
         $schedule->save();
         
-        return response()->json(array('error'=> 'false',
+        return response()->json(array('error'=> false,
             'msg' => 'Schedule Successfully Added!',
             'schedule' => $schedule));
 

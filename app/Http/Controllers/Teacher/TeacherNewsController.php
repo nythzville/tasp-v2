@@ -21,26 +21,26 @@ class TeacherNewsController extends Controller
 
     public function __construct()
     {
-        $user = Auth::user();
-        $teacher = Teacher::where('user_id', $user->id)->first();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->teacher = Auth::user()->getTeacher();
 
+            return $next($request);
+        });
         $current_time = Carbon\Carbon::now('Asia/Manila');
-        $today = date("Y-m-d H:i" , strtotime($current_time));
-        $pending_evaluation_classes = ClassPeriod::where('teacher' , $teacher->id )
-        ->where('status' , '<>', 'CANCELLED')
-        ->where('status' , '<>', 'COMPLETED')
-        ->where('start' , '<=', $today)
-        ->get();
+        
         $this->params = array(
             'msg' => '',
             'page' =>'',
-            'user' => $user,
-            'teacher'=> $teacher,
-            'pending_evaluation_classes'=> $pending_evaluation_classes,
         );
     }
 
     public function index(){
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+
         $this->params['news'] = News::orderBy('updated_at', 'desc')->get();
         
         return view('teacher.bulletinboard')->with($this->params);

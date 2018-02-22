@@ -13,9 +13,14 @@
                     </div>
 
                     <div class="x_content">
-
-                        <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>
-
+                       
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
                         <table class="table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
@@ -43,8 +48,12 @@
                             <td class=" ">{{ $news->author }} </td>
                             <td class=" ">{{ $news->status }} </td>
 
-                            <td class=" last"><a class="btn btn-xs btn-success"><i class="fa fa-eye" data-toggle="modal" data-target="#NewsModal"></i> View</a>
+                            <td class=" last" width="200">
                             <a href="{{ url('admin/news/'. $news->id . '/edit') }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> Edit</a>
+                            {{ Form::open(array('action' => ['Admin\AdminNewsController@destroy', $news->id], 'method' => 'DELETE' ,'class' =>'delete-form')) }}
+                            <button class="btn btn-xs btn-danger"><i class="fa fa-close"></i> Delete </button>
+                            {{ Form::close() }}
+
                             </td>
                         </tr>
                         @endforeach

@@ -34,7 +34,15 @@
                             
                         <!-- Account Information -->
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username<span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="teacher_id">Teacher ID <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="teacher_id" name="teacher_id" required="required" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->teacher_id )? $teacher->getUser->name : old('teacher_id') }}">
+                                
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="text" id="username" name="username" required="required" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->id )? $teacher->getUser->name : old('username') }}">

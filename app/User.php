@@ -35,7 +35,7 @@ class User extends Authenticatable
     }
 
     public function getTeacher(){
-        return $this->hasOne('App\Teachert', 'user_id', 'id')->first();
+        return $this->hasOne('App\Teacher', 'user_id', 'id')->first();
 
     }
     public function getAgent(){

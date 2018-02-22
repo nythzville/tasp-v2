@@ -21,32 +21,30 @@ class TeacherClassController extends Controller
 
     public function __construct()
     {
-        $user = Auth::user();
-        $teacher = Teacher::where('user_id', $user->id)->first();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->teacher = Auth::user()->getTeacher();
+
+            return $next($request);
+        });
 
         $current_time = Carbon\Carbon::now('Asia/Manila');
-        $today = date("Y-m-d H:i" , strtotime($current_time));
-        $pending_evaluation_classes = ClassPeriod::where('teacher' , $teacher->id )
-        ->where('status' , '<>', 'CANCELLED')
-        ->where('status' , '<>', 'COMPLETED')
-        ->where('start' , '<=', $today)
-        ->get();
+       
         $this->params = array(
             'msg' => '',
             'page' =>'',
-            'user' => $user,
-            'teacher'=> $teacher,
             'current_time' => $current_time,
-            'pending_evaluation_classes'=> $pending_evaluation_classes,
         );
     }
     
     public function index(){
 
-    	$user = Auth::user();
-    	$teacher = Teacher::where('user_id', $user->id)->first();
-    	$this->params['user'] = $user;
-    	$this->params['teacher'] = $teacher;
+    	
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+        
     	$this->params['classes'] = ClassPeriod::where('teacher', $teacher->id)
         ->where('status' , '<>', 'CANCELLED')
         ->get();
@@ -56,27 +54,23 @@ class TeacherClassController extends Controller
 
     public function classes_today()
     {
-        $today = Date("Y-m-d");
-        $until = Date("Y-m-d", strtotime('tomorrow'));
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
 
-        $classes = ClassPeriod::where('teacher' , $this->params['teacher']->id )
-        ->where('start' , '>=', $today)
-        ->where('end' , '<=', $until)
-        ->orderBy('start','ASC')
-        ->get();
         $this->params['page'] = 'CLASSES_TODAY';
-        $this->params['classes'] = $classes;
-
-        // dd($classes);
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+        $this->params['classes'] = $teacher->getClassesToday();
+        
         return view('teacher.classperiod')->with($this->params);
     }
 
     public function weekly_class(){
 
-    	$user = Auth::user();
-    	$teacher = Teacher::where('user_id', $user->id)->first();
-    	$this->params['user'] = $user;
-    	$this->params['teacher'] = $teacher;
+    	$teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+
         $this->params['page'] = 'weekly_classes';
     	$this->params['classes'] = ClassPeriod::where('teacher', $teacher->id)->get();
 
@@ -95,6 +89,10 @@ class TeacherClassController extends Controller
     }
 
     public function update_class_evaluation($id, Request $request){
+        
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
 
         $class = ClassPeriod::find($id);
 

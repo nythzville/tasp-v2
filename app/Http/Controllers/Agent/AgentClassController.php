@@ -9,16 +9,24 @@ use App\Http\Controllers\Controller;
 
 use App\ClassPeriod;
 use App\Student;
+use App\Agent;
 
 use Validator;
 use DB;
 use Carbon;
+use Auth;
 
 class AgentClassController extends Controller
 {
     //
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->agent = Auth::user()->getAgent();
+
+            return $next($request);
+        });
         $current_time = Carbon\Carbon::now('Asia/Manila');
         
         $this->params = array(
@@ -31,7 +39,8 @@ class AgentClassController extends Controller
 
     public function index(Request $request)
     {
-
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
         $class_type = $request->get('type');
         
         if ($class_type == 'REGULAR')  {

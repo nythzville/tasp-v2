@@ -17,9 +17,9 @@ class CreateClassesTable extends Migration
             $table->integer('author');
             $table->integer('student');
             $table->integer('teacher');
-            $table->string('topic');
+            $table->string('topic')->nullable();
             $table->integer('course');
-            $table->integer('note');
+            $table->integer('note')->nullable();
             $table->dateTime('start');
             $table->dateTime('end');
             $table->text('evaluation')->nullable(); 

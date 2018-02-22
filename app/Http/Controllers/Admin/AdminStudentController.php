@@ -27,11 +27,17 @@ class AdminStudentController extends Controller
     public function __construct()
     {
         $current_time = Carbon\Carbon::now('Asia/Manila');
-        $user = Auth::user();
+        // $user = Auth::user();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->student = Auth::user()->getStudent();
+
+            return $next($request);
+        });
         $this->params = array(
             'msg' => '',
             'error' => false,
-            'user' => $user,
+            // 'user' => $user,
             'current_time' => $current_time,
 
         );
@@ -573,7 +579,7 @@ class AdminStudentController extends Controller
         }
 
         $classPeriod = new ClassPeriod;
-        $classPeriod->author = $this->params['user']->id;
+        $classPeriod->author = $this->user->id;
         $classPeriod->student = $student->id;
         $classPeriod->teacher = $teacher_id;
         $classPeriod->course = $student->getCourse()->id;

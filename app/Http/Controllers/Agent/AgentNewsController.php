@@ -17,12 +17,14 @@ class AgentNewsController extends Controller
 
     public function __construct()
     {
-        $user = Auth::user();
-        $agent = Agent::where('user_id', $user->id)->first();
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->agent = Auth::user()->getAgent();
+
+            return $next($request);
+        });
         $this->params = array(
             'msg' => '',
-            'user' => $user,
-            'agent' => $agent,
         );
     }
 
