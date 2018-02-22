@@ -20,8 +20,17 @@ use App\TeacherSchedule;
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index');
+Route::get('/home'
+, function () {
+	$teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            ->orderBy('teachers_rank.rank', 'ASC')
+            ->limit(5)->get();
+    $data['teachers'] = $teachers;        
+    return view('front.home')->with($data);
 
+});
 
+	
 /*  Front Views */
 Route::get('/', function () {
 	$teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
@@ -83,11 +92,11 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 	
 	Route::post('/crop_image', 'ProfileController@crop_image');
 
-	Route::Resource('/profile', 'ProfileController');
-	Route::Resource('/progress_report', 'ProfileController@progress_report');
+	Route::get('/profile', 'ProfileController@index');
+	Route::get('/progress_report', 'ProfileController@progress_report');
 
 
-	Route::Resource('/teachers', 'StudentTeacherController');
+	Route::get('/teachers', 'StudentTeacherController@index');
 
 	Route::post('/book/available/teacher', 'StudentClassController@getAvailableTeacher');
 	
@@ -102,9 +111,9 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 	Route::get('/classes/today', 'StudentClassController@classes_today');
 	Route::get('/classes/completed', 'StudentClassController@classes_completed');
 
-	Route::Resource('/classes', 'StudentClassController');
+	Route::get('/classes', 'StudentClassController@index');
+	Route::post('/classes', 'StudentClassController@store');
 
-	
 	/* News Routes */
 
 	Route::get('/news', 'StudentNewsController@index');

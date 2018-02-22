@@ -78,17 +78,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
 
         ]);
-        DB::table('courses')->insert([
-            'id'                        =>  1,
-            'student_id'                =>  1,
-            'name'                      =>  'english_course',
-            'description'               =>  'english_course',
-            'status'                    =>  'Active',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
     
-        ]);
-        
 
         // Teacher account
         DB::table('users')->insert([

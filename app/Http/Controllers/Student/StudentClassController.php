@@ -16,6 +16,7 @@ use App\Student;
 use App\ClassPeriod;
 use App\Teacher;
 use App\TeacherSchedule;
+use App\Course;
 
 use Validator;
 use Carbon;
@@ -84,9 +85,9 @@ class StudentClassController extends Controller
     public function index()
     {
     	
-    	// $classes = ClassPeriod::where('student' , $this->params['student']->id)->where('status' ,'<>', 'CANCELLED')->orderBy('start','ASC')->get();
+    	$classes = ClassPeriod::where('student' , $this->student->id)->where('status' ,'<>', 'CANCELLED')->orderBy('start','ASC')->get();
         $student = Student::find($this->student->id);
-        $this->params['classes'] = $student->getClasses();
+        $this->params['classes'] = $classes;
         $this->params['classes_today'] = $student->getClassesToday();
         $this->params['student'] = $this->student;
         $this->params['user'] = $this->user;
@@ -263,19 +264,34 @@ class StudentClassController extends Controller
             return redirect()->back()
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
         }
+        if($student->available_class < 1) {
+            return redirect()->back()
+                    ->withErrors(["Sorry! You don't have available class to booked!"]);
+        }
+
+        $course = $student->getCourse();
+        if (!$course) {
+            $course = new Course;
+            $course->student_id  = $student->id;
+            $course->teacher_id  = $request->get('tutor_id');
+            $course->name = 'EA English Course';
+            $course->status = 'Active';
+            $course->save();
+        }
 
         $classPeriod = new ClassPeriod;
-        $classPeriod->student = $this->params['student']->id;
-        $classPeriod->author = $this->params['user']->id;
+        $classPeriod->student = $this->student->id;
+        $classPeriod->author = $this->user->id;
         $classPeriod->teacher = $request->get('tutor_id');
-        $classPeriod->course = $this->params['course']->id;
+        $classPeriod->course = $course->id;
         $classPeriod->start = $start;
         $classPeriod->end = $end;
         $classPeriod->status = "BOOKED";
         $classPeriod->type = "REGULAR";
         $classPeriod->save();
 
-        return redirect()->back()->withSuccess('You have successfully booked a classes!');
+
+        return redirect()->back()->withSuccess('You have successfully booked a class!');
 
         // return redirect('student/classes')->withSuccess('You have successfully booked a classes!');
     }
@@ -283,7 +299,7 @@ class StudentClassController extends Controller
     public function destroy($id, Request $request){
 
         $class = ClassPeriod::find($id); 
-        $class->status = "CANCELED";
+        $class->status = "CANCELLED";
         $class->save();
 
         return redirect($request->url())->with($this->params);

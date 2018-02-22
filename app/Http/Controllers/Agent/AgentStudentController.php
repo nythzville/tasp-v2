@@ -143,18 +143,9 @@ class AgentStudentController extends Controller
     	$student->qq					= $request->get('qq-id');
         $student->gender                = $request->get('gender');
         $student->dob                   = $request->get('dob');
-        // $student->available_class       = 20;
         $student->available_class       = 0;
-
-
 	    $student->save();
         
-        $course = new Course();
-        $course->student_id             = $student->id;
-        $course->name                   = 'english_course';
-        $course->description            = 'English Course';
-        $course->status                 = 'Active';
-        $course->save();
 
         // return redirect('agent/student/'.$student->id.'/trial_class')->with($this->params);
         return redirect('agent/student/'.$student->id)->withSuccess('Successfully Added Student!');
@@ -428,20 +419,33 @@ class AgentStudentController extends Controller
                     ->withErrors(['Sorry! Student has no available class left to book.']);
         }
 
+        $course = $student->getCourse();
+        if (!$course) {
+            $course = new Course;
+            $course->student_id  = $student->id;
+            $course->teacher_id  = $request->get('tutor_id');
+            $course->name = 'EA English Course';
+            $course->status = 'Active';
+            $course->save();
+        }
+
         $classPeriod = new ClassPeriod;
         $classPeriod->author = $this->user->id;
         $classPeriod->student = $student->id;
         $classPeriod->teacher = $teacher_id;
-        $classPeriod->course = $student->getCourse()->id;
+        $classPeriod->course = $course->id;
         $classPeriod->start = $start;
         $classPeriod->end = $end;
         $classPeriod->status = "BOOKED";
-        // $classPeriod->type = "REGULAR";
         $classPeriod->type = $request->get('type');
-
 
         $classPeriod->save();
 
+        if ($request->get('type') == 'TRIAL') {
+           $course->trial_class_id = $classPeriod->id;
+           $course->save();
+        }
+        
         return redirect()->back()->withSuccess('Successfully booked a Class.');
 
         // return redirect('agent/student/'.$student->id)->with($this->params);

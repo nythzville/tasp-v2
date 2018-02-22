@@ -60,7 +60,7 @@ class AdminDashboardController extends Controller
         $current_time = date("Y-m-d H:i", strtotime($this->params['current_time']));
 
 
-        if(ClassPeriod::count() > 0){
+        // if(ClassPeriod::count() > 0){
             $record_days = array();
             for($i = 31; $i > 1; $i = $i - 1 ) {
                 $d = date( "Y-m-d", strtotime($current_time." -".$i." day"));
@@ -74,7 +74,7 @@ class AdminDashboardController extends Controller
             }
             $this->params['class_per_day'] = $record_days;
 
-        }
+        // }
     	return view('admin.dashboard')->with($this->params);
     }
 

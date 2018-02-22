@@ -67,7 +67,7 @@ class AgentClassController extends Controller
             return redirect('agent/class');
         }
 
-        $class->status      = 'CANCELED';
+        $class->status      = 'CANCELLED';
         $class->save();
         
         return redirect('agent/class');

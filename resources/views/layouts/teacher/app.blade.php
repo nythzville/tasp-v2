@@ -68,7 +68,7 @@
                                     <img src="{{ url('/')}}/admin/images/girl-avatar.png" alt="{{ $teacher->lastname }} {{ $teacher->firstname }}" class="img-circle profile_img">
                                 @endif
                             @else
-                                <img src="{{ url('/'.$user->user_image) }}" alt="{{ $teacher->lastname }} {{ $teacher->firstname }}" class="img-circle profile_img">
+                                <img src="{{ url($user->user_image) }}" alt="{{ $teacher->lastname }} {{ $teacher->firstname }}" class="img-circle profile_img">
 
                             @endif
                         </div>

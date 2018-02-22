@@ -59,7 +59,16 @@
                     <!-- menu prile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="{{ url('/')}}/admin/images/img.jpg" alt="..." class="img-circle profile_img">
+                            @if(Auth::user()->user_image == null)
+                                @if($agent->gender == 'male')
+                                    <img src="{{ url('/')}}/admin/images/boy-avatar.png" alt="{{ $agent->lastname }} {{ $agent->firstname }}" class="img-circle profile_img">
+                                @elseif($agent->gender == 'female')
+                                    <img src="{{ url('/')}}/admin/images/girl-avatar.png" alt="{{ $agent->lastname }} {{ $agent->firstname }}" class="img-circle profile_img">
+                                @endif
+                            @else
+                                <img src="{{ url(Auth::user()->user_image) }}" alt="{{ $agent->lastname }} {{ $agent->firstname }}" class="img-circle profile_img">
+
+                            @endif
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>

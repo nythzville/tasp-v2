@@ -23,9 +23,9 @@ class CreateStudentsTable extends Migration
             $table->date('dob');
             $table->string('skype')->nullable();
             $table->string('qq')->nullable();
-            $table->text('trial_class')->nullable();
-            $table->integer('available_class')->nullable();
-            
+            $table->integer('available_class')->default(0);
+            $table->string('status')->default('TEMP');
+        
             $table->timestamps();
         });
     }

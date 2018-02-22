@@ -145,6 +145,10 @@ class AdminClassController extends Controller
                 $student = Student::find($class->getStudent->id);
                 $student->available_class = ($student->available_class - 1);
                 $student->save();
+
+                $course = $student->getCourse();
+                $course->regular_classes_completed = (intval($course->regular_classes_completed) + 1);
+                $course->save();
             }
         } 
 
@@ -164,7 +168,7 @@ class AdminClassController extends Controller
             return redirect('admin/class');
         }
 
-        $class->status      = 'CANCELED';
+        $class->status      = 'CANCELLED';
         $class->save();
         
         return redirect('admin/class');

@@ -65,7 +65,13 @@
                     <!-- menu prile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="{{ url('/')}}/admin/images/img.jpg" alt="..." class="img-circle profile_img">
+                            @if(Auth::user()->user_image == null)
+                                    <img src="{{ url('/')}}/admin/images/boy-avatar.png" alt="Admin" class="img-circle profile_img">
+                                
+                            @else
+                                <img src="{{ url(Auth::user()->user_image) }}" alt="Admin" class="img-circle profile_img">
+
+                            @endif
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -166,13 +172,7 @@
                 d1.push([new Date('{{ $classes["date"] }}'), {{ $classes['value'] }}]);
             @endforeach
             @endif
-            // console.log(d1);
-            // here we generate data for chart
-            // for (var i = 0; i < 30; i++) {
-            //     d1.push([new Date(Date.today().add(i).days()).getTime(), randNum() + i + i + 10]);
-            //        d2.push([new Date(Date.today().add(i).days()).getTime(), randNum()]);
-            // }
-
+            
             console.log(d1);
             var chartMinDate = d1[0][0]; //first day
             var chartMaxDate = d1[29][0]; //last day

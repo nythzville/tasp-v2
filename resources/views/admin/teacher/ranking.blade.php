@@ -28,9 +28,9 @@
                 </style>
                 <div class="col-md-6">
                     <h3>Ranking</h3>
-                    <ul id="ranking" class="connectedSortable list-unstyled to_do">
+                    <ul id="ranking" class="connectedSortable list-unstyled to_do" style="min-height: 200px; background-color: #e1e1e1; border-radius: 3px;">
                       @foreach($rankings as $s_rank)
-                      <li class="ui-state-default" teacher-id="{{ $s_rank->getTeacher->id }}"><span class="rank-no">#{{ $s_rank->rank }} </span>{{ $s_rank->getTeacher->lastname }} {{ $s_rank->getTeacher->firstname }}</li>
+                      <li class="ui-state-default" teacher-id="{{ $s_rank->getTeacher->id }}"><span class="rank-no">#{{ $s_rank->rank }} </span>{{ $s_rank->getTeacher->firstname }} {{ $s_rank->getTeacher->lastname }}</li>
                       @endforeach
                     </ul>
                     {!! Form::open(array('url' => 'admin/teacher/ranking', 'method' => 'POST')) !!}
@@ -45,7 +45,7 @@
                     <ul id="teachers-list" class="list-unstyled to_do">
                       @foreach($teachers as $teacher)
                       <li class="ui-state-default" teacher-id="{{ $teacher->id }}">
-                        <span class="rank-no"></span>{{ $teacher->lastname }} {{ $teacher->firstname }}</li>
+                        <span class="rank-no"></span>{{ $teacher->firstname }} {{ $teacher->lastname }}</li>
                       @endforeach
                     </ul> 
                 </div>

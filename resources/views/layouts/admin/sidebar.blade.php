@@ -101,14 +101,20 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ url('/')}}/admin/images/img.jpg" alt="">Admin
+
+                    <img src="{{ url(Auth::user()->user_image) }}" alt="Admin" class="">Admin
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                     <li><a href="{{ url('admin/profile')}}">  Profile</a>
                    
                     </li>
-                    <li><a href="{{ url('/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    <li>
+                       
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="fa fa-sign-out pull-right"></i> Logout</a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
+                        
                     </li>
                 </ul>
             </li>
@@ -118,4 +124,4 @@
 </div>
 
 </div>
-<!-- /top navigation -->
+<!-- /top navigation

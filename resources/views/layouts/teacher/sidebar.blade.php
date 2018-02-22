@@ -68,7 +68,7 @@
                             <img src="{{ url('/') }}/admin/images/girl-avatar.png" alt="">
                         @endif
                     @else
-                        <img src="{{ url('/'.$user->user_image) }}" alt="">
+                        <img src="{{ url($user->user_image) }}" alt="">
 
                     @endif
 
@@ -79,7 +79,11 @@
                     <li><a href="{{ url('student/profile') }}">  Profile</a>
                     </li>
                     
-                    <li><a href="{{url('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    <li>
+                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="fa fa-sign-out pull-right"></i> Logout</a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
+                        
                     </li>
                 </ul>
             </li>
