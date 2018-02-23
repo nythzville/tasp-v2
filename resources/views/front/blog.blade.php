@@ -353,7 +353,7 @@
                 </li>
                 <li><a href="{{ url('/blog') }}">BLOG</a></li>
                 <li><a href="{{ url('/faq') }}">FAQ</a></li>
-                <li class="btn btn-primary btn-main-nav"><a href="http://ea-english.com/login">LOGIN</a></li>
+                <li class="btn btn-primary btn-main-nav"><a href="{{ url('login')}}">LOGIN</a></li>
 
               </ul>
 
