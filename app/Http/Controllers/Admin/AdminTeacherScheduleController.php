@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Teacher;
 use App\TeacherSchedule;
+use App\ClassPeriod;
 
 use App\User;
 
@@ -136,7 +137,36 @@ class AdminTeacherScheduleController extends Controller
                     ->withInput();
         }
 
+        $start = date("Y-m-d H:i", strtotime($request->get('schedule-date'). " " .$request->get('from-time')));
+        $end = date("Y-m-d H:i", strtotime($request->get('schedule-date'). " " .$request->get('to-time')));
+
         $schedule = TeacherSchedule::find($id);
+
+        // get confilct classes
+        $conflicts = ClassPeriod::where('teacher', $teacher_id)
+        ->where('start', '>=', $schedule->start)
+        ->where('end', '<=', $schedule->end)
+        ->get();
+
+        $conflicts2 = ClassPeriod::where('teacher', $teacher_id)
+        ->where('start', '>=', $start)
+        ->where('end', '<=', $end)
+        ->get();
+
+        if($request->get('status') == "CLOSED"){
+            if(count($conflicts) > 0){
+            return redirect()->back()->withErrors("Cannot close schedule with a booked class!");
+            }
+        }
+
+        if(count($conflicts) != count($conflicts2) ){
+            $class_list = "";
+            foreach ($conflicts as $class) {
+                $class_list .= "From: ".date("m/d/y h:i", strtotime($class->start))." - to: ".date("m/d/y h:i", strtotime($class->end))." Student: ".$class->getStudent->firstname. "\n";
+            }
+
+            return redirect()->back()->withErrors("There is a class booked on this schedule! \n".$class_list);
+        }
 
         $schedule->start                = $request->get('schedule-date'). " " .$request->get('from-time');
         $schedule->end                  = $request->get('schedule-date'). " " .$request->get('to-time');

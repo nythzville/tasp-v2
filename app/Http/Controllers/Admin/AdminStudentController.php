@@ -229,9 +229,9 @@ class AdminStudentController extends Controller
             $avatar_data = json_decode($request->get('avatar_data'));
                 
             $thumbnail_path = "thumbnail-".$image_name;
-            $image = Image::make(sprintf('uploads/%s', $image_name));
-            $image->crop( intval($avatar_data->width), intval($avatar_data->height), intval($avatar_data->x) , intval($avatar_data->y) );
-            $image->save(sprintf('uploads/%s', $image_name));
+            // $image = Image::make(sprintf('uploads/%s', $image_name));
+            // $image->crop( intval($avatar_data->width), intval($avatar_data->height), intval($avatar_data->x) , intval($avatar_data->y) );
+            // $image->save(sprintf('uploads/%s', $image_name));
             
            
             $path = url('uploads/' . $image_name);

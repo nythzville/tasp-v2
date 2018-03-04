@@ -30,7 +30,7 @@
                                         @endif
                                     </div>
                                     <!-- Cropping modal -->
-                                    <div class="modal fade in" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1" style="display: block;">
+                                    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1" >
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <form class="avatar-form" action="{{ url('admin/crop_image') }}" enctype="multipart/form-data" method="post">
@@ -156,7 +156,7 @@
         </div>
     </div>
     <!-- image cropping -->
-<!--     <script src="{{ url('/admin') }}/js/cropping/cropper.min.js"></script>
-    <script src="{{ url('/admin') }}/js/cropping/main.js"></script> -->
+    <script src="{{ url('/admin') }}/js/cropping/cropper.min.js"></script>
+    <script src="{{ url('/admin') }}/js/cropping/main.js"></script>
    
 @endsection
