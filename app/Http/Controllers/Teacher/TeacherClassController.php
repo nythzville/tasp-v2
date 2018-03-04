@@ -65,6 +65,45 @@ class TeacherClassController extends Controller
         return view('teacher.classperiod')->with($this->params);
     }
 
+    public function completed_classes()
+    {
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+
+        $this->params['page'] = 'COMPLETED_CLASSES';
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+        $this->params['classes'] = $teacher->getCompletedClasses();
+        
+        return view('teacher.classperiod')->with($this->params);
+    }
+
+    public function booked_classes()
+    {
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+
+        $this->params['page'] = 'BOOKED_CLASSES';
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+        $this->params['classes'] = $teacher->getBookedClasses();
+        
+        return view('teacher.classperiod')->with($this->params);
+    }
+
+    public function upcoming_classes()
+    {
+        $teacher = Teacher::find($this->teacher->id);
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = $this->user;
+
+        $this->params['page'] = 'UPCOMING_CLASSES';
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+        $this->params['classes'] = $teacher->getUpcomingClasses();
+        
+        return view('teacher.classperiod')->with($this->params);
+    }
+
     public function weekly_class(){
 
     	$teacher = Teacher::find($this->teacher->id);
@@ -78,6 +117,55 @@ class TeacherClassController extends Controller
     	return view('teacher.weeklyclasses')->with($this->params);
     }
 
+    public function evaluate_trial_form($id){
+        $teacher = Teacher::find($this->teacher->id);
+        $class = ClassPeriod::find($id);
+        if(!$class){
+            return redirect()->back()->withErrors('No class found!');
+        }
+        if ($class->type != "TRIAL") {
+            return redirect('teacher/classes')->withErrors('No class found!');
+        }
+
+        $student = Student::find($class->student);
+
+        $student->progress_report = json_decode($class->evaluation);
+
+        $this->params['class'] = $class;
+        $this->params['student'] = $student;
+        $this->params['teacher'] = $this->teacher;
+        $this->params['user'] = $this->user;
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
+
+        $this->params['page'] = "EVALUATE_TRIAL";
+
+        return view('teacher.progress-report')->with($this->params);
+    }
+
+    public function evaluate_trial($id, Request $request){
+        
+        $teacher = Teacher::find($this->teacher->id);
+        $classperiod = ClassPeriod::find($id);
+        
+        if(!$classperiod){
+            return redirect()->back()->withErrors('No class found!');
+        }
+        if ($classperiod->type != "TRIAL") {
+            return redirect('teacher/classes')->withErrors('No class found!');
+        }
+
+        $progress_report = $request->all();
+        unset($progress_report['_token']);
+        
+        $classperiod->evaluation = json_encode($progress_report);
+        $classperiod->status = "COMPLETED";
+        
+        if($classperiod->save()){
+            return redirect()->back()->withSuccess('Trial Class Evaluate Successfully!');
+        }else{
+            return redirect()->back()->withErrors('Unable to save Evaluation!');
+        }
+    }
 
     public function class_evaluation($id){
 
@@ -133,7 +221,7 @@ class TeacherClassController extends Controller
                 $student->available_class = ($student->available_class - 1);
                 $student->save();
 
-                $course = $student->getCourse();
+                $course = $student->getCourse($class->teacher);
                 $course->regular_classes_completed = (intval($course->regular_classes_completed) + 1);
                 $course->save();
             }

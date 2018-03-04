@@ -419,7 +419,7 @@ class AgentStudentController extends Controller
                     ->withErrors(['Sorry! Student has no available class left to book.']);
         }
 
-        $course = $student->getCourse();
+        $course = $student->getCourse($request->get('tutor_id'));
         if (!$course) {
             $course = new Course;
             $course->student_id  = $student->id;

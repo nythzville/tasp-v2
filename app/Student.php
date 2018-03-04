@@ -61,8 +61,8 @@ class Student extends Model
 
     }
 
-    public function getCourse(){
-        return Course::where('student_id', $this->id )->where('status', 'Active')->first();
+    public function getCourse($teacher_id = null){
+        return Course::where('student_id', $this->id )->where('teacher_id', $teacher_id )->where('status', 'Active')->first();
     }
 
     // Added V2
@@ -96,4 +96,26 @@ class Student extends Model
         return $completed_today;
     }
 
+    public function getUpcomingClasses(){
+        
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+        $today = date($current_time);
+        $classes = ClassPeriod::where('student' , $this->id)
+        ->where('start' , '>=', $today)
+        ->where('status' , '<>', 'CANCELLED')
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
+    }
+
+    public function getBookedClasses(){
+        
+        $classes = ClassPeriod::where('student' , $this->id)
+        ->where('status' , 'BOOKED')
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
+    }
 }

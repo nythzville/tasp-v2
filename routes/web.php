@@ -19,6 +19,11 @@ use App\TeacherSchedule;
 
 Auth::routes();
 
+Route::get('/home/fileinfo', function(){
+	return phpinfo();
+});
+
+
 // Route::get('/home', 'HomeController@index');
 Route::get('/home'
 , function () {
@@ -40,6 +45,17 @@ Route::get('/', function () {
     return view('front.home')->with($data);
 
 });
+
+	
+/*  Online School Views */
+Route::get('/online-school', function () {
+	$teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            ->orderBy('teachers_rank.rank', 'ASC')
+            ->limit(5)->get();
+    $data['teachers'] = $teachers;        
+    return view('front.online-school')->with($data);
+
+});
 Route::get('/blog', function () {
     return view('front.blog');
 });
@@ -50,9 +66,9 @@ Route::get('/faq', function () {
     return view('front.faq');
 });
 
-Route::get('/online-school', function () {
-    return view('front.online-school');
-});
+// Route::get('/online-school', function () {
+//     return view('front.online-school');
+// });
 Route::get('/our-tutors', function () {
     return view('front.our-tutors');
 });
@@ -75,16 +91,16 @@ Route::post('/trial_application', 'FrontController@trial_class_application');
 
 //
 //
-Route::auth();
+// Route::auth();
 
 Route::get('/redirect', 'UserController@index');
 
-Route::get('/home', 'HomeController@index');
+// Route::get('/home', 'HomeController@index');
 
-Route::get('/dashboard',['middleware' => ['admin'], function () {
+// Route::get('/dashboard',['middleware' => ['admin'], function () {
 	
-    return "Hello Admin";
-}]);
+//     return "Hello Admin";
+// }]);
 
 
 // Routes for Student
@@ -97,6 +113,8 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 
 
 	Route::get('/teachers', 'StudentTeacherController@index');
+	Route::get('/teachers/{id}', 'StudentTeacherController@show');
+
 
 	Route::post('/book/available/teacher', 'StudentClassController@getAvailableTeacher');
 	
@@ -110,6 +128,9 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 
 	Route::get('/classes/today', 'StudentClassController@classes_today');
 	Route::get('/classes/completed', 'StudentClassController@classes_completed');
+	Route::get('/classes/upcoming', 'StudentClassController@upcoming_classes');
+	Route::get('/classes/booked', 'StudentClassController@booked_classes');
+
 
 	Route::get('/classes', 'StudentClassController@index');
 	Route::post('/classes', 'StudentClassController@store');
@@ -157,10 +178,14 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 	Route::Resource('/course', 'AdminCourseController');
 	
 	// Classes
-	Route::get('/class/{id}/evaluation', 'AdminClassController@class_evaluation');
-	Route::post('/class/{id}/evaluation', 'AdminClassController@update_class_evaluation');
-	Route::post('/class/{id}/cancel', 'AdminClassController@cancel_class');
-	Route::Resource('/class', 'AdminClassController');
+	Route::get('/classes/{id}/evaluation', 'AdminClassController@class_evaluation');
+	Route::post('/classes/{id}/evaluation', 'AdminClassController@update_class_evaluation');
+	Route::post('/classes/{id}/cancel', 'AdminClassController@cancel_class');
+
+	Route::get('/classes/{id}/evaluate_trial', 'AdminClassController@evaluate_trial_form');
+	Route::post('/classes/{id}/evaluate_trial', 'AdminClassController@evaluate_trial');
+	
+	Route::Resource('/classes', 'AdminClassController');
 
 	Route::Resource('/news', 'AdminNewsController');
 
@@ -189,15 +214,20 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 // Routes for Teacher
 Route::group(['prefix' => 'teacher', 'namespace'=> 'Teacher', 'middleware' => 'teacher'], function () {
 
-	Route::get('/class/weekly', 'TeacherClassController@weekly_class');	
+	Route::get('/classes/weekly', 'TeacherClassController@weekly_class');	
 
-	Route::get('/class/today', 'TeacherClassController@classes_today');	
+	Route::get('/classes/today', 'TeacherClassController@classes_today');	
+	Route::get('/classes/upcoming', 'TeacherClassController@upcoming_classes');
+	Route::get('/classes/completed', 'TeacherClassController@completed_classes');	
+	Route::get('/classes/booked', 'TeacherClassController@booked_classes');	
 
-	Route::get('/class/{id}/evaluation', 'TeacherClassController@class_evaluation');
-	Route::post('/class/{id}/evaluation', 'TeacherClassController@update_class_evaluation');
+	Route::get('/classes/{id}/evaluation', 'TeacherClassController@class_evaluation');
+	Route::post('/classes/{id}/evaluation', 'TeacherClassController@update_class_evaluation');
 
-	Route::Resource('/class', 'TeacherClassController');
+	Route::get('/classes/{id}/evaluate_trial', 'TeacherClassController@evaluate_trial_form');
+	Route::post('/classes/{id}/evaluate_trial', 'TeacherClassController@evaluate_trial');
 
+	Route::Resource('/classes', 'TeacherClassController');
 	Route::get('/student/{id}', 'TeacherStudentController@show');
 	Route::post('/student/{id}/progress-report', 'TeacherStudentController@progress_report');
 
@@ -219,6 +249,10 @@ Route::group(['prefix' => 'teacher', 'namespace'=> 'Teacher', 'middleware' => 't
 
 // Routes for Agent
 Route::group(['prefix' => 'agent', 'namespace'=> 'Agent', 'middleware' => 'agent'], function () {
+
+	Route::get('/profile', 'AgentProfileController@index');
+	Route::post('/crop_image', 'AgentProfileController@crop_image');
+
 
 	Route::Resource('/student', 'AgentStudentController');
 	Route::get('/teacher', 'AgentTeacherController@index');

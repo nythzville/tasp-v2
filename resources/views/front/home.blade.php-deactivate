@@ -35,33 +35,22 @@
 				</div>
 				<div class="col-md-6 col-sm-6 col-xs-4">
 					
-<div class="topbar-right">
-    <ul class="nav">
-        <li>
-            <div id="google_translate_element"></div>
-        </li>
-    </ul>
-    <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-    </script>
+                    <div class="topbar-right">
+                        <ul class="nav">
+                            <li>
+                                <div id="google_translate_element"></div>
+                            </li>
+                        </ul>
+                        <script type="text/javascript">
+                        function googleTranslateElementInit() {
+                          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                        }
+                        </script>
 
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <!-- <ul class="nav"> 
-  <li class="drop">English
-    <ul id="language-list">
-<li><a href="#" data-value="">English (US)</a></li>
-<li><a href="#" data-value="">한국어</a></li>
-<li><a href="#" data-value="">日本語</a></li>
-<li><a href="#" data-value="">Tiếng Việt</a></li>
-<li><a href="#" data-value="">中文(台灣)</a></li>   
-<li><a href="#" data-value="">中文(简体)</a></li>       
-      
-    </ul>
-  </li>
-</ul> -->
-</div>
+                        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                      
+                    </div>
+
 				</div>
 			</div>
 		</div>
@@ -111,22 +100,7 @@
                 </li>
                 <li><a href="{{ url('/blog') }}">BLOG</a></li>
                 <li><a href="{{ url('/faq') }}">FAQ</a></li>
-                 @if(Auth::guest())
-                    <li class="btn btn-primary btn-main-nav"><a href="{{ url('login')}}">LOGIN</a></li>
-
-                @else
-
-                    @if(Auth::user()->user_type=='ADMIN')
-                        <li class="btn btn-primary btn-main-nav"><a href="{{ url('admin/dashboard')}}">ADMIN</a></li>
-                    @elseif(Auth::user()->user_type=='TEACHER')
-                        <li class="btn btn-primary btn-main-nav"><a href="{{ url('teacher/profile')}}">MY ACCOUNT</a></li>
-                    @elseif(Auth::user()->user_type=='STUDENT')
-                        <li class="btn btn-primary btn-main-nav"><a href="{{ url('student/profile')}}">MY ACCOUNT</a></li>
-                    @elseif(Auth::user()->user_type=='AGENT')
-                        <li class="btn btn-primary btn-main-nav"><a href="{{ url('agent/profile')}}">MY ACCOUNT</a></li>
-                
-                    @endif
-                @endif
+                <li class="btn btn-primary btn-main-nav"><a href="http://ea-english.com/login">LOGIN</a></li>
 
               </ul>
 
@@ -266,12 +240,12 @@
                             @foreach($teachers as $teacher)
                             <!-- Teacher -->
                             <div class="item {{ ($teacher->rank == 1)? 'active': '' }}">
-                                <div class="col-sm-4 col-xs-12">
+                                <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-img">
                                         <img alt="teacher image" src="{{ url($teacher->getUser->user_image ) }}">
                                     </div>
                                 </div>
-                                <div class="col-sm-8 col-xs-12">
+                                <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-details">
                                         <h4>{{ $teacher->firstname }} </h4>
                                         <p>
@@ -295,125 +269,7 @@
                             <!-- /Teacher -->
                             @endforeach
 
-                            <!-- <div class="item active">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Joan_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Joan</h4>
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/China_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Rebecca</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/kate.png">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Kate</h4>
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Rechel_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Rechel</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Straw_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Strawberry</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div> -->
+                           
                         </div>
                     </div>
 
@@ -429,31 +285,7 @@
     			                        </div>
     			                    </li>
                                 @endforeach
-<!-- 
-			                    <li data-target="#teacher-carousel" data-slide-to="1" class="">
-			                        <div class="carousel-nav-img">
-			                            
-			                            <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/China_2.JPG">
-			                        </div>
-			                    </li>
-			                    <li data-target="#teacher-carousel" data-slide-to="2" class="">
-			                        <div class="carousel-nav-img">
-			                            
-			                            <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/kate.png">
-			                        </div>
-			                    </li>
-			                    <li data-target="#teacher-carousel" data-slide-to="3" class="">
-			                        <div class="carousel-nav-img">
-			                            
-			                            <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Rechel_2.JPG">
-			                        </div>
-			                    </li>
-			                    <li data-target="#teacher-carousel" data-slide-to="4" class="">
-			                        <div class="carousel-nav-img">
-			                            
-			                            <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Straw_2.JPG">
-			                        </div>
-			                    </li> -->
+
 			                </ol>
                 		</div>
                 	</div>
@@ -589,10 +421,7 @@
                             </div>
                         </div>
 
-						<!-- <div class="form-group label-floating">
-							<label class="control-label">Your Messge</label>
-							<textarea class="form-control" rows="4"></textarea>
-						</div> -->
+						
 
                         <div class="row">
                             <div class="col-md-4 col-md-offset-4 text-center">
@@ -605,10 +434,7 @@
                 </div>
             </div>
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-info btn-simple">Save</button>
-      </div> -->
+      
     </div>
   </div>
 </div>

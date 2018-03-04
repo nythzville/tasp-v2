@@ -232,7 +232,7 @@
             $('input#date').val(date_value);
 
             // var url = $('#evaluation-form').attr('action');
-            var url = "{{ url('/teacher/class') }}";
+            var url = "{{ url('/teacher/classes') }}";
             $('#UpdateEvaluation').modal('show');
             $('#evaluation-form').attr('action', url + '/' + class_id + '/evaluation');
             $.get(url + '/' + class_id + '/evaluation' )
@@ -245,15 +245,16 @@
                     $('input#subject').val(response.evaluation.subject);
                     $('input#topic').val(response.evaluation.topic);
 
-                    if(response.evaluation.scores){
-                        response.evaluation.scores.forEach(function(score){
-                            // $('input.scores').val(response.evaluation.scores);
-                            $('input#' + score).iCheck('check');
-                            // console.log(score);
-                        });
-                    }
                     $('textarea#comment').val(response.evaluation.comment);
 
+                }else{
+                    // $('input#date').val(null);
+                    $('input#attendance').val(null);
+                    $('input#subject').val(null);
+                    $('input#topic').val(null);
+
+                    
+                    $('textarea#comment').val(null);   
                 }
 
                 console.log(response);

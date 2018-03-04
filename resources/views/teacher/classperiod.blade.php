@@ -9,9 +9,19 @@
                     <div class="x_title">
                         @if(isset($page) && ($page == "CLASSES_TODAY" ))
                         <h2>My Classes Today<small> {{ date("F j, Y", strtotime($current_time)) }}</small></h2>
+                        
+                        @elseif(isset($page) && ($page == "UPCOMING_CLASSES" ))
+                        <h2>Upcoming Classes<small></small></h2>
+
+                        @elseif(isset($page) && ($page == "COMPLETED_CLASSES" ))
+                        <h2>Completed Classes<small></small></h2>
+                        
+                        @elseif(isset($page) && ($page == "BOOKED_CLASSES" ))
+                        <h2>Booked Classes<small></small></h2>
+
+
                         @else
                         <h2>My Classes <small></small></h2>
-
                         @endif
                         <div class="clearfix"></div>
                     </div>
@@ -27,7 +37,7 @@
                                     <th class="column-title">Skype ID</th>
                                     <th class="column-title">QQ ID</th>
                                     <th class="column-title">Age </th>
-                                    <th class="column-title">Status </th>
+                                    <th class="column-title">Type </th>
                                     <th class="column-title">Action </th>
                                     
                                 </tr>
@@ -46,17 +56,33 @@
 
                                     <td class=" ">{{ date_diff(date_create($class->getStudent->dob), date_create('now'))->y }}</td>                                    
                                     
-                                    <td class=" ">
-                                        @if(( date( $class->end ."+1 day") < date( $current_time ) ) && ($class->status != "COMPLETED"))
+                                    <td class="" style="{{ ($class->type == "TRIAL")? 'color:blue;': 'color:#4cae4c;' }}" >
+                                        <!-- @if(( date( $class->end ."+1 day") < date( $current_time ) ) && ($class->status != "COMPLETED"))
                                             {{ "NO EVALUATION" }}
                                         @else    
                                             {{ $class->status }}
-                                        @endif
+                                        @endif -->
+                                        {{ $class->type }}
                                     </td>                                    
                                     <!-- <td class=" last"><a href="{{ url('teacher/classes/'.$class->id.'/evaluation' ) }}" class="btn btn-success"><i class="fa fa-eye"></i> View Evaluation</a> -->
                                     <td class="last">
-                                        @if(( date( $class->end ."+1 day") > date( $current_time ) ) && ($class->status != "COMPLETED"))
-                                            <button class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i> {{ ($class->status == 'COMPLETED')? ' View Evaluation' : ' Evaluate' }}</button>
+                                        @if ( date( strtotime($class->end ."+1 day") ) > date( strtotime($current_time) ) )
+                                            @if($class->status != "COMPLETED")
+                                                
+                                                @if($class->type == 'TRIAL')
+                                                    <a href="{{ url('teacher/classes/'.$class->id.'/evaluate_trial') }}" class="btn btn-success btn-xs" class-id="{{$class->id}}" date-value=""><i class="fa fa-eye"></i>Evaluate</button>
+                                                @else
+                                                <button class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i>Evaluate</button>
+                                                @endif
+
+                                            @else
+                                                @if($class->type == 'TRIAL')
+                                                    <a href="{{ url('teacher/classes/'.$class->id.'/evaluate_trial') }}" class="btn btn-success btn-xs" class-id="{{$class->id}}" date-value=""><i class="fa fa-eye"></i>Evaluate</button>
+                                                @else
+                                                <button class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i> View Evaluation</button>
+                                                @endif
+                                            @endif
+
                                         @endif
                                     </td>
                                 </tr>

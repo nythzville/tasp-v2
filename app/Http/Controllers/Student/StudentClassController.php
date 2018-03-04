@@ -66,16 +66,37 @@ class StudentClassController extends Controller
 
     public function classes_completed()
     {
-        // $classes = ClassPeriod::where('student' , $this->params['student']->id)
-        // ->where('status' , 'COMPLETED')
-        // ->orderBy('start','ASC')
-        // ->get();
         $student = Student::find($this->student->id);
 
-        $this->params['page'] = 'CLASSES_COMPLETED';
-        // $this->params['classes'] = $classes;
+        $this->params['page'] = 'COMPLETED_CLASSES';
         $this->params['classes_today'] = $student->getClassesToday();
         $this->params['classes'] = $student->getCompletedClasses();
+        $this->params['student'] = $this->student;
+        $this->params['user'] = $this->user;
+
+        return view('student.classes')->with($this->params);
+    }
+
+    public function upcoming_classes()
+    {
+        $student = Student::find($this->student->id);
+
+        $this->params['page'] = 'UPCOMING_CLASSES';
+        $this->params['classes_today'] = $student->getClassesToday();
+        $this->params['classes'] = $student->getUpcomingClasses();
+        $this->params['student'] = $this->student;
+        $this->params['user'] = $this->user;
+
+        return view('student.classes')->with($this->params);
+    }
+
+    public function booked_classes()
+    {
+        $student = Student::find($this->student->id);
+
+        $this->params['page'] = 'BOOKED_CLASSES';
+        $this->params['classes_today'] = $student->getClassesToday();
+        $this->params['classes'] = $student->getBookedClasses();
         $this->params['student'] = $this->student;
         $this->params['user'] = $this->user;
 
@@ -269,7 +290,7 @@ class StudentClassController extends Controller
                     ->withErrors(["Sorry! You don't have available class to booked!"]);
         }
 
-        $course = $student->getCourse();
+        $course = $student->getCourse($request->get('tutor_id'));
         if (!$course) {
             $course = new Course;
             $course->student_id  = $student->id;

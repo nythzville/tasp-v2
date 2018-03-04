@@ -97,4 +97,44 @@ class Teacher extends Model
         return $classes;
     }
 
+    public function getUpcomingClasses(){
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = Date($current_time);
+
+        $classes = ClassPeriod::where('teacher' , $this->id )
+        ->where('start' , '>=', $today)
+        ->where('status' , '<>', 'CANCELLED')
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
+    }
+
+    public function getCompletedClasses(){
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = Date($current_time);
+
+        $classes = ClassPeriod::where('teacher' , $this->id )
+        ->where('status' , 'COMPLETED')
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
+    }
+
+    public function getBookedClasses(){
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $today = Date($current_time);
+
+        $classes = ClassPeriod::where('teacher' , $this->id )
+        ->where('status' , 'BOOKED')
+        ->orderBy('start','ASC')
+        ->get();
+
+        return $classes;
+    }
+
 }

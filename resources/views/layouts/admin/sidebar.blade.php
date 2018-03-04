@@ -38,11 +38,11 @@
                 <li><a><i class="fa fa-calendar"></i> Classes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         
-                        <li><a href="{{ url('/admin/class') }}">All</a>
+                        <li><a href="{{ url('/admin/classes') }}">All</a>
                         </li>
-                        <li><a href="{{ url('/admin/class?type=REGULAR') }}">Regular</a>
+                        <li><a href="{{ url('/admin/classes?type=REGULAR') }}">Regular</a>
                         </li>
-                        <li><a href="{{ url('/admin/class?type=TRIAL') }}">Trial</a>
+                        <li><a href="{{ url('/admin/classes?type=TRIAL') }}">Trial</a>
                         </li>
                     </ul>
                 </li>

@@ -119,7 +119,7 @@ class AdminNewsController extends Controller
         $news->status = ($request->get('active') == "on" )? "Active" : "Inactive" ;
         $news->title = $request->get('title');
         $news->content = $request->get('content');
-        $news->author = $this->params['user']->id;
+        $news->author = $this->user->id;
         
         $news->save();
 

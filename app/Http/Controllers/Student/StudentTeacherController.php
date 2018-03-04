@@ -80,9 +80,9 @@ class StudentTeacherController extends Controller
         $this->params['classes_today'] = $student->getClassesToday();
 
 		$teacher = Teacher::find($id);
-		if (!$teacher) {
-            return redirect()->back()->withErrors('Teacher not found!');
-        }
+		// if (!$teacher) {
+  //           return redirect()->back()->withErrors('Teacher not found!');
+  //       }
 		$this->params['student'] = $student;
 		$this->params['teacher'] = $teacher;
 

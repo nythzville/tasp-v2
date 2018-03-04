@@ -24,6 +24,13 @@ class Agent extends Model
         return $this->belongsTo('App\User', 'user_id');
 
     }
+
+    public function getStudents()
+    {
+        return $this->hasMany('App\Student', 'agent_id');
+
+    }
+
     public function getTotalStudents(){
     
         return Student::where('agent_id', $this->id)->count();

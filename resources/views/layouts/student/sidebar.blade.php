@@ -9,6 +9,9 @@
                 <li><a><i class="fa fa-calendar"></i> Classes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         <li><a href="{{ url('/student/classes/today') }}"> Today's Classes</a></li>
+                        <li><a href="{{ url('/student/classes/upcoming') }}">Upcoming Classes</a></li>                    
+                        <li><a href="{{ url('/student/classes/booked') }}">Booked Classes</a></li>                    
+
                         <li><a href="{{ url('/student/classes/completed') }}">Completed Classes</a></li>                    
                         <li><a href="{{ url('/student/classes') }}">All</a>
                         </li>

@@ -659,12 +659,13 @@
                     var data = $('#antoform').serialize();
                     $.post(url,data)
                     .done(function(response){   
-                        // console.log(response);
+                        console.log(response);
                         if(response.error == false){
                             calendar.fullCalendar('renderEvent', {
                                     title: 'OPEN',
                                     start: new Date(response.schedule.start),
                                     end: new Date(response.schedule.end),
+                                    edit_url: "{{ url( 'admin/teacher/'.$teacher->id) }}/schedule/" + response.schedule.id,
                                 },
                                 true // make the event "stick"
                             );

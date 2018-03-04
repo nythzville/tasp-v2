@@ -26,49 +26,56 @@
   
  
 </style>  
-  <nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll" role="navigation">
+ <nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll" role="navigation">
     <div class="border-top"></div>
     <div class="topbar">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="topbar-left">
-              <p>Contact Us &nbsp; | &nbsp;+63 998 7654 321</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="topbar-right">
-              <ul>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/VN.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/KR.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/JP.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/CN.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/US.png"></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-8">
+					<div class="topbar-left">
+						<p>Contact Us &nbsp; | &nbsp;+63 998 7654 321</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-4">
+					
+<div class="topbar-right">
+  <ul class="nav"> 
+  <li class="drop">English
+    <ul>
+<li><a href="#" data-value="">English (US)</a></li>
+<li><a href="#" data-value="">한국어</a></li>
+<li><a href="#" data-value="">日本語</a></li>
+<li><a href="#" data-value="">Tiếng Việt</a></li>
+<li><a href="#" data-value="">中文(台灣)</a></li>   
+<li><a href="#" data-value="">中文(简体)</a></li>       
+      
+    </ul>
+  </li>
+</ul>
+</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="main-nav">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-              </button>
-              
-              <a class="navbar-brand navbar-logo" href="#">
-                <img class="img-responsive" src="{{ url('Elearn/Elearn/assets')}}/img/logo.png">
-              </a>
-            </div>
+	<div class="main-nav">
+    	<div class="container">
+        	<!-- Brand and toggle get grouped for better mobile display -->
+        	<div class="navbar-header">
+        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-ea">
+            		<span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+        		</button>
+        		
+        		<a class="navbar-brand navbar-logo" href="{{ url('/') }}">
+        			<img class="img-responsive" src="{{ url('Elearn/Elearn/assets')}}/img/logo.png">
+        		</a>
+        	</div>
 
-            <div class="collapse navbar-collapse" id="navigation-doc">
-                <ul class="nav navbar-nav navbar-right">
+        	<div class="collapse navbar-collapse" id="navigation-ea">
+        		<ul class="nav navbar-nav navbar-right">
                 
                 <li><a href="{{ url('/') }}">HOME</a></li>
                 <li  class="dropdown">
@@ -95,14 +102,14 @@
                 </li>
                 <li><a href="{{ url('/blog') }}">BLOG</a></li>
                 <li><a href="{{ url('/faq') }}">FAQ</a></li>
-                <li class="btn btn-primary btn-main-nav"><a href="{{ url('login')}}">LOGIN</a></li>
+                <li class="btn btn-primary btn-main-nav"><a href="http://ea-english.com/login">LOGIN</a></li>
 
               </ul>
 
-            </div>
-        </div>
+        	</div>
+    	</div>
     </div>
-  </nav>
+    </nav>
 
     <div class="wrapper contact-page-banner">
       <div class="header header-filter parallax-section" style="background-image: url('{{ url('Elearn/Elearn/assets')}}/img/banner-bg.jpg');">
@@ -131,10 +138,11 @@
                               <div class="ripple-container"></div>
                           </div>
                           <div class="content">
-                              <h6 class="category">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                  TAKE A FREE TRIAL CLASS
-                                </button><!-- <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">TAKE A FREE TRIAL CLASS</a> --></h6>
+                              <!--<h6 class="category">-->
+                              <!--  <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">-->
+                              <!--    TAKE A FREE TRIAL CLASS-->
+                              <!--  </button></h6>>-->
+                              <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">TAKE A FREE TRIAL CLASS</a>
                              
                               <hr>
                               <div class="card-description">
@@ -157,7 +165,7 @@
                     <div class="col-ms-5 col-sm-5">
                       <div class="card-image card-raised">
                         <a href="#" > 
-                          <img width="360" height="240" src="http://mediakey1.ef.com/sitecore/__~/media/centralefcom/corporate/2017/online-school/Step3_TB_4144_retouch.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" alt="Perfectly on furniture" ">
+                          <img width="360" height="240" src="{{ url('Elearn/Elearn/assets')}}/img/handpick.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" >
                         </a>
                       </div>
                     </div>
@@ -187,7 +195,7 @@
                     <div class="col-ms-5 col-sm-5">
                       <div class="card-image card-raised">
                         <a href="#" > 
-                          <img width="360" height="240" src="https://demot-vertigostudio.netdna-ssl.com/hestia-pro/wp-content/uploads/sites/92/2016/10/blog3-360x240.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" alt="Perfectly on furniture" ">
+                          <img width="360" height="240" src="{{ url('Elearn/Elearn/assets')}}/img/onlinebook.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" >
                         </a>
                       </div>
                     </div>
@@ -199,7 +207,7 @@
                   <div class="col-ms-5 col-sm-5">
                     <div class="card-image card-raised">
                       <a href="#" > 
-                        <img width="360" height="240" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/group.png" class="attachment-hestia-blog size-hestia-blog wp-post-image" alt="Perfectly on furniture" ">
+                        <img width="360" height="240" src="{{ url('Elearn/Elearn/assets')}}/img/tutors.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" >
                       </a>
                     </div>
                   </div>
@@ -229,7 +237,7 @@
                     <div class="col-ms-5 col-sm-5">
                       <div class="card-image card-raised">
                         <a href="#" > 
-                          <img width="360" height="240" src="https://cdn.lynda.com/courses/144198-636356275983784678_270x480_thumb.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" alt="Perfectly on furniture" ">
+                          <img width="360" height="240" src="https://cdn.lynda.com/courses/144198-636356275983784678_270x480_thumb.jpg" class="attachment-hestia-blog size-hestia-blog wp-post-image" >
                         </a>
                       </div>
                     </div>
@@ -283,168 +291,61 @@
               <h2 class="easya-title">Featured Tutors</h2>
 
               <div id="teacher-carousel" class="carousel slide" data-ride="carousel">
-                  <div class="col-md-10">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-                            <div class="item active">
+                        <div class="col-md-10">
+                          <div class="carousel-inner" role="listbox">
+
+                            @foreach($teachers as $teacher)
+                            <!-- Teacher -->
+                            <div class="item {{ ($teacher->rank == 1)? 'active': '' }}">
                                 <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Joan_2.JPG">
+                                        <img alt="teacher image" src="{{ url($teacher->getUser->user_image ) }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-details">
-                                        <h4>Joan</h4>
+                                        <h4>{{ $teacher->firstname }} </h4>
                                         <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
+                                            @if($teacher->desc != "")
+                                                {{ $teacher->desc }}
+                                            @else
+
+                                                Were for good. Seed i created appear, seas first and fruitful them life, 
+                                                moved created first beginning fly. Was gathered whales whales our seasons 
+                                                blessed them.
+                                            @endif
                                         </p>
 
                                         <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
+                                              <source src="{{ url('/recordings/'.$teacher->teacher_id.'-'.strtolower($teacher->firstname).'-recording.mp3') }}" type="audio/mpeg">
                                             Your browser does not support the audio element.
                                         </audio>
                                     </div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/China_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Rebecca</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
+                            <!-- /Teacher -->
+                            @endforeach
 
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/kate.png">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Kate</h4>
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Rechel_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Rechel</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-img">
-                                        <img alt="teacher image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Straw_2.JPG">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <div class="teacher-details">
-                                        <h4>Strawberry</h4>
-                                        
-                                        <p>
-                                            Were for good. Seed i created appear, seas first and fruitful them life, 
-                                            moved created first beginning fly. Was gathered whales whales our seasons 
-                                            blessed them.
-                                        </p>
-
-                                        <audio controls>
-                                              <source src="horse.ogg" type="audio/ogg">
-                                              <source src="horse.mp3" type="audio/mpeg">
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
-                  </div>
+                        </div>
 
-                  <div class="col-md-2">
-                    <div class="slide-indicator">
-                      
-                        <ol class="carousel-indicators">
-                          <li data-target="#teacher-carousel" data-slide-to="0" class="active">
-                              <div class="carousel-nav-img">
-                                  
-                                  <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Joan_2.JPG">
-                              </div>
-                          </li>
-                          <li data-target="#teacher-carousel" data-slide-to="1" class="">
-                              <div class="carousel-nav-img">
-                                  
-                                  <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/China_2.JPG">
-                              </div>
-                          </li>
-                          <li data-target="#teacher-carousel" data-slide-to="2" class="">
-                              <div class="carousel-nav-img">
-                                  
-                                  <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/kate.png">
-                              </div>
-                          </li>
-                          <li data-target="#teacher-carousel" data-slide-to="3" class="">
-                              <div class="carousel-nav-img">
-                                  
-                                  <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Rechel_2.JPG">
-                              </div>
-                          </li>
-                          <li data-target="#teacher-carousel" data-slide-to="4" class="">
-                              <div class="carousel-nav-img">
-                                  
-                                  <img alt="Navigation Image" src="{{ url('Elearn/Elearn/assets')}}/img/Teachers/teach/Straw_2.JPG">
-                              </div>
-                          </li>
-                      </ol>
-                    </div>
-                  </div>
+                        <div class="col-md-2">
+                          <div class="slide-indicator">
+                            
+                              <ol class="carousel-indicators">
+                                @foreach($teachers as $teacher)
+                                <li data-target="#teacher-carousel" data-slide-to="{{ (intval($teacher->rank) - 1) }}" class="{{ ($teacher->rank == 1)? 'active': '' }}">
+                                    <div class="carousel-nav-img">
+                                        
+                                        <img alt="Navigation Image" src="{{ url($teacher->getUser->user_image ) }}">
+                                    </div>
+                                </li>
+                                @endforeach
+                              </ol>
+
+                          </div>
+                        </div>
               </div>
 
             </div>
@@ -499,7 +400,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <h2 class="text-center title">TRIAL CLASS APPLICATION FORM</h2>
-          <h4 class="text-center description">We will responde get back to you in a couple of hours.</h4>
+          <h4 class="text-center description">We will get back to you as soon as possible.</h4>
                     <form id="trial-class-form" method="post" action="{{ url('/trial_application')}}">
                         {{ csrf_field() }}
                         <div class="row">

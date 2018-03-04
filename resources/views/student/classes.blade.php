@@ -19,8 +19,22 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Class List<small>All My Classes </small></h2>
+                    @if($page == 'CLASSES_TODAY')
+                    <h2>Classes Today<small> </small></h2>
                     
+                    @elseif($page == 'UPCOMING_CLASSES')
+                    <h2>Upcoming Classes<small> </small></h2>
+
+                    @elseif($page == 'COMPLETED_CLASSES')
+                    <h2>Completed Classes<small> </small></h2>
+
+                    @elseif($page == 'BOOKED_CLASSES')
+                    <h2>Booked Classes<small> </small></h2>
+
+                    @else
+                    <h2>Class List<small>All My Classes </small></h2>
+                    @endif
+
                     <div class="clearfix"></div>
                 </div>
 
@@ -49,7 +63,7 @@
                                 <th class="column-title">Tutor </th>
                                 <th class="column-title">Skype ID</th>
                                 <th class="column-title">QQ ID</th>
-                                <th class="column-title">Status </th>
+                                <th class="column-title">Type </th>
                                 <th class="column-title no-link last"><span class="nobr">Action</span>
                                 </th>
                                 <th class="bulk-actions" colspan="7">
@@ -69,7 +83,9 @@
                             <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >Teacher {{ $class->getTeacher->firstname }}</a></td>
                             <td class=" "> {{ $class->getTeacher->skype }}</i></td>
                             <td class=" "> {{ $class->getTeacher->qq }}</td>
-                            <td class=" ">{{ $class->status }}</td>
+                            <!-- <td class=" ">{{ $class->status }}</td> -->
+                            <td class=" ">{{ $class->type }}</td>
+
                             <td class=" ">
                                 @if($class->status == "COMPLETED" )
                                 <a  class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}"><i class="fa fa-eye"></i> Evaluation</a>

@@ -111,7 +111,7 @@
                 </li>
                 <li><a href="{{ url('/blog') }}">BLOG</a></li>
                 <li><a href="{{ url('/faq') }}">FAQ</a></li>
-                 @if(Auth::guest())
+                @if(Auth::guest())
                     <li class="btn btn-primary btn-main-nav"><a href="{{ url('login')}}">LOGIN</a></li>
 
                 @else
@@ -127,7 +127,6 @@
                 
                     @endif
                 @endif
-
               </ul>
 
         	</div>
@@ -266,12 +265,12 @@
                             @foreach($teachers as $teacher)
                             <!-- Teacher -->
                             <div class="item {{ ($teacher->rank == 1)? 'active': '' }}">
-                                <div class="col-sm-4 col-xs-12">
+                                <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-img">
                                         <img alt="teacher image" src="{{ url($teacher->getUser->user_image ) }}">
                                     </div>
                                 </div>
-                                <div class="col-sm-8 col-xs-12">
+                                <div class="col-sm-6 col-xs-12">
                                     <div class="teacher-details">
                                         <h4>{{ $teacher->firstname }} </h4>
                                         <p>

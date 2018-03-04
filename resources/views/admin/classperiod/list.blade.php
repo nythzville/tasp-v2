@@ -49,14 +49,21 @@
                                     </td>
                                     <td class=" ">{{ $class->type }}</td>                                    
                                     <td class="">
+                                        @if($class->type == "TRIAL")
+                                        <a href="{{ url('admin/classes/'.$class->id.'/evaluate_trial') }}" class="btn btn-success btn-xs" > <i class="fa fa-eye" ></i>View Evaluation</button></a>
+
+                                        @else
                                         @if($class->status == 'COMPLETED')
+                                        
                                         <button class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i>View Evaluation</button>
                                         @else
+                                        
                                         <button class="btn-view-evaluation btn btn-primary btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i> Evaluate </button>
+                                        @endif
                                         @endif
 
                                     @if(($class->status == 'BOOKED') && ( date( $class->end ) > date( $current_time ) ))
-                                    {!! Form::open(array( 'url' => 'admin/class/'.$class->id.'/cancel', 'method'=> 'POST', 'class' => 'cancel-form-class',
+                                    {!! Form::open(array( 'url' => 'admin/classes/'.$class->id.'/cancel', 'method'=> 'POST', 'class' => 'cancel-form-class',
                                     'style'=> 'display: inline;')) !!}
                                         <button class="btn btn-warning btn-xs"><i class="fa fa-close"></i> Cancel</button>
                                     {!! Form::close() !!}
@@ -85,7 +92,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="testmodal" style="padding: 5px 20px;">
-                        {{ Form::open(array( 'url' => 'admin/class/evaluate', 'id'=>'evaluation-form', 'class'=>'form-horizontal calender', 'role'=>'form' ,'method' => 'POST')) }}
+                        {{ Form::open(array( 'url' => 'admin/classes/evaluate', 'id'=>'evaluation-form', 'class'=>'form-horizontal calender', 'role'=>'form' ,'method' => 'POST')) }}
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Date</label>
                                 <div class="col-sm-9">
@@ -138,7 +145,7 @@
             $('input#date').val(date_value);
 
             // var url = $('#evaluation-form').attr('action');
-            var url = "{{ url('/admin/class') }}";
+            var url = "{{ url('/admin/classes') }}";
             $('#UpdateEvaluation').modal('show');
             $('#evaluation-form').attr('action', url + '/' + class_id + '/evaluation');
             $.get(url + '/' + class_id + '/evaluation' )

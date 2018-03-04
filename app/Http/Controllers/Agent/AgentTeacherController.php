@@ -15,15 +15,38 @@ use App\Course;
 use App\User;
 
 use Auth;
+use Carbon;
 
 class AgentTeacherController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->agent = Auth::user()->getAgent();
+
+            return $next($request);
+        });
+
+        $current_time = Carbon\Carbon::now('Asia/Manila');
+
+        $this->params = array(
+            'msg' => '',
+            'page' => '',
+            'current_time' => $current_time,
+
+        );
+    }
     //
     public function index()
     {
+       
 
     	$teachers = Teacher::all();
+        $agent = Agent::where('user_id', $this->user->id)->first();
+
     	$this->params['teachers'] = $teachers;
+        $this->params['agent'] = $agent;
 
     	return view('agent.teacher-list')->with($this->params);
     }
@@ -63,6 +86,10 @@ class AgentTeacherController extends Controller
         $teacher = Teacher::find($id);
 
         $this->params['user'] = $user;
+        $this->params['teacher'] = $teacher;
+        $agent = Agent::where('user_id', $this->user->id)->first();
+        $this->params['agent'] = $agent;
+
         $this->params['teacher'] = $teacher;
 
         return view('agent.teacher-profile')->with($this->params);

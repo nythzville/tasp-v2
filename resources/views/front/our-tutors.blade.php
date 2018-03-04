@@ -51,13 +51,18 @@
           </div>
           <div class="col-md-6">
             <div class="topbar-right">
-              <ul>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/VN.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/KR.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/JP.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/CN.png"></li>
-                <li><img src="{{ url('Elearn/Elearn/assets')}}/img/flags/US.png"></li>
-              </ul>
+               <ul class="nav">
+        <li>
+            <div id="google_translate_element"></div>
+        </li>
+    </ul>
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+    </script>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
             </div>
           </div>
         </div>

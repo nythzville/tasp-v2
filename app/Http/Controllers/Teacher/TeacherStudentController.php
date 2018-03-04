@@ -65,7 +65,7 @@ class TeacherStudentController extends Controller
             return redirect('teacher/student');
         }
         if($student->getCompletedClassesWithId($this->teacher->id) >= 10 ){
-            $student->progress_report = json_decode($student->getCourse()->report);            
+            $student->progress_report = json_decode($student->getCourse($teacher->id)->report);            
         }
         $this->params['student'] = $student;
 
@@ -108,7 +108,7 @@ class TeacherStudentController extends Controller
         $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
         
         $student = Student::find($id);
-        $course = $student->getCourse();
+        $course = $student->getCourse($teacher->id);
         $progress_report = $request->all();
         $progress_report['teacher'] =  $this->teacher->id;
         unset($progress_report['_token']);

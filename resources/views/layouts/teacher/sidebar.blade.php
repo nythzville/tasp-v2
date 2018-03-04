@@ -7,10 +7,17 @@
             
             
            
-                <li><a href="{{ url('/teacher/class/today') }}"><i class="fa fa-calendar"></i> My Classes Today</a>
+                <li><a href="{{ url('/teacher/classes/today') }}"><i class="fa fa-calendar"></i> My Classes Today</a>
+                </li>
+                <li><a href="{{ url('/teacher/classes/upcoming') }}"><i class="fa fa-calendar"></i> Upcoming Classes</a>
                 </li>
 
-                <li><a href="{{ url('/teacher/class') }}"><i class="fa fa-calendar"></i> My All Classes</a>
+                <li><a href="{{ url('/teacher/classes/booked') }}"><i class="fa fa-calendar"></i> Booked Classes</a>
+                </li>
+
+                <li><a href="{{ url('/teacher/classes/completed') }}"><i class="fa fa-calendar"></i> Completed Classes</a>
+                </li>
+                <li><a href="{{ url('/teacher/classes') }}"><i class="fa fa-calendar"></i> All My Classes</a>
                 </li>
 
                 <li><a href="{{ url('/teacher/schedule') }}"><i class="fa fa-calendar"></i> My Schedule</a>

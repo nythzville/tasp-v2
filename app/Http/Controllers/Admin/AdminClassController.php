@@ -9,10 +9,14 @@ use App\Http\Controllers\Controller;
 
 use App\ClassPeriod;
 use App\Student;
+use App\Teacher;
+
 
 use Validator;
 use DB;
 use Carbon;
+
+use Auth;
 
 class AdminClassController extends Controller
 {
@@ -146,7 +150,7 @@ class AdminClassController extends Controller
                 $student->available_class = ($student->available_class - 1);
                 $student->save();
 
-                $course = $student->getCourse();
+                $course = $student->getCourse($class->teacher);
                 $course->regular_classes_completed = (intval($course->regular_classes_completed) + 1);
                 $course->save();
             }
@@ -159,6 +163,58 @@ class AdminClassController extends Controller
 
         $this->params['msg'] = 'Evaluation Successfully Saved!';
         return redirect('admin/class')->with($this->params);
+    }
+
+    public function evaluate_trial_form($id){
+        $class = ClassPeriod::find($id);
+        $teacher = Teacher::find($class->teacher);
+        $student = Teacher::find($class->student);
+
+        if(!$class){
+            return redirect()->back()->withErrors('No class found!');
+        }
+        if ($class->type != "TRIAL") {
+            return redirect('admin/classes')->withErrors('No class found!');
+        }
+
+        $student = Student::find($class->student);
+
+        $student->progress_report = json_decode($class->evaluation);
+
+        $this->params['class'] = $class;
+        $this->params['student'] = $student;
+        $this->params['teacher'] = $teacher;
+        $this->params['user'] = Auth::user();
+
+        $this->params['page'] = "EVALUATE_TRIAL";
+
+        return view('admin.classperiod.progress-report')->with($this->params);
+    }
+
+    public function evaluate_trial($id, Request $request){
+        
+        $class = ClassPeriod::find($id);
+        $teacher = Teacher::find($class->teacher);
+        $student = Teacher::find($class->student);
+
+        if(!$class){
+            return redirect()->back()->withErrors('No class found!');
+        }
+        if ($class->type != "TRIAL") {
+            return redirect('admin/classes')->withErrors('No class found!');
+        }
+
+        $progress_report = $request->all();
+        unset($progress_report['_token']);
+        
+        $class->evaluation = json_encode($progress_report);
+        $class->status = "COMPLETED";
+        
+        if($class->save()){
+            return redirect()->back()->withSuccess('Trial Class Evaluate Successfully!');
+        }else{
+            return redirect()->back()->withErrors('Unable to save Evaluation!');
+        }
     }
 
     public function cancel_class($id){
