@@ -45,9 +45,9 @@
                             <td class="">{{ $student->getTotalCompletedClasses() }} </td>
                             <!-- <td class=" ">{{ date("F j, Y g:i a",strtotime($student->getTrialClass['start'])) }}</td> -->
                             <td class=" last">
-                                <a href="{{ url('agent/student/'. $student->id . '/book') }}" class="btn btn-success btn-xs"><i class="fa fa-book"></i> Book a Class</a>
+                                <a href="{{ url('agent/students/'. $student->id . '/book') }}" class="btn btn-success btn-xs"><i class="fa fa-book"></i> Book a Class</a>
 
-                                <a href="{{ url('agent/student/'. $student->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
+                                <a href="{{ url('agent/students/'. $student->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
                             </td>
                         </tr>
                         @endforeach

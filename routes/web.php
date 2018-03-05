@@ -158,19 +158,19 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 
 
 	// Student 
-	Route::post('/student/{id}/available_class', 'AdminStudentController@update_available_class');
-	Route::Resource('/student', 'AdminStudentController');
-	Route::Resource('/student/{id}/booking', 'AdminStudentController@booking');
+	Route::post('/students/{id}/available_class', 'AdminStudentController@update_available_class');
+	Route::Resource('/students', 'AdminStudentController');
+	Route::Resource('/students/{id}/booking', 'AdminStudentController@booking');
 
 	// Teacher
-	Route::get('/teacher/ranking', 'AdminTeacherController@ranking');
-	Route::post('/teacher/ranking', 'AdminTeacherController@ranking_post');
-	Route::get('/teacher/{id}/profile', 'AdminTeacherController@profile');
-	Route::Resource('/teacher/{teacher_id}/schedule', 'AdminTeacherScheduleController');
-	Route::post('/teacher/{teacher_id}/edit_desc', 'AdminTeacherController@edit_desc');
-	Route::post('/teacher/{id}/recording', 'AdminTeacherController@recording');
-	Route::post('/teacher/{id}/crop_image', 'AdminTeacherController@crop_image');
-	Route::Resource('/teacher', 'AdminTeacherController');
+	Route::get('/teachers/ranking', 'AdminTeacherController@ranking');
+	Route::post('/teachers/ranking', 'AdminTeacherController@ranking_post');
+	Route::get('/teachers/{id}/profile', 'AdminTeacherController@profile');
+	Route::Resource('/teachers/{teacher_id}/schedule', 'AdminTeacherScheduleController');
+	Route::post('/teachers/{teacher_id}/edit_desc', 'AdminTeacherController@edit_desc');
+	Route::post('/teachers/{id}/recording', 'AdminTeacherController@recording');
+	Route::post('/teachers/{id}/crop_image', 'AdminTeacherController@crop_image');
+	Route::Resource('/teachers', 'AdminTeacherController');
 
 	// Agent
 	Route::post('/agents/{id}/crop_image', 'AdminAgentController@crop_image');
@@ -194,18 +194,18 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 
 
 	// Student Trial Class
-	Route::get('/teacher/{id}/schedule', 'AdminTeacherController@get_teacher_sched');
-	Route::get('/student/{id}/trial_class', 'AdminStudentController@student_trial_class_teacher');
-	Route::get('/student/{student_id}/teacher/{teacher_id}/trial_class', 'AdminStudentController@trial_class');
-	Route::post('/student/{student_id}/teacher/{teacher_id}/trial_class', 'AdminStudentController@book_trial_class');
-	Route::post('/student/{id}/crop_image', 'AdminStudentController@crop_image');
+	Route::get('/teachers/{id}/schedule', 'AdminTeacherController@get_teacher_sched');
+	Route::get('/students/{id}/trial_class', 'AdminStudentController@student_trial_class_teacher');
+	Route::get('/students/{student_id}/teachers/{teacher_id}/trial_class', 'AdminStudentController@trial_class');
+	Route::post('/students/{student_id}/teachers/{teacher_id}/trial_class', 'AdminStudentController@book_trial_class');
+	Route::post('/students/{id}/crop_image', 'AdminStudentController@crop_image');
 
 	// Route::get('/users', 'AdminUserController@index');
 
 	// Book Regular Class
-	Route::get('/student/{id}/book', 'AdminStudentController@book');
-	Route::get('/student/{student_id}/teacher/{teacher_id}/book', 'AdminStudentController@book_by_teacher');
-	Route::post('/student/{student_id}/teacher/{teacher_id}/book', 'AdminStudentController@book_regular_class');
+	Route::get('/students/{id}/book', 'AdminStudentController@book');
+	Route::get('/students/{student_id}/teachers/{teacher_id}/book', 'AdminStudentController@book_by_teacher');
+	Route::post('/students/{student_id}/teachers/{teacher_id}/book', 'AdminStudentController@book_regular_class');
 
 
 });
@@ -254,21 +254,23 @@ Route::group(['prefix' => 'agent', 'namespace'=> 'Agent', 'middleware' => 'agent
 	Route::post('/crop_image', 'AgentProfileController@crop_image');
 
 
-	Route::Resource('/student', 'AgentStudentController');
-	Route::get('/teacher', 'AgentTeacherController@index');
-	Route::get('/teacher/{id}', 'AgentTeacherController@show');
+	Route::Resource('/students', 'AgentStudentController');
+	Route::get('/teachers', 'AgentTeacherController@index');
+	Route::get('/teachers/{id}', 'AgentTeacherController@show');
 
-	Route::get('/teacher/{id}/schedule', 'AgentTeacherController@get_teacher_sched');
+	Route::get('/teachers/{id}/schedule', 'AgentTeacherController@get_teacher_sched');
 
-	Route::get('/student/{id}/trial_class', 'AgentStudentController@student_trial_class_teacher');
-	Route::get('/student/{student_id}/teacher/{teacher_id}/trial_class', 'AgentStudentController@trial_class');
-	Route::post('/student/{student_id}/teacher/{teacher_id}/trial_class', 'AgentStudentController@book_trial_class');
-	Route::get('/class', 'AgentClassController@index');
+	Route::get('/students/{id}/trial_class', 'AgentStudentController@student_trial_class_teacher');
+	Route::get('/students/{student_id}/teacher/{teacher_id}/trial_class', 'AgentStudentController@trial_class');
+	Route::post('/students/{student_id}/teacher/{teacher_id}/trial_class', 'AgentStudentController@book_trial_class');
+	Route::get('/classes', 'AgentClassController@index');
+	Route::post('/classes/{id}/cancel', 'AgentClassController@cancel_class');
+	
 
 	// Book Regular Class
-	Route::get('/student/{id}/book', 'AgentStudentController@book');
-	Route::get('/student/{student_id}/teacher/{teacher_id}/book', 'AgentStudentController@book_by_teacher');
-	Route::post('/student/{student_id}/teacher/{teacher_id}/book', 'AgentStudentController@book_regular_class');
+	Route::get('/students/{id}/book', 'AgentStudentController@book');
+	Route::get('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_by_teacher');
+	Route::post('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_regular_class');
 
 
 

@@ -7,23 +7,23 @@
                 <li><a><i class="fa fa-users"></i> Students <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         
-                        <li><a href="{{ url('/agent/student') }}">All</a>
+                        <li><a href="{{ url('/agent/students') }}">All</a>
                         </li>
-                        <li><a href="{{ url('/agent/student/create') }}">Add New</a>
+                        <li><a href="{{ url('/agent/students/create') }}">Add New</a>
                         </li>
                     </ul>
                 </li>
-                <li><a href="{{ url('/agent/teacher') }}"><i class="fa fa-users"></i> Teachers </a>
+                <li><a href="{{ url('/agent/teachers') }}"><i class="fa fa-users"></i> Teachers </a>
                     
                 </li>
                 <li><a><i class="fa fa-calendar"></i> Classes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         
-                        <li><a href="{{ url('/agent/class') }}">All</a>
+                        <li><a href="{{ url('/agent/classes') }}">All</a>
                         </li>
-                        <li><a href="{{ url('/agent/class?type=REGULAR') }}">Regular</a>
+                        <li><a href="{{ url('/agent/classes?type=REGULAR') }}">Regular</a>
                         </li>
-                        <li><a href="{{ url('/agent/class?type=TRIAL') }}">Trial</a>
+                        <li><a href="{{ url('/agent/classes?type=TRIAL') }}">Trial</a>
                         </li>
                     </ul>
                 </li>

@@ -78,7 +78,7 @@ class AgentStudentController extends Controller
         ->get();
         $this->params['completed_classes'] = $completed_classes;
         $this->params['classes'] = $classes;
-
+        $this->params['agent'] = $agent;
         $this->params['teachers'] = Teacher::all();
 
         return view('agent.student-profile')->with($this->params);
@@ -338,13 +338,14 @@ class AgentStudentController extends Controller
 
         $student = Student::find($student_id);
         $teacher =  Teacher::find($teacher_id);
-        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->get();
+        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->where('status', 'OPEN')->get();
 
-        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->get();
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->where('status', 'BOOKED')->get();
 
         $this->params['classPeriods'] = $classPeriods;
         $this->params['student'] = $student;
         $this->params['teacher'] = $teacher;
+        $this->params['agent'] = $agent;
         $this->params['teacher_scheds'] = $teacher_scheds;
 
         return view('agent.regular-class')->with($this->params);

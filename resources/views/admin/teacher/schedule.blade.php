@@ -16,7 +16,7 @@
                             <div class="title_right">
                                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                                     
-                                    <a class="btn btn-default btn-xs" href="{{ url('/admin/teacher')}}"> <i class="fa fa-chevron-left"></i> Back To Teachers List</a>
+                                    <a class="btn btn-default btn-xs" href="{{ url('/admin/teachers')}}"> <i class="fa fa-chevron-left"></i> Back To Teachers List</a>
                                
                                 </div>
                             </div>    

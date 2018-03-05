@@ -5,14 +5,14 @@
     <div class="right_col" role="main">
         <div class="page-title">
             <div class="title_left">
-                <h3>{{ $student->lastname }} {{ $student->firstname }} <span id="clock" class="small">Book A class</span></h3> 
+                <h3> {{ $student->firstname }} {{ $student->lastname }} <span id="clock" class="small">Book A class</span></h3> 
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Teacher {{ $teacher->lastname }} {{ $teacher->firstname }}<small> Schedule</small></h2> 
+                        <h2>Teacher {{ $teacher->firstname }}'s <small> Schedule</small></h2> 
                         <ul class="nav navbar-right panel_toolbox">
                             @if(date("Y-m-d") < date("Y-m-d", strtotime($date)))
                             <li><a href="{{ url()->current() }}?week={{ ($week - 1 ) }}"><i class="fa fa-chevron-left"></i> Prev</a>
@@ -181,20 +181,20 @@
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="myModalLabel">You Book a Class for {{ $student->lastname }} {{ $student->firstname }} with Teacher {{ $teacher->lastname }} {{ $teacher->firstname }}</h4>
+                        <h4 class="modal-title" id="myModalLabel">Book a Class for {{ $student->firstname }} {{ $student->lastname }} with Teacher {{ $teacher->firstname }}</h4>
                     </div>
                     <div class="modal-body">
                         <div id="testmodal" style="padding: 5px 20px;">
                            
                             <!-- <form id="booking-form" class="form-horizontal calender" role="form"> -->
-                                {{ Form::open(array('url' => 'admin/student/'.$student->id.'/teacher/'.$teacher->id.'/book', 
+                                {{ Form::open(array('url' => 'admin/students/'.$student->id.'/teachers/'.$teacher->id.'/book', 
                                 'id' => 'booking-form', 'class' => 'form-horizontal calendar', 'role' => 'form', 'method' => 'POST')) }}
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Details</label>
                                     <div class="col-sm-9">
                                        <p>
-                                          Student:{{ $student->lastname }} {{ $student->firstname }} <br/>
-                                          Teacher: {{ $teacher->lastname }} {{ $teacher->firstname }}
+                                          Student:  {{ $student->firstname }} <br/>
+                                          Teacher:  {{ $teacher->firstname }}
                                         </p>
                                         <!-- <input type="text" class="form-control" id="tutor" name="tutor" value="{{ $teacher->lastname }} {{ $teacher->firstname }}" readonly="" > -->
                                         <input type="hidden" class="form-control" id="tutor_id" name="tutor_id">

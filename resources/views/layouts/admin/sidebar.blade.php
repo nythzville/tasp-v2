@@ -10,19 +10,19 @@
                 <li><a><i class="fa fa-users"></i> Students <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         
-                        <li><a href="{{ url('/admin/student') }}">All</a>
+                        <li><a href="{{ url('/admin/students') }}">All</a>
                         </li>
-                        <li><a href="{{ url('/admin/student/create') }}">Add New</a>
+                        <li><a href="{{ url('/admin/students/create') }}">Add New</a>
                         </li>
                     </ul>
                 </li>
                 <li><a><i class="fa fa-users"></i> Teachers <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
-                        <li><a href="{{ url('/admin/teacher/ranking') }}">Ranking</a>
+                        <li><a href="{{ url('/admin/teachers/ranking') }}">Ranking</a>
                         
-                        <li><a href="{{ url('/admin/teacher') }}">All</a>
+                        <li><a href="{{ url('/admin/teachers') }}">All</a>
                         </li>
-                        <li><a href="{{ url('/admin/teacher/create') }}">Add New</a>
+                        <li><a href="{{ url('/admin/teachers/create') }}">Add New</a>
                         </li>
                     </ul>
                 </li>

@@ -399,7 +399,9 @@
     <!-- Booking Date Picker -->
     @if(isset($booking_calendar) && ($booking_calendar == true))
     <script src="{{ url('/')}}/admin/js/moment.min.js"></script>
-    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script>
+    <!-- <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script> -->
+    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.js"></script>
+
     <script>
     $(document).ready(function () {
 
@@ -505,7 +507,9 @@
 
     <!-- / End Evaluation script -->
     @if(isset($page) && ($page == 'teacher_schedule'))
-    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script>
+    <!-- <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script> -->
+    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.js"></script>
+
     <script>
             $(window).load(function () {
 

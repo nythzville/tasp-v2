@@ -54,7 +54,7 @@
                                     <th colspan="2">Test</th>
                                 </tr>
                                 <tr>
-                                    <td>{{ $student->firstname }}</td>
+                                    <td>{{ $student->firstname }} {{ $student->lastname }}</td>
                                     <td>{{ date_diff(date_create($student->dob), date_create('now'))->y }}</td>
                                     <td>{{ $teacher->firstname }}</td>
                                     <td><input type="text" name="score" value="{{ isset($student->progress_report->score)? $student->progress_report->score : ''}}"></td>

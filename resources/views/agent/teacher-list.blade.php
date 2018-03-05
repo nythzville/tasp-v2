@@ -44,7 +44,7 @@
                             <td class=" ">{{ $teacher->skype}}</i></td>
                             <td class=" "></td>
                             <td class="a-right a-right ">{{ $teacher->qq}}</td>
-                            <td class=" last"><a href="{{ url('agent/teacher/'. $teacher->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
+                            <td class=" last"><a href="{{ url('agent/teachers/'. $teacher->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
                             
                             </td>
                         </tr>

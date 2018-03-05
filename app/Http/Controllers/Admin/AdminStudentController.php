@@ -182,11 +182,11 @@ class AdminStudentController extends Controller
 
         $classes = ClassPeriod::where('student' , $id)
         ->where('status' , '<>', 'CANCELED')
-        ->orderBy('start','DESC')
+        ->orderBy('start','DESC')->limit(20)
         ->get();
 
         $completed_classes = ClassPeriod::where('student' , $id)
-        ->where('status' , 'COMPLETED')
+        ->where('status' , 'COMPLETED')->limit(20)
         ->get();
         $this->params['completed_classes'] = $completed_classes;
         $this->params['classes'] = $classes;
@@ -448,7 +448,7 @@ class AdminStudentController extends Controller
         $student->save();
 
         $this->params['msg'] = 'Available Classes Updated!';
-        return redirect('admin/student/'.$id)->with($this->params);
+        return redirect()->back()->withSuccess('Available Classes Updated!');
 
     }
 
@@ -488,9 +488,9 @@ class AdminStudentController extends Controller
 
         $student = Student::find($student_id);
         $teacher =  Teacher::find($teacher_id);
-        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->get();
+        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->where('status', 'OPEN')->get();
 
-        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->get();
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->where('status', 'BOOKED')->get();
 
         $this->params['classPeriods'] = $classPeriods;
         $this->params['student'] = $student;

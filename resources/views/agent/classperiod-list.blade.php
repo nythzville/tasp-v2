@@ -13,7 +13,22 @@
                     </div>
 
                     <div class="x_content">
-
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <table class="table list-table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
@@ -51,7 +66,7 @@
 
                                     <td class="">
                                     @if(($class->status == 'BOOKED') && ( date( $class->end ) > date( $current_time ) ))
-                                    {!! Form::open(array( 'url' => 'admin/class/'.$class->id.'/cancel', 'method'=> 'POST',
+                                    {!! Form::open(array( 'url' => 'agent/classes/'.$class->id.'/cancel', 'method'=> 'POST', 'class' => 'cancel-form-class',
                                     'style'=> 'display: inline;')) !!}
                                         <button class="btn btn-warning btn-xs"><i class="fa fa-close"></i> Cancel</button>
                                     {!! Form::close() !!}

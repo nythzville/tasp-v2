@@ -13,7 +13,22 @@
                     </div>
 
                     <div class="x_content">
-
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <table class="table list-table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
@@ -37,8 +52,8 @@
                                 <tr class="even pointer">
                                     <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
                                     <td class="date-cell" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                    <td class=" ">{{ $class->getStudent->lastname }} {{ $class->getStudent->firstname }}</td>
-                                    <td class=" ">{{ $class->getTeacher->lastname }} {{ $class->getTeacher->firstname }}</td>                                    
+                                    <td class=" ">{{ $class->getStudent->firstname }} {{ $class->getStudent->lastname }}</td>
+                                    <td class=" ">{{ $class->getTeacher->firstname }}</td>                                    
                                     
                                     <td class=" ">
                                         @if(( date( $class->end ."+1 day") < date( $current_time ) ) && ($class->status != "COMPLETED"))

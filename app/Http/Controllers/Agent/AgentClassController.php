@@ -44,13 +44,13 @@ class AgentClassController extends Controller
         $class_type = $request->get('type');
         
         if ($class_type == 'REGULAR')  {
-            $query = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELED');
+            $query = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELLED');
             
         }else if ($class_type == 'TRIAL')  {
-            $query = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELED');
+            $query = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELLED');
             
         }else{
-            $query = ClassPeriod::where('status', '<>', 'CANCELED');
+            $query = ClassPeriod::where('status', '<>', 'CANCELLED');
         }
        
 
@@ -64,13 +64,14 @@ class AgentClassController extends Controller
 
         $class = ClassPeriod::find($id);
         if (!$class) {
-            return redirect('agent/class');
+            return redirect()->back()->withErrors('Class not found!');
+            
         }
 
         $class->status      = 'CANCELLED';
         $class->save();
         
-        return redirect('agent/class');
+        return redirect()->back()->withSuccess('Class Successfully Cancelled!');
 
     }
 }

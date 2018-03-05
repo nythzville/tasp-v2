@@ -43,7 +43,7 @@ class Teacher extends Model
     public function hasSchedule($date){
         $until = date("Y-m-d", strtotime($date. "+1 day"));
         $teacher_sched = TeacherSchedule::where('teacher_id', $this->id)
-        ->where('start','>=', $date)->where( 'end', '<', $until )->get();
+        ->where('start','>=', $date)->where( 'end', '<', $until )->where('status', 'OPEN')->orderBy('start', 'ASC')->get();
 
         return $teacher_sched;
     }

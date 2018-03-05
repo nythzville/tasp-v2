@@ -15,7 +15,7 @@
                         <br>
                         @if($action == 'edit')
                         
-                        {!! Form::open(array('url' => 'admin/teacher/'.$teacher->id.'', 'id' => 'frm-teacher', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '', 'method' => 'PUT')) !!}
+                        {!! Form::open(array('url' => 'admin/teachers/'.$teacher->id.'', 'id' => 'frm-teacher', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '', 'method' => 'PUT')) !!}
                         
                         @else
                         

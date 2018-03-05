@@ -42,7 +42,7 @@
                                 <!-- end of image cropping -->
 
                             </div>
-                            <h3> {{ $teacher->firstname }} {{ $teacher->lastname }}</h3>
+                            <h3> Teacher {{ $teacher->firstname }}</h3>
 
                             <ul class="list-unstyled user_data">
                                 <li><i class="fa fa-user user-profile-icon"></i> <strong>Birth Date :</strong> {{ date("M j, Y", strtotime($teacher->dob)) }}

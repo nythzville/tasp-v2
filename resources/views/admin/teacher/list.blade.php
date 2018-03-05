@@ -46,9 +46,9 @@
                             <td class=" ">{{ $teacher->skype}}</i></td>
                             <td class=" ">{{ $teacher->qq}}</td>
                             <td class=" last">
-                            <a href="{{ url('admin/teacher/'. $teacher->id. '/profile') }}" class="btn btn-xs btn-success"><i class="fa fa-user"></i>Profile</a>
-                            <a href="{{ url('admin/teacher/'. $teacher->id. '/schedule') }}" class="btn btn-xs btn-default"><i class="fa fa-clock-o"></i>Schedule</a>
-                            <a href="{{ url('admin/teacher/'. $teacher->id . '/edit') }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> Edit</a>
+                            <a href="{{ url('admin/teachers/'. $teacher->id. '/profile') }}" class="btn btn-xs btn-success"><i class="fa fa-user"></i>Profile</a>
+                            <a href="{{ url('admin/teachers/'. $teacher->id. '/schedule') }}" class="btn btn-xs btn-default"><i class="fa fa-clock-o"></i>Schedule</a>
+                            <a href="{{ url('admin/teachers/'. $teacher->id . '/edit') }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> Edit</a>
                             </td>
                         </tr>
                         @endforeach

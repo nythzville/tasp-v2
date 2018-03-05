@@ -46,9 +46,9 @@
                             <td class=" ">{{ $student->getTotalCompletedClasses() }}  </td>
                             <td class=" ">{{ $student->available_class }}  </td>
                             <td class="">
-                                <a href="{{ url('admin/student/'. $student->id . '/book') }}" class="btn btn-success btn-xs"><i class="fa fa-book"></i> Book a Class</a>
-                                <a href="{{ url('admin/student/'. $student->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View Profile</a>
-                            <a href="{{ url('admin/student/'. $student->id . '/edit') }}" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="{{ url('admin/students/'. $student->id . '/book') }}" class="btn btn-success btn-xs"><i class="fa fa-book"></i> Book a Class</a>
+                                <a href="{{ url('admin/students/'. $student->id . '') }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View Profile</a>
+                            <a href="{{ url('admin/students/'. $student->id . '/edit') }}" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Edit</a>
                             </td>
                         </tr>
                         @endforeach

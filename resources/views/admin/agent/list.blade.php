@@ -45,7 +45,7 @@
                         @foreach($agents as $agent)
                         <tr class="even pointer">
                             <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
-                            <td class=" ">{{ $agent->lastname.' '. $agent->firstname }}</td>
+                            <td class=" ">{{ $agent->firstname }}</td>
                             <td class=" ">{{ $agent->dob }} </td>
                             <td class=" ">{{ $agent->getUser->email}}</td>
                             <td class=" ">{{ $agent->skype}}</i></td>

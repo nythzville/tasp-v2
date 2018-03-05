@@ -13,7 +13,13 @@
                     </div>
 
                     <div class="x_content">
-
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
                         <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
 
                             <div class="profile_img">
@@ -120,7 +126,7 @@
                                 <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#Update-available-class"><i class="fa fa-edit m-right-xs"></i> Update Available Class</a>
                                 </li>
                                 <li>
-                                <a class="btn btn-default btn-xs" href="{{ url('admin/student/'. $student->id. '/edit' ) }}"><i class="fa fa-edit user-profile-icon"></i>  Edit Student</a>
+                                <a class="btn btn-default btn-xs" href="{{ url('admin/students/'. $student->id. '/edit' ) }}"><i class="fa fa-edit user-profile-icon"></i>  Edit Student</a>
                                 <br/>
                                 </li>
                                 <li>
@@ -162,7 +168,7 @@
                                             @foreach($classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >{{ $class->getTeacher->lastname }} {{ $class->getTeacher->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >{{ $class->getTeacher->firstname }}</a></td>
                                                 <td class=" ">{{ $class->type }}</td>
 
                                                 <td class=" ">{{ $class->status }}</td>
@@ -197,7 +203,7 @@
                                             @foreach($completed_classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >{{ $class->getTeacher->lastname }} {{ $class->getTeacher->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >{{ $class->getTeacher->firstname }}</a></td>
                                                 <td class=" ">{{ $class->status }}</td>
                                                 <td class=" ">
                                                     @if($class->status == "COMPLETED" )
@@ -329,7 +335,7 @@
                 <div class="modal-body">
                     <div id="testmodal" style="padding: 5px 20px;">
 
-                        {!! Form::open(array('url' => 'admin/student/'.$student->id.'/available_class', 'id' => 'available-class-form', 'class' => 'form-horizontal calender', 'role'=> 'form', 'method' => 'POST' ))!!}
+                        {!! Form::open(array('url' => 'admin/students/'.$student->id.'/available_class', 'id' => 'available-class-form', 'class' => 'form-horizontal calender', 'role'=> 'form', 'method' => 'POST' ))!!}
                             <input type="hidden" id="student_id" name="student_id" value="{{ $student->id }}">
                             <input type="hidden" id="class_start" name="class_start" value="">
                             <input type="hidden" id="class_end" name="class_end" value="">

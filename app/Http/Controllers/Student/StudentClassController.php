@@ -161,14 +161,15 @@ class StudentClassController extends Controller
         $this->params['date'] = $date;
 
         $teachers = Teacher::all();
-        $teachers_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher_id', 'desc')->get();
+        // $teachers_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher_id', 'desc')->where('status', 'OPEN')->orderBy('start', 'ASC')->get();
 
-        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher', 'desc')->get();
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher', 'desc')->where('status', 'BOOKED')->orderBy('start', 'ASC')->get();
 
         $this->params['classPeriods'] = $classPeriods;
         $this->params['teachers'] = $teachers;
-        $this->params['teachers_scheds'] = $teachers_scheds;
+        // $this->params['teachers_scheds'] = $teachers_scheds;
 
+        // dd($this->params);
         return view('student.bookbydate')->with($this->params);   
     }
 
@@ -204,9 +205,9 @@ class StudentClassController extends Controller
 
         $teacher =  Teacher::find($id);
         // $teachers = Teacher::all();
-        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->get();
+        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->where('status', 'OPEN')->get();
 
-        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->get();
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->where('status', 'BOOKED')->get();
 
         $this->params['classPeriods'] = $classPeriods;
         // $this->params['teachers'] = $teachers;

@@ -29,6 +29,8 @@ class AgentNewsController extends Controller
     }
 
     public function index(){
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
         $this->params['news'] = News::orderBy('updated_at', 'desc')->get();
         return view('agent.bulletinboard')->with($this->params);
     }

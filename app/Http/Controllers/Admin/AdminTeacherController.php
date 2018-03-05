@@ -304,7 +304,7 @@ class AdminTeacherController extends Controller
             $rank->save();
         }
 
-        return redirect('admin/teacher/ranking')->withSuccess('Ranking Successfully Updated!');
+        return redirect()->back()->withSuccess('Ranking Successfully Updated!');
 
     }
 

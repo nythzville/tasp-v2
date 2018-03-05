@@ -69,7 +69,7 @@
                                     <tr>
                                         @foreach($teachers as $teacher)
                                             @if(count($teacher->hasSchedule($date) ) > 0 )
-                                                <th width="300" id="{{ $teacher->id }}" width="300"> <a href="{{ url('student/teachers/'.$teacher->id ) }}">{{ $teacher->lastname }} {{ $teacher->firstname }}</a>
+                                                <th width="300" id="{{ $teacher->id }}" width="300"> <a href="{{ url('student/teachers/'.$teacher->id ) }}">Teacher {{ $teacher->firstname }}</a>
                                                 </th>
                                             @endif
                                         @endforeach
@@ -103,17 +103,22 @@
                                         <?php
                                         foreach($teachers as $teacher){
                                             $status = "<td width='300' class='closed'>CLOSED</td>";
+                                            $this_teachers_scheds = $teacher->hasSchedule($date);
+                                            if(count($this_teachers_scheds) > 0 ){
                                             
-                                            if(count($teacher->hasSchedule($date) ) > 0 ){
-                                            
-                                            foreach($teachers_scheds as $sched){
+                                            foreach($this_teachers_scheds as $sched){
 
-                                                if( $teacher->id == $sched->teacher_id ){
+                                                // if( $teacher->id == $sched->teacher_id ){
 
-                                                    
+                                                  $teachers_sched_start = date('H:i', strtotime($sched->start));
+                                                  $teachers_sched_end = date('H:i', strtotime($sched->end)); 
+                                                  $time_to_hours = date('H:i', $time ) ;
+                                                  echo "<!-- $teachers_sched_start  to $teachers_sched_end -->";
+                                                  echo "<!-- $time_to_hours -->";
+                                                  // echo "<!-- date('H:i', $time ) -->";
 
-                                                    if(date('H:i', $time ) >= date('H:i', strtotime($sched->start) ) 
-                                                       && date('H:i', $time ) <= date('H:i', strtotime($sched->end) )
+                                                    if($time_to_hours >= $teachers_sched_start
+                                                       && $time_to_hours < $teachers_sched_end
                                                         ){
 
                                                         $booked = false;
@@ -134,12 +139,12 @@
                                                         }else{
                                                             $status = "<td width='300' date='".$date."' from='".date('H:i', $time )."' to='".date('H:i', $time + (60 * 30 ))."' teacher-id='".$teacher->id."' class='open'>BOOK NOW </td>";
                                                         }
-                                                        // break;
+                                                        break;
                                                     }else{
                                                         $status = "<td width='300' class='closed'>CLOSED</td>";
 
                                                     }
-                                                }
+                                                // }
                                             }
                                             echo $status;
                                             }

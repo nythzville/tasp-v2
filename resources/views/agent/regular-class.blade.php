@@ -186,7 +186,7 @@
                         <div id="testmodal" style="padding: 5px 20px;">
                            
                             <!-- <form id="booking-form" class="form-horizontal calender" role="form"> -->
-                                {{ Form::open(array('url' => 'agent/student/'.$student->id.'/teacher/'.$teacher->id.'/book', 
+                                {{ Form::open(array('url' => 'agent/students/'.$student->id.'/teachers/'.$teacher->id.'/book', 
                                 'id' => 'booking-form', 'class' => 'form-horizontal calendar', 'role' => 'form', 'method' => 'POST')) }}
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Details</label>
