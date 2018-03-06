@@ -28,8 +28,8 @@
                                     <th>
                                         <input type="checkbox" id="check-all" class="flat">
                                     </th>
+                                    <th class="column-title">ID </th>
                                     <th class="column-title">Name </th>
-                                    <th class="column-title">Age </th>
                                     <th class="column-title">Email </th>
                                     <th class="column-title">Skype ID</th>
                                     <th class="column-title">QQ ID</th>
@@ -45,8 +45,8 @@
                         @foreach($agents as $agent)
                         <tr class="even pointer">
                             <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
-                            <td class=" ">{{ $agent->firstname }}</td>
-                            <td class=" ">{{ $agent->dob }} </td>
+                            <td class=" ">{{ $agent->agent_id }}</td>
+                            <td class=" ">{{ $agent->firstname }} {{ $agent->lastname }}</td>
                             <td class=" ">{{ $agent->getUser->email}}</td>
                             <td class=" ">{{ $agent->skype}}</i></td>
                             <td class="a-right a-right ">{{ $agent->qq}}</td>

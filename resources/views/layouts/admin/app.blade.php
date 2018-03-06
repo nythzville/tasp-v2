@@ -650,7 +650,7 @@
                             start: new Date('{{ Date( "Y-m-d H:i", strtotime($schedule->start )) }}'),
                             end: new Date('{{ Date( "Y-m-d H:i", strtotime($schedule->end )) }}'),
                             allDay: false,
-                            edit_url: '{{ url( 'admin/teacher/'.$teacher->id.'/schedule/'.$schedule->id ) }}'
+                            edit_url: '{{ url( 'admin/teachers/'.$teacher->id.'/schedule/'.$schedule->id ) }}'
 
                         },
                         @endforeach

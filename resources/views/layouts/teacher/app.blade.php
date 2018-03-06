@@ -333,7 +333,9 @@
     </script>
     <!-- / End Evaluation script -->
     @if($page == 'schedule')
-    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script>
+    <!-- <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.min.js"></script> -->
+    <script src="{{ url('/')}}/admin/js/calendar/fullcalendar.js"></script>
+
     <script>
             $(window).load(function () {
 

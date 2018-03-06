@@ -1209,6 +1209,8 @@ legend {
 
 .well.profile_view h2 {
     margin: 5px 0;
+    height: 20px;
+    overflow: hidden;
 }
 
 .well.profile_view .ratings {

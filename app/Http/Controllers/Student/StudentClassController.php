@@ -324,7 +324,7 @@ class StudentClassController extends Controller
         $class->status = "CANCELLED";
         $class->save();
 
-        return redirect($request->url())->with($this->params);
+        return redirect()->back()->withSuccess("Class successfully cancelled!");
 
     }
 

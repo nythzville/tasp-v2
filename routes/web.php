@@ -131,6 +131,7 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 	Route::get('/classes/upcoming', 'StudentClassController@upcoming_classes');
 	Route::get('/classes/booked', 'StudentClassController@booked_classes');
 
+	Route::delete('/classes/{id}', 'StudentClassController@destroy');
 
 	Route::get('/classes', 'StudentClassController@index');
 	Route::post('/classes', 'StudentClassController@store');

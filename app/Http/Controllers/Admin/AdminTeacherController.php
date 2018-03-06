@@ -184,14 +184,19 @@ class AdminTeacherController extends Controller
 
         $teacher = Teacher::find($teacher_id);
         if(!$teacher){
-            return redirect('admin/teacher')->with($this->params);   
+            return redirect()->bac()->withErrors("Teacher not found!");   
         }
+
+        if(!$request->get('desc')){
+            return redirect()->bac()->withErrors("Teacher's desc not found!");   
+        }
+
         $desc = $request->get('desc');
 
         $teacher->desc      = $desc;
         $teacher->save();
 
-        return redirect('admin/teacher/'.$teacher_id.'/profile')->with($this->params);
+        return redirect()->back()->withSuccess("Teacher's description successfully updated!");
 
     }
 
@@ -320,7 +325,7 @@ class AdminTeacherController extends Controller
 
         // IF not mp3
         if( $extension != "mp3"){
-            return redirect('admin/teacher/'.$id.'/profile')->withErrors("File must have mp3 extension.");
+            return redirect()->back()->withErrors("File must have mp3 extension.");
         }
 
         // if file exist
@@ -329,9 +334,9 @@ class AdminTeacherController extends Controller
         }
 
         if(!$file->move('recordings', $recording_name)){
-            return redirect('admin/teacher/'.$id.'/profile')->withErrors("Error uploading audio recording.");
+            return redirect()->back()->withErrors("Error uploading audio recording.");
         }else{
-            return redirect('admin/teacher/'.$id.'/profile')->withSuccess("Successfully uploaded recording.");
+            return redirect()->back()->withSuccess("Successfully uploaded recording.");
 
         }
     }

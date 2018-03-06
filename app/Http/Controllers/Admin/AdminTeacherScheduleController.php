@@ -174,7 +174,7 @@ class AdminTeacherScheduleController extends Controller
 
         $schedule->save();
         
-        return redirect('admin/teacher/'.$teacher->id.'/schedule')->with($this->params);
+        return redirect()->back()->withSuccess("Schedule successfully updated!");
     }
 
 

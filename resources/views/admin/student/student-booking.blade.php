@@ -51,7 +51,10 @@
                                     <div class="right col-xs-12 text-center">
 
                                         @if($teacher->getUser->user_image)
-                                        <img src="{{ url($teacher->getUser->user_image) }}" alt="" class="img-circle img-responsive">
+                                        <div class="img-circle" style="overflow: hidden; padding: 0; width: 100px; height: 100px;">
+                                            <img src="{{ url($teacher->getUser->user_image) }}" alt="" class="img-responsive" width="100" height="100">
+                                                                                        
+                                        </div>
                                         @else
                                         <img src="{{ url('admin/images/user.png') }}" alt="" class="img-circle img-responsive">
 

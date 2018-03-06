@@ -7,7 +7,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>{{ $teacher->lastname }} {{ $teacher->firstname }} Profile <small></small></h2>
+                        <h2>Teacher {{ $teacher->firstname }}'<s></s> Profile <small></small></h2>
                         
                         <div class="clearfix"></div>
                     </div>
@@ -90,7 +90,7 @@
                                 <!-- end of image cropping -->
 
                             </div>
-                            <h3>{{ $teacher->lastname }}, {{ $teacher->firstname }}</h3>
+                            <h3>Teacher {{ $teacher->firstname }}</h3>
 
                             <ul class="list-unstyled user_data">
                                 <li><i class="fa fa-user user-profile-icon"></i> <strong>Birth Date :</strong> {{ date("M j, Y", strtotime($teacher->dob)) }}
@@ -120,7 +120,7 @@
                                 </li>
                                 <li>
                                     
-                                    <a class="btn btn-default btn-xs" href="{{ url('admin/teacher/'. $teacher->id. '/edit' ) }}"><i class="fa fa-edit user-profile-icon"></i>  Edit Teacher</a>
+                                    <a class="btn btn-default btn-xs" href="{{ url('admin/teachers/'. $teacher->id. '/edit' ) }}"><i class="fa fa-edit user-profile-icon"></i>  Edit Teacher</a>
                                 </li>
                                 <li>
                                      
@@ -191,7 +191,7 @@
                                                     });
                                                     </script>
                                                     <div id="desc-form" style="display: none;">
-                                                        {!! Form::open(array('url'=> 'admin/teacher/'.$teacher->id.'/edit_desc', 'method' => 'POST', 'class' => 'form-horizontal form-label-left')) !!}
+                                                        {!! Form::open(array('url'=> 'admin/teachers/'.$teacher->id.'/edit_desc', 'method' => 'POST', 'class' => 'form-horizontal form-label-left')) !!}
 
                                                         <div class="form-group">
                                                             
@@ -224,7 +224,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h4>Upload Recording</h4>
-                                                    {!! Form::open(array('url'=> 'admin/teacher/'.$teacher->id.'/recording', 'method' => 'POST', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal form-label-left')) !!}
+                                                    {!! Form::open(array('url'=> 'admin/teachers'./$teacher->id.'/recording', 'method' => 'POST', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal form-label-left')) !!}
                                                         <div class="form-group">
                                                             <div class="col-md-8">
                                                                 <input type="file" name="recording" required="required" class="form-control col-md-12" accept=".mp3">
@@ -331,7 +331,7 @@
                   <h2>Edit Profile</h2>
                 </div>
                 <div class="modal-body">
-                    {{ Form::open( array( 'url' => 'admin/teacher/profile/'.$teacher->id , 'method' => 'PUT','id' => 'frm-teacher', 'class' => 'form-horizontal form-label-left', 'novalidate' => '') ) }}
+                    {{ Form::open( array( 'url' => 'admin/teachers/profile/'.$teacher->id , 'method' => 'PUT','id' => 'frm-teacher', 'class' => 'form-horizontal form-label-left', 'novalidate' => '') ) }}
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastname">Last Name <span class="required">*</span>
                         </label>

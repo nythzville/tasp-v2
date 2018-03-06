@@ -93,7 +93,7 @@
 
 
                                 @if( Date("Y-m-d H:i", strtotime( $class->start ) ) > Date("Y-m-d H:i:s", strtotime($current_time." +2 hours") ) && ($class->status != "CANCELED"))
-                                {!! Form::open(['url' => '/student/classes/'.$class->id, 'method' => 'DELETE']) !!}
+                                {!! Form::open(['url' => '/student/classes/'.$class->id, 'method' => 'DELETE', 'class' => 'cancel-form-class']) !!}
 
                                 {!! Form::submit('Cancel', ['class' => 'btn btn-danger btn-xs' ]) !!}
                                 {!! Form::close() !!}
@@ -201,6 +201,10 @@
                 console.log(response);
             });
         });
+        $(".cancel-form-class").on("submit", function(){
+            return confirm("Do you want to Cancel this Class?");
+        });
+
     </script>
         
 @endsection
