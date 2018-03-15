@@ -35,7 +35,7 @@ class UserController extends Controller
 
             }elseif($this->auth->user()->user_type =='AGENT'){
 
-                return redirect('/agent/student');
+                return redirect('/agent/profile');
             
             }elseif($this->auth->user()->user_type =='STUDENT'){
 

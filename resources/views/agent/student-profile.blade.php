@@ -100,7 +100,7 @@
                                             @foreach($classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >Teacher {{ $class->getTeacher->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/agent/teachers/'. $class->getTeacher->id ) }}" >Teacher {{ $class->getTeacher->firstname }}</a></td>
                                                 <td class=" ">{{ $class->status }}</td>
                                                 <!-- <td class=" ">
                                                     @if($class->status == "COMPLETED" )
@@ -148,7 +148,7 @@
                                             @foreach($completed_classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/student/teachers/'. $class->getTeacher->id ) }}" >Teacher {{ $class->getTeacher->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/agent/teachers/'. $class->getTeacher->id ) }}" >Teacher {{ $class->getTeacher->firstname }}</a></td>
                                                 <td class=" ">{{ $class->status }}</td>
                                                 <!-- <td class=" ">
                                                     @if($class->status == "COMPLETED" )

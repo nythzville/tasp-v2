@@ -59,11 +59,11 @@ class AdminAgentController extends Controller
         $rules = array(
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'gender'              		=> 'required|min:1',            
-            'skype-id'              	=> 'required|min:1', 
-            'qq-id'              		=> 'required|min:1',
-            'dob'                       => 'required|min:1',
-
+            // 'gender'              		=> 'required|min:1',            
+            // 'skype-id'              	=> 'required|min:1', 
+            // 'qq-id'              		=> 'required|min:1',
+            // 'dob'                       => 'required|min:1',
+            'agent_id'                  => 'required|min:1',
             'username'                  => 'required|min:6',
             'email'                     => 'required|unique:users|max:255',
             'password'                  => 'required|min:6|confirmed',
@@ -89,7 +89,8 @@ class AdminAgentController extends Controller
 
         // continue if no error occur
     	$agent = new Agent();
-        $agent->user_id                 = $new_user->id;    
+        $agent->user_id                 = $new_user->id;
+        $agent->agent_id                = $request->get('agent_id');    
     	$agent->lastname				= $request->get('lastname');
     	$agent->firstname				= $request->get('firstname');
         $agent->gender                  = $request->get('gender');
@@ -99,7 +100,7 @@ class AdminAgentController extends Controller
 
 	    $agent->save();
         
-        return redirect('admin/agents')->with($this->params);
+        return redirect('admin/agents')->withSucess("Agent successfully added!");
 
     }
     public function edit($id)
@@ -115,11 +116,14 @@ class AdminAgentController extends Controller
     {
     	// Define Agent fields rules
         $rules = array(
+            'agent_id'                  => 'required|min:1',
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'gender'              		=> 'required|min:1',            
-            'skype-id'              	=> 'required|min:1', 
-            'qq-id'              		=> 'required|min:1',            
+            'password'                  => 'required|min:6|confirmed',
+
+            // 'gender'              		=> 'required|min:1',            
+            // 'skype-id'              	=> 'required|min:1', 
+            // 'qq-id'              		=> 'required|min:1',            
             );
 
         // Validate data
@@ -131,26 +135,37 @@ class AdminAgentController extends Controller
                         ->withInput();
         }
 
+        
         // continue if no error occur
     	$agent = Agent::find($id);
 
+        $agent->agent_id                = $request->get('agent_id');    
         $agent->lastname                = $request->get('lastname');
         $agent->firstname               = $request->get('firstname');
         $agent->gender                  = $request->get('gender');
         $agent->dob                     = $request->get('dob');
         $agent->skype                   = $request->get('skype-id');
         $agent->qq                      = $request->get('qq-id');
-
 	    $agent->save();
-        return redirect('admin/agents')->withSucess('Agent Successfully updated!');
+
+        // update user password
+        $user = User::find($agent->user_id);
+        $user->password             = bcrypt($request->get('password'));
+        $user->save();
+
+        return redirect()->back()->withSuccess('Agent information successfully updated!');
 
     }
     public function destroy($id)
     {
         
         $agent = Agent::find($id);
+        $user = User::find($agent->user_id);
+
         $agent->delete();
-        return redirect('admin/agent')->withSuccess('Agent Successfully Deleted!');
+        $user->delete();
+        
+        return redirect('admin/agents')->withSuccess('Agent Successfully Deleted!');
 
     }
 

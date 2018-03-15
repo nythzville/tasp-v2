@@ -13,6 +13,15 @@
                     </div>
                     <div class="x_content">
                         <br>
+
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
+                        
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <ul>
@@ -30,7 +39,52 @@
 
                         {!! Form::open(array('action' => 'Admin\AdminAgentController@store', 'id' => 'frm-agent', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
 
-                        @endif    
+                        @endif  
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="email" name="email" class="form-control col-md-7 col-xs-12" 
+                                    @if(isset($agent->id))
+                                        value="{{ $agent->getUser->email }}" readonly=""
+
+                                    @else
+                                        value="{{ old('email') }}"
+
+                                    @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="username" name="username" required="required" class="form-control col-md-7 col-xs-12"
+                                    @if(isset($agent->id))
+                                        value="{{ $agent->getUser->name }}" readonly
+                                    @else
+                                        value="{{ old('username') }}"
+                                    @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastname">Password <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password_confirmation">Re-type Password <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="password" id="password_confirmation" name="password_confirmation" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agent_id">Agent ID <span class="required">*</span>
                                 </label>
@@ -86,14 +140,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="birthday" name="dob" class="date-picker form-control col-md-7 col-xs-12" required="required" type="date"
+                                    <input id="birthday" name="dob" class="date-picker form-control col-md-7 col-xs-12" type="date"
                                     @if(isset($agent->id))
                                         value="{{ date("Y-m-d", strtotime($agent->dob)) }}"
                                     @else
-                                        value="{{ date("Y-m-d", strtotime( old('lastname'))) }}"
+                                        value="{{ date("Y-m-d", strtotime( old('dob'))) }}"
                                     @endif
                                     >
                                 </div>
@@ -102,7 +156,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="skype-id">Skype ID
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="skype-id" name="skype-id" required="required" class="form-control col-md-7 col-xs-12" 
+                                    <input type="text" id="skype-id" name="skype-id" class="form-control col-md-7 col-xs-12" 
                                     @if(isset($agent->id))
                                         value="{{ $agent->skype }}"
                                     @else
@@ -115,7 +169,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qq-id">QQ ID
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="qq-id" name="qq-id" required="required" class="form-control col-md-7 col-xs-12"
+                                    <input type="text" id="qq-id" name="qq-id" class="form-control col-md-7 col-xs-12"
                                     @if(isset($agent->id))
                                         value="{{ $agent->qq }}"
                                     @else
@@ -125,53 +179,12 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12" 
-                                    @if(isset($agent->id))
-                                        value="{{ $agent->getUser->email }}" readonly=""
-
-                                    @else
-                                        value="{{ old('email') }}"
-
-                                    @endif
-                                    >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="username" name="username" required="required" class="form-control col-md-7 col-xs-12"
-                                    @if(isset($agent->id))
-                                        value="{{ $agent->getUser->name }}" readonly
-                                    @else
-                                        value="{{ old('username') }}"
-                                    @endif
-                                    >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastname">Password <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password_confirmation">Re-type Password <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="password" id="password_confirmation" name="password_confirmation" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
+                            
 
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                    <a href="{{ url('admin/agent') }}" class="btn btn-primary">Cancel</a>
+                                    <a href="{{ url('admin/agents') }}" class="btn btn-primary">Cancel</a>
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>

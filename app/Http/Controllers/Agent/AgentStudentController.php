@@ -148,7 +148,7 @@ class AgentStudentController extends Controller
         
 
         // return redirect('agent/student/'.$student->id.'/trial_class')->with($this->params);
-        return redirect('agent/student/'.$student->id)->withSuccess('Successfully Added Student!');
+        return redirect('agent/students/'.$student->id)->withSuccess('Successfully Added Student!');
     }
 
     public function student_trial_class_teacher($id){
@@ -347,6 +347,30 @@ class AgentStudentController extends Controller
         $this->params['teacher'] = $teacher;
         $this->params['agent'] = $agent;
         $this->params['teacher_scheds'] = $teacher_scheds;
+
+
+        // Get 3rd saturday of the month
+        $current_month = date("m", strtotime($date));        
+        $current_year = date("Y", strtotime($date));        
+        // $days_count = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+        $days_count = date('t', strtotime($date));
+        $month_start = Date("Y-m-d", mktime(0,0,0, $current_month, 1, $current_year ) );
+      
+        $count = 0;
+        $third_sat = 0;
+        for ($i=1; $i < $days_count; $i++) { 
+            if(date('l', strtotime($month_start. "+".$i." day")) == 'Saturday'){
+                $count++;
+            }
+            if ($count == 3) {
+                $third_sat = date('Y-m-d', strtotime($month_start. "+".$i." day"));
+                break;
+            }
+        }
+        
+        $this->params['third_sat'] = $third_sat;
+        // If date picked is 3rd saturday
+
 
         return view('agent.regular-class')->with($this->params);
     }

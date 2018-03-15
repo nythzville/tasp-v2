@@ -62,18 +62,17 @@ class AdminTeacherController extends Controller
             'password'                  => 'required|min:6|confirmed',
 
             'teacher_id'                 => 'required|min:1',
-
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'gender'              		=> 'required|min:1',            
-            'skype-id'              	=> 'required|min:1', 
-            'qq-id'              		=> 'required|min:1',            
+            // 'gender'              		=> 'required|min:1',            
+            // 'skype-id'              	=> 'required|min:1', 
+            // 'qq-id'              		=> 'required|min:1',            
             );
 
         // Validate data
         $validator = Validator::make( $request->all(), $rules );
         if ( $validator->fails() ) {
-            return redirect('admin/teacher/create')
+            return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
         }
@@ -100,7 +99,7 @@ class AdminTeacherController extends Controller
 
 	    $teacher->save();
         
-        return redirect('admin/teacher')->with($this->params);
+        return redirect('admin/teachers')->withSuccess("Teacher successfully added!");
 
     }
     public function edit($id)
@@ -118,18 +117,19 @@ class AdminTeacherController extends Controller
     	// Define Teacher fields rules
         $rules = array(
             'teacher_id'                 => 'required|min:1',
-
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'gender'              		=> 'required|min:1',            
-            'skype-id'              	=> 'required|min:1', 
-            'qq-id'              		=> 'required|min:1',            
+            'password'                  => 'required|min:6|confirmed',
+
+            // 'gender'              		=> 'required|min:1',            
+            // 'skype-id'              	=> 'required|min:1', 
+            // 'qq-id'              		=> 'required|min:1',            
             );
 
         // Validate data
         $validator = Validator::make( $request->all(), $rules );
         if ( $validator->fails() ) {
-            return redirect('admin/teacher/'.$id.'/edit')
+            return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
         }
@@ -143,16 +143,25 @@ class AdminTeacherController extends Controller
     	$teacher->firstname				= $request->get('firstname');
     	$teacher->skype					= $request->get('skype-id');
     	$teacher->qq					= $request->get('qq-id');
-
 	    $teacher->save();
-        return redirect('admin/teacher')->with($this->params);
+
+        // update user password
+        $user = User::find($teacher->user_id);
+        $user->password             = bcrypt($request->get('password'));
+        $user->save();
+
+        return redirect()->back()->withSuccess("Teacher information successfully updated!");
 
     }
     public function destroy($id)
     {
     	$teacher = Teacher::find($id);
+        $user = User::find($teacher->user_id);
+
         $teacher->delete();
-        return redirect('admin/teacher')->withSuccess('Teacher Successfully Deleted!');
+        $user->delete();
+
+        return redirect('admin/teachers')->withSuccess('Teacher Successfully Deleted!');
 
 
     }

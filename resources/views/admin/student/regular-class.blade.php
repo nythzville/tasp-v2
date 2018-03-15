@@ -121,6 +121,8 @@
                                 $booked = false;
                                 $owned = false;
                                 $bookby = $student->getUser;
+                                $student_id = "";
+                                $student_link = "";
 
                                 foreach ($classPeriods as $classPeriod) {
                                   if ( date('H:i a', $time ) == date('H:i a', strtotime($classPeriod->start))
@@ -129,6 +131,8 @@
                                   ) {
 
                                       $booked = true;
+                                      $student_id = $classPeriod->getStudent->student_id;
+                                      $student_link = url('admin/students/'.$classPeriod->getStudent->id);
                                       
                                       // If student of the class same as current student then make it owned
                                       if($classPeriod->student == $student->id){
@@ -143,9 +147,12 @@
                                 ?>
                                 <td date="{{ date('Y-m-d', strtotime($d)) }}" hour="{{ date('H', $time ) }}" from="{{date('H:i', $time )}}" to="{{date('H:i', $time + (60 * 30 ))}}" teacher-id="{{ $teacher->id }}" class="status {{ (($sched_open == true ) && ($booked != true))? 'open' : 'closed'}} {{($booked == true )? 'booked' : ''}}">
                                   @if($booked == true)
-                                    {{ 'BOOKED' }}
-                                    <!-- {{ ($owned == true )? ' BY '.$bookby->user_type : '' }} -->
                                     
+                                    <?php
+                                    echo '<span class="booked-text">BOOKED with</span><br/>';
+                                    echo '<span class="student-id"><a href="'.$student_link.'">'.$student_id.'</a></span>';
+                                    ?>
+                                    <!-- {{ ($owned == true )? ' BY '.$bookby->user_type : '' }} -->
                                   @else
                                   {{ ($sched_open == true )? 'OPEN' : 'CLOSED' }}
                                   @endif

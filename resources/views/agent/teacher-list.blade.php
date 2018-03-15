@@ -14,7 +14,7 @@
 
                     <div class="x_content">
 
-                        <table class="table table-striped responsive-utilities jambo_table bulk_action">
+                        <table class="table list-table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
                                     <th>

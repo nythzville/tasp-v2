@@ -139,7 +139,7 @@
 
                                                 @foreach($students as $student)
                                                 <tr class="even pointer">
-                                                    <td class=" "><a href="{{ url('admin/student/'.$student->id) }}">{{ $student->lastname.' '. $student->firstname }}</a></td>
+                                                    <td class=" "><a href="{{ url('agent/students/'.$student->id) }}">{{ $student->lastname.' '. $student->firstname }}</a></td>
                                                     <td class=" ">{{ date("M j, Y", strtotime($student->dob)) }} / {{ date_diff(date_create($student->dob), date_create('now'))->y }} years old</td>
                                                     <td class=" ">{{ $student->available_class}} class </i></td>
                                                     <td class="">{{ $student->getTotalCompletedClasses() }} class</td>

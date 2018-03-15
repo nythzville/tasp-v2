@@ -55,6 +55,7 @@ class TeacherClassController extends Controller
     public function classes_today()
     {
         $teacher = Teacher::find($this->teacher->id);
+        
         $this->params['teacher'] = $teacher;
         $this->params['user'] = $this->user;
 
@@ -232,7 +233,7 @@ class TeacherClassController extends Controller
 
         $class->save();
 
-        $this->params['msg'] = 'Evaluation Successfully Saved!';
-        return redirect('teacher/class')->with($this->params);
+        // $this->params['msg'] = 'Evaluation Successfully Saved!';
+        return redirect()->back()->withSuccess('Evaluation Successfully Saved');
     }
 }

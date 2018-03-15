@@ -82,7 +82,7 @@ class AdminStudentController extends Controller
         // Validate data
         $validator = Validator::make( $request->all(), $rules );
         if ( $validator->fails() ) {
-            return redirect('admin/student/create')
+            return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
         }
@@ -112,7 +112,7 @@ class AdminStudentController extends Controller
         
         
         // return redirect('admin/student/'.$student->id.'/trial_class')->with($this->params);
-        return redirect('admin/student/'.$student->id)->with($this->params);
+        return redirect('admin/students/'.$student->id)->withSuccess("Student successfully added!");
 
 
     }
@@ -135,7 +135,9 @@ class AdminStudentController extends Controller
             'student_id'                => 'required|min:1',
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'gender'              		=> 'required|min:1',      
+            'password'                  => 'required|min:6|confirmed',
+
+            // 'gender'              		=> 'required|min:1',      
 
             // 'sched-date'              	=> 'required|min:1',            
             // 'sched-time'              	=> 'required|min:1',            
@@ -146,22 +148,26 @@ class AdminStudentController extends Controller
         // Validate data
         $validator = Validator::make( $request->all(), $rules );
         if ( $validator->fails() ) {
-            return redirect('admin/agent/'.$id.'/edit')
+            return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
         }
 
         // continue if no error occur
-        $student->lastname              = $request->get('lastname');
+        $student->student_id            = $request->get('student_id');
     	$student->lastname				= $request->get('lastname');
     	$student->firstname				= $request->get('firstname');
     	$student->skype					= $request->get('skype-id');
         $student->dob                   = date("Y-m-d", strtotime($request->get('dob')));
     	$student->qq					= $request->get('qq-id');
-        $student->trial_class 			= $request->get('sched-date') . ' ' . $request->get('sched-time');
-
 	    $student->save();
-        return redirect('admin/student')->with($this->params);
+
+        // update user password
+        $user = User::find($student->user_id);
+        $user->password             = bcrypt($request->get('password'));
+        $user->save();
+
+        return redirect()->back()->withSuccess("Student information successfully updated!");
         // return redirect('admin/student/'.$student->id.'/trial_class')->with($this->params);
 
 
@@ -169,9 +175,12 @@ class AdminStudentController extends Controller
     public function destroy($id)
     {
         $student = Student::find($id);
+        $user = User::find($student->user_id);
+
         $student->delete();
+        $user->delete();
         
-        return redirect('admin/student')->withSuccess('Student Successfully Deleted!');
+        return redirect('admin/students')->withSuccess('Student Successfully Deleted!');
     }
 
     public function show($id)
@@ -339,7 +348,7 @@ class AdminStudentController extends Controller
 
         $student = Student::find($student_id);
         if(!$student){
-            return redirect('admin/student')->with($this->params);
+            return redirect('admin/students')->with($this->params);
         }
         $rules = array(
 
@@ -380,7 +389,7 @@ class AdminStudentController extends Controller
         $student->trial_class = $classPeriod->id;
         $student->save();
         
-        return redirect('admin/student/'.$student->id)->with($this->params);
+        return redirect('admin/students/'.$student->id)->with($this->params);
 
     }
 
@@ -507,7 +516,7 @@ class AdminStudentController extends Controller
 
         $student = Student::find($student_id);
         if(!$student){
-            return redirect('admin/student')->with($this->params);
+            return redirect('admin/students')->with($this->params);
         }
         $rules = array(
 
@@ -528,7 +537,7 @@ class AdminStudentController extends Controller
             foreach ($messages as $field_name => $message) {
                 $this->params['msg'] .= '<br/>'.$message[0];
             }
-            return redirect('admin/student/'.$student->id)->with($this->params);
+            return redirect('admin/students/'.$student->id)->with($this->params);
             
         }
 
@@ -544,7 +553,7 @@ class AdminStudentController extends Controller
         ->where('end', $end)->where('teacher', $request->get('tutor_id'))->first();
         
         if($conflict_class){
-            return redirect('admin/student/'.$student->id)
+            return redirect('admin/students/'.$student->id)
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
         }
 

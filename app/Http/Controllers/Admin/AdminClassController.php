@@ -161,8 +161,8 @@ class AdminClassController extends Controller
 
         $class->save();
 
-        $this->params['msg'] = 'Evaluation Successfully Saved!';
-        return redirect('admin/class')->with($this->params);
+        // $this->params['msg'] = 'Evaluation Successfully Saved!';
+        return redirect()->back()->withSuccess('Evaluation Successfully Saved!');
     }
 
     public function evaluate_trial_form($id){
@@ -227,7 +227,7 @@ class AdminClassController extends Controller
         $class->status      = 'CANCELLED';
         $class->save();
         
-        return redirect('admin/class');
+        return redirect()->back()->withSuccess('Class Successfully Cancelled!');
 
     }
 }

@@ -161,15 +161,35 @@ class StudentClassController extends Controller
         $this->params['date'] = $date;
 
         $teachers = Teacher::all();
-        // $teachers_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher_id', 'desc')->where('status', 'OPEN')->orderBy('start', 'ASC')->get();
 
         $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher', 'desc')->where('status', 'BOOKED')->orderBy('start', 'ASC')->get();
 
         $this->params['classPeriods'] = $classPeriods;
         $this->params['teachers'] = $teachers;
-        // $this->params['teachers_scheds'] = $teachers_scheds;
 
-        // dd($this->params);
+        // Get 3rd saturday of the month
+        $current_month = date("m", strtotime($date));        
+        $current_year = date("Y", strtotime($date));        
+        // $days_count = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+        $days_count = date('t', strtotime($date));
+        $month_start = Date("Y-m-d", mktime(0,0,0, $current_month, 1, $current_year ) );
+      
+        $count = 0;
+        $third_sat = 0;
+        for ($i=1; $i < $days_count; $i++) { 
+            if(date('l', strtotime($month_start. "+".$i." day")) == 'Saturday'){
+                $count++;
+            }
+            if ($count == 3) {
+                $third_sat = date('Y-m-d', strtotime($month_start. "+".$i." day"));
+                break;
+            }
+        }
+        // If date picked is 3rd saturday
+        if ( date($date) == date($third_sat)) {
+            return redirect()->back()->withErrors('Cannot book on the third saturday of the month!');
+        }
+
         return view('student.bookbydate')->with($this->params);   
     }
 
@@ -213,6 +233,29 @@ class StudentClassController extends Controller
         // $this->params['teachers'] = $teachers;
         $this->params['teacher'] = $teacher;
         $this->params['teacher_scheds'] = $teacher_scheds;
+
+
+        // Get 3rd saturday of the month
+        $current_month = date("m", strtotime($date));        
+        $current_year = date("Y", strtotime($date));        
+        // $days_count = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+        $days_count = date('t', strtotime($date));
+        $month_start = Date("Y-m-d", mktime(0,0,0, $current_month, 1, $current_year ) );
+      
+        $count = 0;
+        $third_sat = 0;
+        for ($i=1; $i < $days_count; $i++) { 
+            if(date('l', strtotime($month_start. "+".$i." day")) == 'Saturday'){
+                $count++;
+            }
+            if ($count == 3) {
+                $third_sat = date('Y-m-d', strtotime($month_start. "+".$i." day"));
+                break;
+            }
+        }
+        
+        $this->params['third_sat'] = $third_sat;
+        // If date picked is 3rd saturday
 
         return view('student.bookbyteacher-v2')->with($this->params);   
     }

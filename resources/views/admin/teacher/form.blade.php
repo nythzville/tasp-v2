@@ -22,16 +22,25 @@
                         {!! Form::open(array('action' => 'Admin\AdminTeacherController@store', 'id' => 'frm-teacher', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
                         
                         @endif
+                        
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
+                        
                         @if (count($errors) > 0)
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        
                         <!-- Account Information -->
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="teacher_id">Teacher ID <span class="required">*</span>
@@ -101,24 +110,24 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="birthday" name="dob" class="date-picker form-control col-md-7 col-xs-12" required="required" type="date" value="{{ isset( $teacher->id )? date('Y-m-d', strtotime($teacher->dob)) : date('Y-m-d', strtotime(old('dob'))) }}">
+                                    <input id="birthday" name="dob" class="date-picker form-control col-md-7 col-xs-12" r type="date" value="{{ isset( $teacher->id )? date('Y-m-d', strtotime($teacher->dob)) : date('Y-m-d', strtotime(old('dob'))) }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="skype-id">Skype ID <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="skype-id">Skype ID
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="skype-id" name="skype-id" required="required" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->id )? $teacher->skype : old('skype-id') }}">
+                                    <input type="text" id="skype-id" name="skype-id" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->id )? $teacher->skype : old('skype-id') }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qq-id">QQ ID <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qq-id">QQ ID
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="qq-id" name="qq-id" required="required" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->id )? $teacher->qq : old('qq-id') }}">
+                                    <input type="text" id="qq-id" name="qq-id" class="form-control col-md-7 col-xs-12" value="{{ isset( $teacher->id )? $teacher->qq : old('qq-id') }}">
                                 </div>
                             </div>
 
@@ -127,7 +136,7 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                    <button type="submit" class="btn btn-primary">Cancel</button>
+                                    <a href="{{ url('admin/teachers') }}" type="submit" class="btn btn-primary">Cancel</a>
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>

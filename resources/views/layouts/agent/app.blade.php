@@ -28,6 +28,7 @@
     @endif
     <script src="{{ url('/')}}/admin/js/jquery.min.js"></script>
 
+
     <!--[if lt IE 9]>
         <script src="../assets/js/ie8-responsive-file-warning.js"></script>
         <![endif]-->
@@ -118,9 +119,62 @@
     <script src="{{ url('/')}}/admin/js/progressbar/bootstrap-progressbar.min.js"></script>
     <script src="{{ url('/')}}/admin/js/nicescroll/jquery.nicescroll.min.js"></script>
 
-    <script src="{{ url('/')}}/admin/js/custom.js"></script>
+    <script src="{{ url('/')}}/admin/js/datatables/js/jquery-dataTables.js"></script>
+    <script src="{{ url('/')}}/admin/js/datatables/tools/js/dataTables.tableTools.js"></script>
+    <script type="text/javascript">
+         $(document).ready(function () {
+                var oTable = $('.list-table').dataTable({
+                    "oLanguage": {
+                        "sSearch": "Search all columns:"
+                    },
+            //         "aoColumnDefs": [
+            //             {
+            //                 'bSortable': false,
+            //                 'aTargets': [0,1,2,3,4,5,6]
+            //             } //disables sorting for column one
+            // ],
+                    "order": [],
+                    "columnDefs": [ {
+                      "targets"  : 'no-sort',
+                      "orderable": false,
+                      "order": []
+                    }],
+                    'iDisplayLength': 12,
+                    "sPaginationType": "full_numbers",
+                    // "dom": 'T<"clear">lfrtip',
+                    // "tableTools": {
+                        // "sSwfPath": "{{ url('admin/js/datatables/tools/swf/copy_csv_xls_pdf.swf') }}"
+                    // }
+                });
+                $("tfoot input").keyup(function () {
+                    /* Filter on the column based on the index of this element's parent <th> */
+                    oTable.fnFilter(this.value, $("tfoot th").index($(this).parent()));
+                });
+                $("tfoot input").each(function (i) {
+                    asInitVals[i] = this.value;
+                });
+                $("tfoot input").focus(function () {
+                    if (this.className == "search_init") {
+                        this.className = "";
+                        this.value = "";
+                    }
+                });
+                $("tfoot input").blur(function (i) {
+                    if (this.value == "") {
+                        this.className = "search_init";
+                        this.value = asInitVals[$("tfoot input").index(this)];
+                    }
+                });
 
-    
+                var reportTable = $('.report-table').dataTable({ 
+                    dom: 'T<"clear">lf',
+                    buttons: [
+                        'print'
+                    ]
+                });
+        });
+    </script>
+    <script src="{{ url('/')}}/admin/js/custom.js"></script>
     <!-- datepicker -->
     <script type="text/javascript">
         $(document).ready(function () {

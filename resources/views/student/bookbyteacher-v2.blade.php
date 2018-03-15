@@ -117,6 +117,7 @@
                                 /** Check if schedule is already booked for a class **/
                                 $booked = false;
                                 $owned = false;
+                                $disabled = false;
                                 $bookby = $student->getUser;
 
                                 foreach ($classPeriods as $classPeriod) {
@@ -137,19 +138,32 @@
                                       break;
                                   }
                                 }
+                                //If third saturday of the month
+                                if($d == $third_sat){
+                                  $disabled = true;
+                                }
                                 ?>
+                                @if($disabled == true)
+
+                                <td date="{{ date('Y-m-d', strtotime($d)) }}" from="{{date('H:i', $time )}}" to="{{date('H:i', $time + (60 * 30 ))}}" teacher-id="{{ $teacher->id }}" class="sched-block closed disabled" style="background-color: #212121;">DISABLED
+                                </td>
+                                @else
                                 <td date="{{ date('Y-m-d', strtotime($d)) }}" from="{{date('H:i', $time )}}" to="{{date('H:i', $time + (60 * 30 ))}}" teacher-id="{{ $teacher->id }}" class="sched-block status {{ (($sched_open == true ) && ($booked != true))? 'open' : 'closed'}} {{($booked == true )? 'booked' : ''}}">
                                   @if($booked == true)
                                     {{ 'BOOKED' }}
                                     <!-- {{ ($owned == true )? ' BY '.$bookby->user_type : '' }} -->
                                     
                                   @else
-                                  {{ ($sched_open == true )? 'OPEN' : 'CLOSED' }}
+                                    {{ ($sched_open == true )? 'OPEN' : 'CLOSED' }}
                                   @endif
 
                                   @if($passed==true)
+                                  
                                   @endif
                                   </td>
+                                  @endif
+
+
                                 </tr>
                               @endfor
                               </tbody>
