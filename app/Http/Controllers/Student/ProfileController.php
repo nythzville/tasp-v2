@@ -49,13 +49,15 @@ class ProfileController extends Controller
     {
         $student = Student::find($this->student->id);
 
-        $today = date("Y-m-d");
-        $until = Date("Y-m-d +1 day");
+        $today = date($this->params['current_time']);
+        $until = date("Y-m-d +1 day");
 
         $classes_today = ClassPeriod::where('student' , $student->id)
-        ->where('start' , '<=', $today)
-        ->where('end' , '>=', $until)
+        ->where('start' , '>=', $today)
+        ->where('end' , '<=', $until)
+        ->where('status' , '<>', 'CANCELLED')
         ->get();
+
         $completed_class_count = ClassPeriod::where('student' , $student->id)
         ->where('status', 'COMPLETED')
         ->count();

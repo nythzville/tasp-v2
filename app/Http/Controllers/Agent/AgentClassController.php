@@ -61,8 +61,14 @@ class AgentClassController extends Controller
     }
 
     public function cancel_class($id){
-
+        $current_time = Carbon\Carbon::now('Asia/Manila');
         $class = ClassPeriod::find($id);
+        
+        if (date("Y-m-d",strtotime($current_time)) < date("Y-m-d",strtotime($class['start']))) {
+            // return redirect()->back()->withErrors('Cannot cancel classes 2 hours before schedule!');
+            
+        }
+
         if (!$class) {
             return redirect()->back()->withErrors('Class not found!');
             

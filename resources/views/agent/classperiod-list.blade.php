@@ -52,8 +52,8 @@
                                 <tr class="even pointer">
                                     <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
                                     <td class="date-cell" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                    <td class=" ">{{ $class->getStudent->firstname }} {{ $class->getStudent->lastname }} </td>
-                                    <td class=" ">Teacher {{ $class->getTeacher->firstname }}</td>                                    
+                                    <td class=" "><a href="{{ url('agent/students/'.$class->getStudent['id']) }}">{{ $class->getStudent['firstname'] }} {{ $class->getStudent['lastname'] }}</a>  </td>
+                                    <td class=" "><a href="{{ url('agent/teachers/'.$class->getTeacher['id']) }}">Teacher {{ $class->getTeacher['firstname'] }}</a></td>                                    
                                     
                                     <td class=" ">
                                         @if(( date( $class->end ."+1 day") < date( $current_time ) ) && ($class->status != "COMPLETED"))
@@ -65,7 +65,7 @@
                                     <td class=" ">{{ $class->type }}</td>                                    
 
                                     <td class="">
-                                    @if(($class->status == 'BOOKED') && ( date( $class->end ) > date( $current_time ) ))
+                                    @if(($class->status == 'BOOKED') && ( date( "Y-m-d H:i", $class->start ) > date( "Y-m-d H:i", $current_time. "+2 hours" ) ))
                                     {!! Form::open(array( 'url' => 'agent/classes/'.$class->id.'/cancel', 'method'=> 'POST', 'class' => 'cancel-form-class',
                                     'style'=> 'display: inline;')) !!}
                                         <button class="btn btn-warning btn-xs"><i class="fa fa-close"></i> Cancel</button>

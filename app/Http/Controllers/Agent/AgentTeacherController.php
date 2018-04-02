@@ -42,7 +42,7 @@ class AgentTeacherController extends Controller
     {
        
 
-    	$teachers = Teacher::all();
+    	$teachers = Teacher::orderBy('firstname', 'ASC')->get();
         $agent = Agent::where('user_id', $this->user->id)->first();
 
     	$this->params['teachers'] = $teachers;

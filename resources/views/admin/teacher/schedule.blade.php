@@ -110,16 +110,16 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Date</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="edit-schedule-date" name="schedule-date">
+                                    <input type="text" class="form-control" id="edit-schedule-date" name="schedule-date" readonly="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Time</label>
                                 <div class="col-sm-4">
-                                    <input type="time" class="form-control" id="edit-from-time" name="from-time">
+                                    <input type="time" class="form-control" id="edit-from-time" name="from-time" readonly="">
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="time" class="form-control" id="edit-to-time" name="to-time">
+                                    <input type="time" class="form-control" id="edit-to-time" name="to-time" readonly="">
                                 </div>
                             </div>
                             <div class="form-group">

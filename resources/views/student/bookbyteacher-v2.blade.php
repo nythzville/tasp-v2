@@ -150,8 +150,8 @@
                                 @else
                                 <td date="{{ date('Y-m-d', strtotime($d)) }}" from="{{date('H:i', $time )}}" to="{{date('H:i', $time + (60 * 30 ))}}" teacher-id="{{ $teacher->id }}" class="sched-block status {{ (($sched_open == true ) && ($booked != true))? 'open' : 'closed'}} {{($booked == true )? 'booked' : ''}}">
                                   @if($booked == true)
-                                    {{ 'BOOKED' }}
-                                    <!-- {{ ($owned == true )? ' BY '.$bookby->user_type : '' }} -->
+                                    <span class="booked-text">{{ 'BOOKED' }}</span><br/>
+                                    <span class="student-id">{{ ($owned == true )? ' by '.$bookby->user_type : '' }}</span>
                                     
                                   @else
                                     {{ ($sched_open == true )? 'OPEN' : 'CLOSED' }}

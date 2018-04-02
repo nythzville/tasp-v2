@@ -56,6 +56,10 @@
                                     <i class="fa fa-skype user-profile-icon"></i> <strong>Skype :</strong> {{ $teacher->skype }}
                                     
                                 </li>
+                                <li>
+                                    <i class="fa fa-phone user-profile-icon"></i> <strong>QQ :</strong> {{ $teacher->qq }}
+                                    
+                                </li>
                             </ul>
                           
                             <br />

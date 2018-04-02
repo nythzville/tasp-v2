@@ -364,6 +364,12 @@ class StudentClassController extends Controller
     public function destroy($id, Request $request){
 
         $class = ClassPeriod::find($id); 
+        
+        if( date(strtotime($class->start)) < date(strtotime($this->params['current_time']. "+2 hours"))){
+            return redirect()->back()
+                    ->withErrors(['Cannot cancel a class 2 hours before the schedule time!']);
+        }
+
         $class->status = "CANCELLED";
         $class->save();
 

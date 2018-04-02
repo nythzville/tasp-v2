@@ -39,7 +39,7 @@
                         @foreach($students as $student)
                         <tr class="even pointer">
                             <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
-                            <td class=" ">{{ $student->lastname.' '. $student->firstname }}</td>
+                            <td class=" "><a href="{{ url('agent/students/'.$student->id) }}">{{ $student->lastname.' '. $student->firstname }}</a></td>
                             <td class=" ">{{ date("M j, Y", strtotime($student->dob)) }} / {{ date_diff(date_create($student->dob), date_create('now'))->y }} years old</td>
                             <td class=" ">{{ $student->available_class}} </i></td>
                             <td class="">{{ $student->getTotalCompletedClasses() }} </td>

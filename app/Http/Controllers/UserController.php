@@ -39,11 +39,11 @@ class UserController extends Controller
             
             }elseif($this->auth->user()->user_type =='STUDENT'){
 
-                return redirect('/student/classes/today');
+                return redirect('/student/profile');
             
             }elseif($this->auth->user()->user_type =='TEACHER'){
 
-                return redirect('/teacher/classes/today');
+                return redirect('/teacher/profile');
 
             }else{
                 return redirect('/login');

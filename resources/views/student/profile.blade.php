@@ -138,10 +138,6 @@
                                                     <th>Tutor</th>
                                                     <th>Skype ID</th>
                                                     <th>QQ ID</th>
-                                                    <th>Last Class</th>
-                                                    <th>Book</th>
-                                                    <th>Topic</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -149,11 +145,9 @@
                                                 <tr>
                                                     
                                                     <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                    <td class=" ">{{ $class->getTeacher->lastname }} {{ $class->getTeacher->firstname }}</td>
-                                                    <td class=" "> {{ $class->skype }}</i></td>
-                                                    <td class=" "> {{ $class->qq }}</td>
-                                                    <td class=" ">{{ $class->status }}</td>
-                                                    <td class=" "></td>
+                                                    <td class=" ">Teacher {{ $class->getTeacher['firstname'] }}</td>
+                                                    <td class=" "> {{ $class->getTeacher['skype'] }}</i></td>
+                                                    <td class=" "> {{ $class->getTeacher['qq'] }}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

@@ -52,8 +52,8 @@
                                 <tr class="even pointer">
                                     <td class="a-center "><input type="checkbox" class="flat" name="table_records" ></td>
                                     <td class="date-cell" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                    <td class=" ">{{ $class->getStudent->firstname }} {{ $class->getStudent->lastname }}</td>
-                                    <td class=" ">{{ $class->getTeacher->firstname }}</td>                                    
+                                    <td class=" ">{{ $class->getStudent['firstname'] }} {{ $class->getStudent['lastname'] }}</td>
+                                    <td class=" ">{{ $class->getTeacher['firstname'] }}</td>                                    
                                     
                                     <td class=" ">
                                         @if(( date( $class->end ."+1 day") < date( $current_time ) ) && ($class->status != "COMPLETED"))

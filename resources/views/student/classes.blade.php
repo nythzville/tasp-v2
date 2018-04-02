@@ -92,7 +92,7 @@
                                 @endif
 
 
-                                @if( Date("Y-m-d H:i", strtotime( $class->start ) ) > Date("Y-m-d H:i:s", strtotime($current_time." +2 hours") ) && ($class->status != "CANCELED"))
+                                @if( Date("Y-m-d H:i", strtotime( $class->start ) ) > Date("Y-m-d H:i", strtotime($current_time." +2 hours") ) && ($class->status != "CANCELLED"))
                                 {!! Form::open(['url' => '/student/classes/'.$class->id, 'method' => 'DELETE', 'class' => 'cancel-form-class']) !!}
 
                                 {!! Form::submit('Cancel', ['class' => 'btn btn-danger btn-xs' ]) !!}

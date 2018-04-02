@@ -20,6 +20,7 @@ use App\ClassPeriod;
 use Validator;
 use Carbon;
 use Auth;
+use DB;
 
 class AdminStudentController extends Controller
 {
@@ -180,6 +181,14 @@ class AdminStudentController extends Controller
         $student->delete();
         $user->delete();
         
+        DB::table('classes')
+         ->where('student', $id)
+         ->delete();
+         
+        DB::table('courses')
+         ->where('student_id', $id)
+         ->delete();
+
         return redirect('admin/students')->withSuccess('Student Successfully Deleted!');
     }
 
@@ -190,7 +199,7 @@ class AdminStudentController extends Controller
         // get all today
 
         $classes = ClassPeriod::where('student' , $id)
-        ->where('status' , '<>', 'CANCELED')
+        ->where('status' , '<>', 'CANCELLED')
         ->orderBy('start','DESC')->limit(20)
         ->get();
 
@@ -544,9 +553,9 @@ class AdminStudentController extends Controller
         $start = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('from-time')));
         $end = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('to-time')));
 
-        if( date(strtotime($start)) < date(strtotime($this->params['current_time']. "+2 hours"))){
+        if( date(strtotime($start)) < date(strtotime($this->params['current_time']))){
             return redirect()->back()
-                    ->withErrors(['Cannot book a class! Schedule must be 2 hours earlier than current time.']);
+                    ->withErrors(['Cannot book a class! Class must be book before the current time.']);
         }
 
         $conflict_class = ClassPeriod::where('start', $start)

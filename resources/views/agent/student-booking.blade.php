@@ -50,8 +50,11 @@
                                     <!-- <div class="right col-xs-5 text-center"> -->
                                     <div class="right col-xs-12 text-center">
 
-                                        @if($teacher->getUser->user_image)
-                                        <img src="{{ url($teacher->getUser->user_image) }}" alt="" class="img-circle img-responsive">
+                                        @if($teacher['user_image'])
+                                        <div class="img-circle" style="overflow: hidden; padding: 0; width: 100px; height: 100px;">
+                                            <img src="{{ url($teacher['user_image']) }}" alt="" class="img-responsive" width="100" height="100">
+                                                                                        
+                                        </div>
                                         @else
                                         <img src="{{ url('admin/images/user.png') }}" alt="" class="img-circle img-responsive">
 
@@ -60,11 +63,11 @@
                                 </div>
                                 <div class="col-xs-12 bottom text-right">
                                     <div class="col-xs-12 col-sm-6 emphasis">
-                                        <a href="{{ url('agent/students/'.$student->id.'/teachers/'.$teacher->id.'/book') }}" class="btn btn-success btn-xs"> <i class="fa fa-book">
+                                        <a href="{{ url('agent/students/'.$student->id.'/teachers/'.$teacher->teacher_id.'/book') }}" class="btn btn-success btn-xs"> <i class="fa fa-book">
                                             </i> Book A Class</a>
                                     <!-- </div>
                                     <div class="col-xs-12 col-sm-6 emphasis"> -->
-                                        <a href="{{ url('agent/teachers/'.$teacher->id.'') }}" class="btn btn-primary btn-xs"> <i class="fa fa-user">
+                                        <a href="{{ url('agent/teachers/'.$teacher->teacher_id) }}" class="btn btn-primary btn-xs"> <i class="fa fa-user">
                                             </i> View Profile </a>
                                     </div>
                                 </div>

@@ -39,13 +39,13 @@ class AdminClassController extends Controller
         $class_type = $request->get('type');
         
         if ($class_type == 'REGULAR')  {
-            $query = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELED');
+            $classes = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELLED')->get();
             
         }else if ($class_type == 'TRIAL')  {
-            $query = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELED');
+            $classes = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELLED')->get();
             
         }else{
-            $query = ClassPeriod::where('status', '<>', 'CANCELED');
+            $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->get();
             // $query = ClassPeriod::all();
 
         }
@@ -53,7 +53,7 @@ class AdminClassController extends Controller
     	// $classes = ClassPeriod::where('type','REGULAR')->get();
     	
 
-        $classes = $query->get();
+        // $classes = $query->get();
         $this->params['classes'] = $classes;
         return view('admin.classperiod.list')->with($this->params);
         // dd($classes);
@@ -221,7 +221,7 @@ class AdminClassController extends Controller
 
         $class = ClassPeriod::find($id);
         if (!$class) {
-            return redirect('admin/class');
+            return redirect()->back()->withErrors('Class not found!');
         }
 
         $class->status      = 'CANCELLED';

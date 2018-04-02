@@ -489,14 +489,17 @@
                 .done(function(response){   
 
                     if(response.error == false){
-                        calendar.fullCalendar('renderEvent', {
-                                title: 'OPEN',
-                                start: new Date(response.schedule.start),
-                                end: new Date(response.schedule.end),
-                            },
-                            true // make the event "stick"
-                        );
+                        response.schedules.forEach(function(sched, index){
 
+                            console.log(sched);
+                            calendar.fullCalendar('renderEvent', {
+                                    title: sched.status,
+                                    start: new Date(sched.start),
+                                    end: new Date(sched.end),
+                                },
+                                true // make the event "stick"
+                            );
+                        });
                         var msg = "<div class='alert alert-success alert-dismissible fade in' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>×</span></button><strong>Horray!</strong> "+ response.msg +"</div>";
                         $('.x_panel').prepend(msg);
 
@@ -511,6 +514,8 @@
                             scrollTop: $(".x_panel").offset().top
                         }, 1000);
                     }
+
+                    console.log(response);
 
                 })
                 .fail(function(response){

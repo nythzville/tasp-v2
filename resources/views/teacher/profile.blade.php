@@ -238,7 +238,7 @@
                                                 @foreach($classes_today as $class)
                                                 <tr>
                                                     <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                    <td class=" ">{{ $class->getStudent->lastname }} {{ $class->getStudent->firstname }}</td>
+                                                    <td class=" "><a href="{{ url('teacher/student/'.$class->getStudent['id']) }}">{{ $class->getStudent['lastname'] }} {{ $class->getStudent['firstname'] }}</a></td>
                                                     <!-- <td><a href="{{ url('teacher/clas') }}"> Go to Classes </a></td> -->
                                                 </tr>
                                                 @endforeach

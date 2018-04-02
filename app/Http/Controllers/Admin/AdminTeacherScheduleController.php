@@ -99,17 +99,31 @@ class AdminTeacherScheduleController extends Controller
             'msg' => "Your schedule conflicts with some of your schedule!"));
         }
         
-        $schedule = new TeacherSchedule();
-        $schedule->teacher_id           = $teacher->id;
-        $schedule->start                = $request->get('schedule-date'). " " .$request->get('from-time');
-        $schedule->end                  = $request->get('schedule-date'). " " .$request->get('to-time');
-        $schedule->status               = $request->get('status');
+        /* -- Cutting scheds into 30mins -- */
+        $sched_cut = date("H:i", strtotime($request->get('from-time')));
+        $sched_limit = date("H:i", strtotime($request->get('to-time')));
+        $sched_ids = array();
+        while ($sched_cut < $sched_limit) {
+            $sched_offset = date("H:i", strtotime($sched_cut."+30 minutes"));
 
-        $schedule->save();
+            $schedule = new TeacherSchedule();
+            $schedule->teacher_id                 = $request->get('teacher_id');
+            $schedule->start                = $request->get('schedule-date'). " " .$sched_cut;
+            $schedule->end                  = $request->get('schedule-date'). " " .$sched_offset;
+            $schedule->status               = $request->get('status');
+            $schedule->save();
+
+            // add id on list of scheds added
+            array_push($sched_ids, $schedule->id);
+
+            // move the time cut
+            $sched_cut = $sched_offset;
+        }
         
+        $scheds = TeacherSchedule::find($sched_ids);        
         return response()->json(array('error'=> false,
             'msg' => 'Schedule Successfully Added!',
-            'schedule' => $schedule));
+            'schedules' => $scheds));
 
         // return redirect('admin/teacher/'.$teacher->id.'/schedule')->with($this->params);
     }
@@ -123,9 +137,9 @@ class AdminTeacherScheduleController extends Controller
 
             // Schedule fields 
             'teacher_id'                => 'required|min:1',
-            'schedule-date'             => 'required|min:1',
-            'from-time'                 => 'required|min:1',
-            'to-time'                   => 'required|min:1',
+            // 'schedule-date'             => 'required|min:1',
+            // 'from-time'                 => 'required|min:1',
+            // 'to-time'                   => 'required|min:1',
             'status'                    => 'required|min:1',
             );
 
@@ -168,8 +182,8 @@ class AdminTeacherScheduleController extends Controller
             return redirect()->back()->withErrors("There is a class booked on this schedule! \n".$class_list);
         }
 
-        $schedule->start                = $request->get('schedule-date'). " " .$request->get('from-time');
-        $schedule->end                  = $request->get('schedule-date'). " " .$request->get('to-time');
+        // $schedule->start                = $request->get('schedule-date'). " " .$request->get('from-time');
+        // $schedule->end                  = $request->get('schedule-date'). " " .$request->get('to-time');
         $schedule->status               = $request->get('status');
 
         $schedule->save();

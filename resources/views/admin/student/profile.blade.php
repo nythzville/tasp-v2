@@ -106,6 +106,10 @@
                                     <i class="fa fa-skype user-profile-icon"></i> <strong>Skype :</strong> {{ $student->skype }}
                                     
                                 </li>
+                                <li>
+                                    <i class="fa fa-phone user-profile-icon"></i> <strong>QQ :</strong> {{ $student->qq }}
+                                    
+                                </li>
                             </li>
                             <hr>
                             <h4>Classes</h4>

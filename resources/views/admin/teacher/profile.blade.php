@@ -7,7 +7,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Teacher {{ $teacher->firstname }}'<s></s> Profile <small></small></h2>
+                        <h2>Teacher {{ $teacher->firstname }}'s Profile <small></small></h2>
                         
                         <div class="clearfix"></div>
                     </div>
@@ -224,7 +224,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h4>Upload Recording</h4>
-                                                    {!! Form::open(array('url'=> 'admin/teachers'./$teacher->id.'/recording', 'method' => 'POST', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal form-label-left')) !!}
+                                                    {!! Form::open(array('url'=> 'admin/teachers'.$teacher->id.'/recording', 'method' => 'POST', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal form-label-left')) !!}
                                                         <div class="form-group">
                                                             <div class="col-md-8">
                                                                 <input type="file" name="recording" required="required" class="form-control col-md-12" accept=".mp3">
@@ -262,7 +262,7 @@
                                             @foreach($classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/admin/student/'. $class->getStudent->id ) }}" >{{ $class->getStudent->lastname }} {{ $class->getStudent->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/admin/students/'. $class->getStudent['id'] ) }}" > {{ $class->getStudent['firstname'] }} {{ $class->getStudent['lastname'] }}</a></td>
                                                 <td class=" ">{{ $class->type }}</td>
                                                 <td class=" ">{{ $class->status }}</td>
                                                 
@@ -296,7 +296,7 @@
                                             @foreach($completed_classes as $class)
                                             <tr class="pointer">
                                                 <td class=" "> {{ date("m/d/Y H:i a",strtotime($class->start)) }}</td>
-                                                <td class=" "><a href="{{ url('/admin/student/'. $class->getStudent->id ) }}" >{{ $class->getStudent->lastname }} {{ $class->getStudent->firstname }}</a></td>
+                                                <td class=" "><a href="{{ url('/admin/students/'. $class->getStudent['id'] ) }}" > {{ $class->getStudent['firstname'] }} {{ $class->getStudent['lastname'] }}</a></td>
                                                 <td class=" ">{{ $class->status }}</td>
                                                 <td class=" ">
                                                     @if($class->status == "COMPLETED" )

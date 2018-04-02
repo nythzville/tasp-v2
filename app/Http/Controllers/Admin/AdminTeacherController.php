@@ -17,6 +17,8 @@ use App\ClassPeriod;
 use Auth;
 use Validator;
 
+use DB;
+
 use Carbon;
 
 class AdminTeacherController extends Controller
@@ -161,6 +163,13 @@ class AdminTeacherController extends Controller
         $teacher->delete();
         $user->delete();
 
+        DB::table('classes')
+         ->where('teacher', $id)
+         ->delete();
+         DB::table('teachers_schedule')
+         ->where('teacher_id', $id)
+         ->delete();
+
         return redirect('admin/teachers')->withSuccess('Teacher Successfully Deleted!');
 
 
@@ -172,7 +181,7 @@ class AdminTeacherController extends Controller
         $teacher = Teacher::find($id);
 
         $classes = ClassPeriod::where('teacher' , $id)
-        ->where('status' , '<>', 'CANCELED')
+        ->where('status' , '<>', 'CANCELLED')
         ->orderBy('start','DESC')
         ->get();
 

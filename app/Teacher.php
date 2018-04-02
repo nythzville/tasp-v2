@@ -91,6 +91,7 @@ class Teacher extends Model
         $classes = ClassPeriod::where('teacher' , $this->id )
         ->where('start' , '>=', $today)
         ->where('end' , '<=', $until)
+        ->where('status' , '<>', 'CANCELLED')
         ->orderBy('start','ASC')
         ->get();
 

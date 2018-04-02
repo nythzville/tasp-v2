@@ -261,13 +261,13 @@
             });
 
             //check all row of this day
-            $('table#<?php echo date('Y-m-d') ?> tbody tr td.status').each(function(index, row){
+            $('td.status').each(function(index, row){
 
-              var currentTime = new Date();
-              var currentHours = currentTime.getHours ( );
+              var currentTimePST = new Date('{{ date("Y-m-d H:i", strtotime($current_time) ) }}');
+              var cellTime = new Date( $(row).attr('date') + ' ' + $(row).attr('from'));
 
-              var from = parseInt($(row).attr('hour'));
-              if(from <= (parseInt(currentHours) + 2 )){
+              if(cellTime < (currentTimePST)){
+
                 //if not close the close
                 if(!$(row).hasClass('booked')){
                   if ($(row).hasClass('open')) {

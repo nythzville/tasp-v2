@@ -12,7 +12,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Teacher {{ $teacher->lastname }} {{ $teacher->firstname }}<small> Schedule</small></h2>
+                        <h2>Teacher {{ $teacher->firstname }}<small> Schedule</small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             @if(date("Y-m-d") < date("Y-m-d", strtotime($date)))
                             <li><a href="{{ url()->current() }}?week={{ ($week - 1 ) }}"><i class="fa fa-chevron-left"></i> Prev</a>
@@ -149,6 +149,11 @@
                                 if($d == $third_sat){
                                   $disabled = true;
                                 }
+                                if(($d >= $third_sat) && ($d <= $current_month_ends)){
+                                  $disabled = true;
+
+                                }
+                                
                                 ?>
                                 @if($disabled == true)
 
@@ -269,18 +274,19 @@
                 $('#schedule-date').val(date);
                 $('#from-time').attr('value',from);
                 $('#to-time').attr('value',to);
-
+                // console.log('from:' + from);
                 $('#BookingModal').modal('show');
             });
 
             //check all row of this day
-            $('table#<?php echo date('Y-m-d') ?> tbody tr td.status').each(function(index, row){
+           
+            $('td.status').each(function(index, row){
 
-              var currentTime = new Date();
-              var currentHours = currentTime.getHours ( );
+              var currentTimePST = new Date('{{ date("Y-m-d H:i", strtotime($current_time) ) }}');
+              var cellTime = new Date( $(row).attr('date') + ' ' + $(row).attr('from'));
 
-              var from = parseInt($(row).attr('hour'));
-              if(from <= (parseInt(currentHours) + 2 )){
+              if(cellTime < (currentTimePST)){
+
                 //if not close the close
                 if(!$(row).hasClass('booked')){
                   if ($(row).hasClass('open')) {

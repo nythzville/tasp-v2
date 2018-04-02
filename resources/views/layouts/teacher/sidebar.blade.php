@@ -83,7 +83,7 @@
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                    <li><a href="{{ url('student/profile') }}">  Profile</a>
+                    <li><a href="{{ url('teacher/profile') }}">  Profile</a>
                     </li>
                     
                     <li>

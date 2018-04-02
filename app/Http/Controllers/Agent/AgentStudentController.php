@@ -18,6 +18,8 @@ use App\ClassPeriod;
 use Auth;
 use Validator;
 use Carbon;
+use DB;
+
 class AgentStudentController extends Controller
 {
     //
@@ -303,10 +305,14 @@ class AgentStudentController extends Controller
     public function book($id){
         $agent = Agent::find($this->agent->id);
         $this->params['agent'] = $agent;
-
+        $teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            ->join('users', 'users.id', '=', 'teachers.user_id')
+            ->orderBy('teachers_rank.rank', 'ASC')
+            ->get();
         $this->params['student'] = Student::find($id);
-        $this->params['teachers'] = Teacher::all();
+        $this->params['teachers'] = $teachers;
 
+        // dd($teachers);
         return view('agent.student-booking')->with($this->params);
     }
 
@@ -367,7 +373,7 @@ class AgentStudentController extends Controller
                 break;
             }
         }
-        
+        $this->params['current_month_ends'] = date("Y-m-d", strtotime($current_year."-".$current_month."-".$days_count));
         $this->params['third_sat'] = $third_sat;
         // If date picked is 3rd saturday
 
@@ -409,9 +415,11 @@ class AgentStudentController extends Controller
         $start = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('from-time')));
         $end = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('to-time')));
 
-        if( date(strtotime($start)) < date(strtotime($this->params['current_time']. "+2 hours"))){
+        // if( date(strtotime($start)) < date(strtotime($this->params['current_time']. "+2 hours"))){
+        if( date(strtotime($start)) < date(strtotime($this->params['current_time']))){
+
             return redirect()->back()
-                    ->withErrors(['Cannot book a class! Schedule must be 2 hours earlier than current time.']);
+                    ->withErrors(['Cannot book a class! Class must be book before the current time.']);
         }
 
         $conflict_class = ClassPeriod::where('start', $start)

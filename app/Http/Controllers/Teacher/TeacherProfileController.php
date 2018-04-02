@@ -49,8 +49,9 @@ class TeacherProfileController extends Controller
         $until = date("Y-m-d" ,strtotime($today."+1 day"));
 
         $classes = ClassPeriod::where('teacher' , $this->params['teacher']->id)
-        ->where('start' , '<=', $today)
-        ->where('end' , '>=', $until)
+        ->where('start' , '>=', $today)
+        ->where('end' , '<=', $until)
+        ->where('status' , '<>', 'CANCELLED')
         ->get();
         $this->params['classes_today'] = $classes;
 

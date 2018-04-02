@@ -55,6 +55,11 @@
                                 </li>
 
                                 <li>
+                                    <i class="fa fa-phone user-profile-icon"></i> <strong>QQ :</strong> {{ $student->qq }}
+                                    
+                                </li>
+
+                                <li>
                                     <i class="fa fa-calendar user-profile-icon"></i> <strong>Completed Classes :</strong> {{ $student->getTotalCompletedClasses() }}
                                     
                                 </li>
