@@ -136,12 +136,7 @@ class AdminStudentController extends Controller
             'student_id'                => 'required|min:1',
             'lastname'          	    => 'required|min:1',
             'firstname'              	=> 'required|min:1',
-            'password'                  => 'required|min:6|confirmed',
-
-            // 'gender'              		=> 'required|min:1',      
-
-            // 'sched-date'              	=> 'required|min:1',            
-            // 'sched-time'              	=> 'required|min:1',            
+            'password'                  => 'required|min:6|confirmed',          
             );
 
         $student = Student::find($id);
@@ -472,10 +467,33 @@ class AdminStudentController extends Controller
 
 
     // Book Regular Class
-    public function book($id){
+    public function book($id, Request $request){
 
         $this->params['student'] = Student::find($id);
-        $this->params['teachers'] = Teacher::all();
+        $search_key = $request->get('s');
+        if($search_key!=null){
+            $teachers = Teacher::where('lastname' , 'LIKE', '%'.$search_key.'%')
+            ->orWhere('firstname' , 'LIKE', '%'.$search_key.'%')
+            ->orWhere('teacher_id' , 'LIKE', '%'.$search_key.'%')
+            ->get();
+        }else{
+
+            // $teachers = Teacher::leftJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            //     ->join('users', 'users.id', '=', 'teachers.user_id')
+            //     ->orderBy('teachers_rank.rank', 'ASC')
+            //     ->get();
+            $teachers = Teacher::all();
+        }
+        
+        $teachers = $teachers->map(function ($item, $key) {
+            $item->rank = $item->rank;
+            return $item;
+        });
+        $teachers = $teachers->sortBy('rank');
+
+        $this->params['teachers'] = $teachers;
+        $this->params['search_key'] = $search_key;
+
 
         return view('admin.student.student-booking')->with($this->params);
     }

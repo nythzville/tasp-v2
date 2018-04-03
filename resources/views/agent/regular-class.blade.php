@@ -206,7 +206,7 @@
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="myModalLabel">You Book a Class for {{ $student->lastname }} {{ $student->firstname }} with Teacher {{ $teacher->lastname }} {{ $teacher->firstname }}</h4>
+                        <h4 class="modal-title" id="myModalLabel">You Book a Class for {{ $student->firstname }} with Teacher {{ $teacher->firstname }}</h4>
                     </div>
                     <div class="modal-body">
                         <div id="testmodal" style="padding: 5px 20px;">
@@ -218,8 +218,8 @@
                                     <label class="col-sm-3 control-label">Details</label>
                                     <div class="col-sm-9">
                                        <p>
-                                          Student:{{ $student->lastname }} {{ $student->firstname }} <br/>
-                                          Teacher: {{ $teacher->lastname }} {{ $teacher->firstname }}
+                                          Student: {{ $student->firstname }} {{ $student->lastname }}<br/>
+                                          Teacher: Teacher {{ $teacher->firstname }}
                                         </p>
                                         <!-- <input type="text" class="form-control" id="tutor" name="tutor" value="{{ $teacher->lastname }} {{ $teacher->firstname }}" readonly="" > -->
                                         <input type="hidden" class="form-control" id="tutor_id" name="tutor_id">

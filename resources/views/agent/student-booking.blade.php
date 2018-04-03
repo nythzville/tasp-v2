@@ -13,8 +13,24 @@
             </div>
 
             <div class="title_right">
-               
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                {!! Form::open(array('url' => 'agent/students/'.$student->id.'/book', 'method' => 'GET')) !!}
+                    
+                <div class="input-group">
+                    @if(isset($search_key))
+                        <input name="s" type="text" class="form-control" value="{{ $search_key }}" placeholder="Search for...">
+                    @else
+                        <input name="s" type="text" class="form-control" placeholder="Search for...">
+                    @endif
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+
+                </div>
+                {!! Form::close() !!}
+                
             </div>
+        </div>
         </div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -26,7 +42,7 @@
                     </div>
 
                     <div class="x_content">
-                        <p>Select a <code>Teacher</code> for the trial class of your student.</p>
+                        <p>Select a <code>Teacher</code> for the class of your student.</p>
                        
                     @if(isset($teachers))
 
@@ -34,7 +50,7 @@
                         <div class="col-md-2 col-sm-2 col-xs-12 animated fadeInDown">
                             <div class="well profile_view">
                                 <div class="col-sm-12">
-                                    <h5 class="brief"><i>[ Top #{{ $teacher->rank }} ] Teacher</i></h5>
+                                    <h5 class="brief"><i>[ Top #{{ $teacher->rank['rank'] }} ] Teacher</i></h5>
                                     
                                     <!-- <div class="left col-xs-7"> -->
                                     <div class="left col-xs-12">
@@ -63,11 +79,11 @@
                                 </div>
                                 <div class="col-xs-12 bottom text-right">
                                     <div class="col-xs-12 col-sm-6 emphasis">
-                                        <a href="{{ url('agent/students/'.$student->id.'/teachers/'.$teacher->teacher_id.'/book') }}" class="btn btn-success btn-xs"> <i class="fa fa-book">
+                                        <a href="{{ url('agent/students/'.$student->id.'/teachers/'.$teacher->id.'/book') }}" class="btn btn-success btn-xs"> <i class="fa fa-book">
                                             </i> Book A Class</a>
                                     <!-- </div>
                                     <div class="col-xs-12 col-sm-6 emphasis"> -->
-                                        <a href="{{ url('agent/teachers/'.$teacher->teacher_id) }}" class="btn btn-primary btn-xs"> <i class="fa fa-user">
+                                        <a href="{{ url('agent/teachers/'.$teacher->id) }}" class="btn btn-primary btn-xs"> <i class="fa fa-user">
                                             </i> View Profile </a>
                                     </div>
                                 </div>

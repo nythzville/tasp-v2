@@ -18,12 +18,13 @@
                 </li>
                 <li><a><i class="fa fa-calendar"></i> Classes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
-                        
-                        <li><a href="{{ url('/agent/classes') }}">All</a>
-                        </li>
+                        <li><a href="{{ url('/agent/classes/upcoming') }}">Upcoming</a>
+                        </li>  
                         <li><a href="{{ url('/agent/classes?type=REGULAR') }}">Regular</a>
                         </li>
                         <li><a href="{{ url('/agent/classes?type=TRIAL') }}">Trial</a>
+                        </li>
+                        <li><a href="{{ url('/agent/classes') }}">All</a>
                         </li>
                     </ul>
                 </li>

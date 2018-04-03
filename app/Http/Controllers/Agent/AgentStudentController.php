@@ -302,15 +302,35 @@ class AgentStudentController extends Controller
 
     */
     // Book Regular Class
-    public function book($id){
+    public function book($id, Request $request){
         $agent = Agent::find($this->agent->id);
         $this->params['agent'] = $agent;
-        $teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
-            ->join('users', 'users.id', '=', 'teachers.user_id')
-            ->orderBy('teachers_rank.rank', 'ASC')
+
+        $search_key = $request->get('s');
+        if($search_key!=null){
+            $teachers = Teacher::where('lastname' , 'LIKE', '%'.$search_key.'%')
+            ->orWhere('firstname' , 'LIKE', '%'.$search_key.'%')
+            ->orWhere('teacher_id' , 'LIKE', '%'.$search_key.'%')
             ->get();
+        }else{
+
+            // $teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            //     ->join('users', 'users.id', '=', 'teachers.user_id')
+            //     ->orderBy('teachers_rank.rank', 'ASC')
+            //     ->get();
+            $teachers = Teacher::all();
+
+        }
+        $teachers = $teachers->map(function ($item, $key) {
+            $item->rank = $item->rank;
+            return $item;
+        });
+        $teachers = $teachers->sortBy('rank');
+
+        
         $this->params['student'] = Student::find($id);
         $this->params['teachers'] = $teachers;
+        $this->params['search_key'] = $search_key;
 
         // dd($teachers);
         return view('agent.student-booking')->with($this->params);

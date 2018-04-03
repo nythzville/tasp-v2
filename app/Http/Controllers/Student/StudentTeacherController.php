@@ -61,13 +61,20 @@ class StudentTeacherController extends Controller
 			->orWhere('teacher_id' , 'LIKE', '%'.$search_key.'%')
 			->get();
 		}else{
-			// $teachers = Teacher::all();
-            $teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
-            ->orderBy('teachers_rank.rank', 'ASC')
-            ->get();
+			$teachers = Teacher::all();
+            // $teachers = Teacher::rightJoin('teachers_rank', 'teachers_rank.teacher_id', '=', 'teachers.id')
+            // ->orderBy('teachers_rank.rank', 'ASC')
+            // ->get();
 		}
+         $teachers = $teachers->map(function ($item, $key) {
+            $item->rank = $item->rank;
+            return $item;
+        });
+        $teachers = $teachers->sortBy('rank');
+        
 		$this->params['teachers'] = $teachers;
-        // dd($teachers);
+        $this->params['search_key'] = $search_key;
+        
 		return view('student.teacherslist')->with($this->params);
 	}
 

@@ -138,4 +138,9 @@ class Teacher extends Model
         return $classes;
     }
 
+    public function rank(){
+        return $this->hasOne('App\TeacherRanking', 'id');
+
+    }
+
 }

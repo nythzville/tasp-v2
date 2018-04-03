@@ -65,7 +65,7 @@
                                     <td class=" ">{{ $class->type }}</td>                                    
 
                                     <td class="">
-                                    @if(($class->status == 'BOOKED') && ( date( "Y-m-d H:i", $class->start ) > date( "Y-m-d H:i", $current_time. "+2 hours" ) ))
+                                    @if(($class->status == 'BOOKED') && ( date( "Y-m-d H:i", strtotime($class->start) ) > date( "Y-m-d H:i", strtotime($current_time. "+2 hours") ) ))
                                     {!! Form::open(array( 'url' => 'agent/classes/'.$class->id.'/cancel', 'method'=> 'POST', 'class' => 'cancel-form-class',
                                     'style'=> 'display: inline;')) !!}
                                         <button class="btn btn-warning btn-xs"><i class="fa fa-close"></i> Cancel</button>

@@ -266,6 +266,8 @@ Route::group(['prefix' => 'agent', 'namespace'=> 'Agent', 'middleware' => 'agent
 	Route::post('/students/{student_id}/teacher/{teacher_id}/trial_class', 'AgentStudentController@book_trial_class');
 	Route::get('/classes', 'AgentClassController@index');
 	Route::post('/classes/{id}/cancel', 'AgentClassController@cancel_class');
+	Route::get('/classes/upcoming', 'AgentClassController@upcoming_classes');
+
 	
 
 	// Book Regular Class
