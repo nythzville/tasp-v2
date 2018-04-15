@@ -69,8 +69,20 @@
                                 </li>
                             </ul>
                             
-                            <br />
-
+                            <hr>
+                            <h4>Actions</h4>
+                            <ul class="list-unstyled user_data">
+                                <li>
+                                <a href="{{ url('agent/students/'.$student->id.'/book') }}" class="btn btn-success btn-xs"><i class="fa fa-edit m-right-xs"></i> Book a Class</a>
+                                </li>
+                                <li>
+                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#Update-available-class"><i class="fa fa-edit m-right-xs"></i> Update Available Class</a>
+                                </li>
+                                <li>
+                                <a class="btn btn-default btn-xs" href="{{ url('agent/students/'. $student->id. '/edit' ) }}"><i class="fa fa-edit user-profile-icon"></i>  Edit Student</a>
+                                <br/>
+                                </li>
+                            </ul>
                         </div>
                         <div class="col-md-9 col-sm-9 col-xs-12">
 
@@ -264,7 +276,41 @@
 
     <!-- End Calender modal -->
 
+    <!-- Start Available Class modal -->
+    <div id="Update-available-class" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Available Classes</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 5px 20px;">
+
+                        {!! Form::open(array('url' => 'agent/students/'.$student->id.'/available_class', 'id' => 'available-class-form', 'class' => 'form-horizontal calender', 'role'=> 'form', 'method' => 'POST' ))!!}
+                            <input type="hidden" id="student_id" name="student_id" value="{{ $student->id }}">
+                            <!-- <input type="hidden" id="class_start" name="class_start" value=""> -->
+                            <!-- <input type="hidden" id="class_end" name="class_end" value=""> -->
+
+                            <p>This is the number of available classes can be book by a student.</p>
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">Number of Available Class</label>
+                                <div class="col-sm-7">
+                                <input type="number" class="form-control" name="available_class" value="{{ $student->available_class }}" required="">
+                                </div>
+                            </div>
+                            
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary antosubmit" onclick="$('#available-class-form').submit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     
 @endsection

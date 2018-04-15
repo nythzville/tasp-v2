@@ -32,7 +32,7 @@ class AdminDashboardController extends Controller
 
     public function index()
     {
-        $this->params['students'] = Student::all();
+        $this->params['students'] = Student::limit(10)->get();
         $this->params['teachers'] = Teacher::all();
         $this->params['agents'] = Agent::all();
 

@@ -375,7 +375,10 @@
             });
             $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
                 // console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
-                window.location.href = "http://ea-english.com/admin/reports?from_date="+ picker.startDate.format('YYYY-MM-DD') + "&to_date=" + picker.endDate.format('YYYY-MM-DD');
+                // window.location.href = "http://ea-english.com/admin/reports?from_date="+ picker.startDate.format('YYYY-MM-DD') + "&to_date=" + picker.endDate.format('YYYY-MM-DD');
+
+                window.location.href = "{{ url('admin/reports') }}?from_date="+ picker.startDate.format('YYYY-MM-DD') + "&to_date=" + picker.endDate.format('YYYY-MM-DD');
+
                 // console.log(picker.startDate.format('YYYY-MM-DD'));  
             });
             $('#reportrange').on('cancel.daterangepicker', function (ev, picker) {
@@ -729,6 +732,10 @@
 
     $(".cancel-form-class").on("submit", function(){
         return confirm("Do you want to Cancel this Class?");
+    });
+
+    $(".delete-form-class").on("submit", function(){
+        return confirm("Do you want to Delete this Class?");
     });
 
     $(".cancel-form-news").on("submit", function(){

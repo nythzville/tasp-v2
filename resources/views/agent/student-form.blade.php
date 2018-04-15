@@ -18,7 +18,7 @@
                     <div class="x_content">
                         <br>
                         @if($action == 'edit')
-                        {!! Form::open(array('url' => 'agent/student/'.$student->id.'/update', 'method' => 'PUT', 'id' => 'frm-student', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
+                        {!! Form::open(array('action' => ['Agent\AgentStudentController@update', $student->id ], 'method' => 'PUT', 'id' => 'frm-student', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
                         @else
                         {!! Form::open(array('action' => 'Agent\AgentStudentController@store', 'id' => 'frm-student', 'class' => 'form-horizontal form-label-left', 'novalidate' => '', 'data-parsley-validate' => '')) !!}
                         @endif

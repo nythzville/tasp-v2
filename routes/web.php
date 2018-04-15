@@ -271,6 +271,7 @@ Route::group(['prefix' => 'agent', 'namespace'=> 'Agent', 'middleware' => 'agent
 	
 
 	// Book Regular Class
+	Route::post('/students/{id}/available_class', 'AgentStudentController@update_available_class');
 	Route::get('/students/{id}/book', 'AgentStudentController@book');
 	Route::get('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_by_teacher');
 	Route::post('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_regular_class');

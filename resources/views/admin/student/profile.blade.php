@@ -127,6 +127,11 @@
                             <h4>Actions</h4>
                             <ul class="list-unstyled user_data">
                                 <li>
+                                <a href="{{ url('admin/students/'.$student->id.'/book') }}" class="btn btn-success btn-xs"><i class="fa fa-calendar m-right-xs"></i> Book a Class</a>
+                                </li>
+                                
+                                </li>
+                                <li>
                                 <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#Update-available-class"><i class="fa fa-edit m-right-xs"></i> Update Available Class</a>
                                 </li>
                                 <li>
@@ -242,48 +247,7 @@
             </div>
         </div>
     </div>
-        
-    <!-- Start Calender modal -->
-    <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Select Tutor</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="testmodal" style="padding: 5px 20px;">
-
-                        {!! Form::open(array('action' => 'Admin\AdminClassController@store', 'id' => 'class-form', 'class' => 'form-horizontal calender', 'role'=> 'form' ))!!}
-                            <input type="hidden" id="student_id" name="student_id" value="{{ $student->id }}">
-                            <input type="hidden" id="class_start" name="class_start" value="">
-                            <input type="hidden" id="class_end" name="class_end" value="">
-
-                            
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Tutor Available</label>
-                                <div class="col-sm-9">
-                                <select name="tutor" id="tutor" class="form-control">
-                                    @if(isset($teachers))
-                                    @foreach($teachers as $teacher)
-                                    <option value="{{ $teacher->id }}"> {{ $teacher->lastname }}, {{ $teacher->firstname }}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                                </div>
-                            </div>
-                            
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary antosubmit">Book</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -327,7 +291,7 @@
 
 
 
-    <!-- Start Calender modal -->
+    <!-- Start Available Classes modal -->
     <div id="Update-available-class" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -362,6 +326,96 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Start Class Evaluation modal -->
+    <div id="UpdateEvaluation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Class Evaluation</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 5px 20px;">
+                        {{ Form::open(array( 'url' => 'admin/classes', 'id'=>'evaluation-form', 'class'=>'form-horizontal calender', 'role'=>'form' ,'method' => 'POST')) }}
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Date</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="date" name="date" readonly="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Attendance</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="attendance" name="attendance" readonly="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Curriculum / Subject</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="subject" name="subject" readonly="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Topic / Page</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="topic" name="topic" readonly="">
+                                </div>
+                            </div>
+                            
+                                
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Comment</label>
+                                <div class="col-sm-9">
+                                    <textarea name="comment" id="comment" class="form-control" readonly=""></textarea>
+                                </div>
+                            </div>
+                        {{ Form::close() }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <!-- <a id="print-url" class="btn btn-info" target="_blank">Print</a> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.btn-view-evaluation').click(function(){
+            var class_id = $(this).attr('class-id');
+            var url = $('#evaluation-form').attr('action');
+            $('#UpdateEvaluation').modal('show');
+            $('#evaluation-form').attr('action', url + '/' + class_id + '/evaluation');
+            $.get(url + '/' + class_id + '/evaluation' )
+            .done(function(response) {
+
+                if (response.evaluation != null) {
+
+                    $('input#date').val(response.evaluation.date);
+                    $('input#attendance').val(response.evaluation.attendance);
+                    $('input#subject').val(response.evaluation.subject);
+                    $('input#topic').val(response.evaluation.topic);
+
+                    $('textarea#comment').val(response.evaluation.comment);
+
+                    $('a#print-url').attr('href', url + '/' + class_id + '/evaluation/print');
+
+                }
+
+            })
+            .fail(function(response) {
+
+            });
+        });
+        $(".cancel-form-class").on("submit", function(){
+            return confirm("Do you want to Cancel this Class?");
+        });
+
+    </script>
+
     <!-- image cropping -->
     <script src="{{ url('/admin') }}/js/cropping/cropper.min.js"></script>
     <script src="{{ url('/admin') }}/js/cropping/main.js"></script>

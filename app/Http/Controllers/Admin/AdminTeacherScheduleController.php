@@ -45,8 +45,11 @@ class AdminTeacherScheduleController extends Controller
     	$teacher = Teacher::find($teacher_id);
     	$this->params['teacher'] = $teacher;
         $this->params['page'] = 'teacher_schedule';
-    	$this->params['schedules'] = TeacherSchedule::where('teacher_id', $teacher->id)->get();
-
+        $lastweek = date("Y-m-d H:i", strtotime($this->params['current_time'] ."- 7days") );
+        
+    	$this->params['schedules'] = TeacherSchedule::where('teacher_id', $teacher->id)
+        ->where('start', '>', $lastweek)
+        ->get();
     	return view('admin.teacher.schedule')->with($this->params);
     }
 

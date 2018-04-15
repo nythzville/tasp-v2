@@ -211,14 +211,14 @@ class StudentClassController extends Controller
             $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
             
             // $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = $week;
             $this->params['date'] = $date;
         }else{
 
             $date = Date("Y-m-d");
             $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = 0;
             $this->params['date'] = $date;      
         }
@@ -324,11 +324,22 @@ class StudentClassController extends Controller
         }
 
         $conflict_class = ClassPeriod::where('start', $start)
-        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->first();
+        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->where('status', '<>', 'CANCELLED')->first();
+
         if($conflict_class){
             return redirect()->back()
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
         }
+
+        $conflict_class_2 = ClassPeriod::where('start', $start)
+        ->where('end', $end)->where('student', $this->student->id)->where('status', '<>', 'CANCELLED')->first();
+        
+        if($conflict_class_2){
+            return redirect()->back()
+                    ->withErrors(['Sorry! The seleted class schedule is already booked with teacher '.$conflict_class_2->getTeacher['firstname'].'.']);
+        }
+
+
         if($student->available_class < 1) {
             return redirect()->back()
                     ->withErrors(["Sorry! You don't have available class to booked!"]);
@@ -356,9 +367,12 @@ class StudentClassController extends Controller
         $classPeriod->save();
 
 
+        // Decrement available class by 1
+        $student->available_class = (intval($student->available_class) - 1);
+        $student->save();
+
         return redirect()->back()->withSuccess('You have successfully booked a class!');
 
-        // return redirect('student/classes')->withSuccess('You have successfully booked a classes!');
     }
 
     public function destroy($id, Request $request){

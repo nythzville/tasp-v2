@@ -139,7 +139,7 @@ class Teacher extends Model
     }
 
     public function rank(){
-        return $this->hasOne('App\TeacherRanking', 'id');
+        return $this->hasOne('App\TeacherRanking', 'teacher_id');
 
     }
 

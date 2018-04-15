@@ -113,6 +113,14 @@
                                 </li>
                             </ul>
 
+                            <ul class="list-unstyled user_data">
+                                <li>
+                                <a href="{{ url('student/teachers') }}" class="btn btn-success btn-xs"><i class="fa fa-edit m-right-xs"></i> Book a Class</a>
+                                </li>
+                                
+                                </li>
+                            </ul>
+
                             <!-- <a class="btn btn-success" data-toggle="modal" data-target="#profile-modal"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a> -->
                             <br />
 

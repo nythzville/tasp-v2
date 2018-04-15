@@ -77,7 +77,7 @@
 
                                             @else
                                                 @if($class->type == 'TRIAL')
-                                                    <a href="{{ url('teacher/classes/'.$class->id.'/evaluate_trial') }}" class="btn btn-success btn-xs" class-id="{{$class->id}}" date-value=""><i class="fa fa-eye"></i>Evaluate</button>
+                                                    <a href="{{ url('teacher/classes/'.$class->id.'/evaluate_trial') }}" class="btn btn-success btn-xs" class-id="{{$class->id}}" date-value=""><i class="fa fa-eye"></i> View Evaluation</button>
                                                 @else
                                                 <button class="btn-view-evaluation btn btn-success btn-xs" class-id="{{$class->id}}" date-value="{{ date("m/d/Y",strtotime($class->start)) }}"><i class="fa fa-eye" ></i> View Evaluation</button>
                                                 @endif

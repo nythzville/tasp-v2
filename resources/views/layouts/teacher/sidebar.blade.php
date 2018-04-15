@@ -11,6 +11,8 @@
                 </li>
                 <li><a href="{{ url('/teacher/classes/upcoming') }}"><i class="fa fa-calendar"></i> Upcoming Classes</a>
                 </li>
+                <li><a href="{{ url('/teacher/classes/weekly') }}"><i class="fa fa-calendar"></i> Weekly Classes</a>
+                </li>
 
                 <!-- <li><a href="{{ url('/teacher/classes/booked') }}"><i class="fa fa-calendar"></i> Booked Classes</a>
                 </li> -->

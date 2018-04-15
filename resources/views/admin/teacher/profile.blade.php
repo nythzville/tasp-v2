@@ -38,7 +38,7 @@
                                     <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
-                                                <form class="avatar-form" action="{{ url('admin/teacher/'.$teacher->id.'/crop_image') }}" enctype="multipart/form-data" method="post">
+                                                <form class="avatar-form" action="{{ url('admin/teachers/'.$teacher->id.'/crop_image') }}" enctype="multipart/form-data" method="post">
                                                     {{ Form::token() }}
                                                     <div class="modal-header">
                                                         <button class="close" data-dismiss="modal" type="button">&times;</button>

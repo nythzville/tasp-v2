@@ -39,22 +39,23 @@ class AdminClassController extends Controller
         $class_type = $request->get('type');
         
         if ($class_type == 'REGULAR')  {
-            $classes = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELLED')->get();
+            $classes = ClassPeriod::where('type', 'REGULAR')->where('status', '<>', 'CANCELLED')->latest()->paginate(10);
             
         }else if ($class_type == 'TRIAL')  {
-            $classes = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELLED')->get();
+            $classes = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELLED')->latest()->paginate(10);
             
         }else{
-            $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->get();
+            $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->latest()->paginate(10);
             // $query = ClassPeriod::all();
 
         }
 
     	// $classes = ClassPeriod::where('type','REGULAR')->get();
     	
-
         // $classes = $query->get();
         $this->params['classes'] = $classes;
+
+        // echo $classes->lastPage();
         return view('admin.classperiod.list')->with($this->params);
         // dd($classes);
     }
@@ -95,6 +96,17 @@ class AdminClassController extends Controller
             // return view('admin.student.form', $this->params);
         }
 
+    }
+
+    public function destroy($id){
+        $class = ClassPeriod::find($id);
+        if (!$class) {
+            return redirect()->back()->withErrors('Class not found!');
+        }
+
+        $class->delete();
+        
+        return redirect()->back()->withSuccess('Class Successfully Deleted!');
     }
 
     // Evaluation

@@ -153,6 +153,95 @@ class AgentStudentController extends Controller
         return redirect('agent/students/'.$student->id)->withSuccess('Successfully Added Student!');
     }
 
+
+    public function edit($id)
+    {
+        $student = Student::find($id);
+        $courses = Course::all();
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
+
+        $this->params['student'] = $student;
+        $this->params['courses'] = $courses;
+
+        $this->params['action'] = 'edit';
+
+        return view('agent.student-form')->with($this->params);
+    }
+    public function update($id, Request $request)
+    {
+        // Define Student fields rules
+        $rules = array(
+            'student_id'                => 'required|min:1',
+            'lastname'                  => 'required|min:1',
+            'firstname'                 => 'required|min:1',
+            // 'password'                  => 'required|min:6|confirmed',          
+            );
+
+        $student = Student::find($id);
+
+        // Validate data
+        $validator = Validator::make( $request->all(), $rules );
+        if ( $validator->fails() ) {
+            return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
+        // continue if no error occur
+        $student->student_id            = $request->get('student_id');
+        $student->lastname              = $request->get('lastname');
+        $student->firstname             = $request->get('firstname');
+        $student->skype                 = $request->get('skype-id');
+        $student->dob                   = date("Y-m-d", strtotime($request->get('dob')));
+        $student->qq                    = $request->get('qq-id');
+        $student->save();
+
+        $user = User::find($student->user_id);
+        // update user password
+        if (($request->get('password') != null) && ($request->get('password') != "")) {   
+            $user->password             = bcrypt($request->get('password'));
+            
+        }
+        $user->name                 = $request->get('username');
+        $user->email             = $request->get('email');
+
+        $user->save();
+
+        return redirect()->back()->withSuccess("Student information successfully updated!");
+
+    }
+
+    public function update_available_class($id, Request $request){
+
+        $student = Student::find($id);
+        $rules = array(
+            // available_class 
+            'available_class'                      => 'required|min:1',
+            );
+
+        // Validate data
+        $validator = Validator::make( $request->all(), $rules );
+        if ( $validator->fails() ) {
+            $messages = $validator->messages()->getMessages();
+            $this->params['error'] = true;
+            foreach ($messages as $field_name => $message) {
+                $this->params['msg'] .= '<br/>'.$message[0];
+            }
+            return redirect()->back()->withErrors($this->params['msg']);
+
+
+        }
+
+        $available_class = $request->get('available_class');
+
+        $student->available_class = $available_class;
+        $student->save();
+
+        return redirect()->back()->withSuccess('Available Classes Updated!');
+
+    }
+
     public function student_trial_class_teacher($id){
 
         $agent = Agent::find($this->agent->id);
@@ -350,14 +439,14 @@ class AgentStudentController extends Controller
             $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
             
             // $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = $week;
             $this->params['date'] = $date;
         }else{
 
             $date = Date("Y-m-d");
             $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = 0;
             $this->params['date'] = $date;      
         }
@@ -443,7 +532,7 @@ class AgentStudentController extends Controller
         }
 
         $conflict_class = ClassPeriod::where('start', $start)
-        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->first();
+        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->where('status', '<>', 'CANCELLED')->first();
         if($conflict_class){
             return redirect()->back()
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
@@ -467,10 +556,10 @@ class AgentStudentController extends Controller
         }
 
         // Check Avilable class
-        if( intval($student->available_class) < 1 ){
-            return redirect()->back()
-                    ->withErrors(['Sorry! Student has no available class left to book.']);
-        }
+        // if( intval($student->available_class) < 1 ){
+        //     return redirect()->back()
+        //             ->withErrors(['Sorry! Student has no available class left to book.']);
+        // }
 
         $course = $student->getCourse($request->get('tutor_id'));
         if (!$course) {
@@ -498,6 +587,10 @@ class AgentStudentController extends Controller
            $course->trial_class_id = $classPeriod->id;
            $course->save();
         }
+
+        // Decrement available class by 1
+        $student->available_class = (intval($student->available_class) - 1);
+        $student->save();
         
         return redirect()->back()->withSuccess('Successfully booked a Class.');
 

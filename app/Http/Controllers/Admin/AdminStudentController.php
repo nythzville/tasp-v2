@@ -510,14 +510,14 @@ class AdminStudentController extends Controller
             $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
             
             // $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = $week;
             $this->params['date'] = $date;
         }else{
 
             $date = Date("Y-m-d");
             $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = 0;
             $this->params['date'] = $date;      
         }
@@ -577,7 +577,7 @@ class AdminStudentController extends Controller
         }
 
         $conflict_class = ClassPeriod::where('start', $start)
-        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->first();
+        ->where('end', $end)->where('teacher', $request->get('tutor_id'))->where('status', '<>', 'CANCELLED')->first();
         
         if($conflict_class){
             return redirect('admin/students/'.$student->id)
@@ -635,6 +635,9 @@ class AdminStudentController extends Controller
            $course->save();
         }
         
+        // Decrement available class by 1
+        $student->available_class = (intval($student->available_class) - 1);
+        $student->save();
 
         return redirect()->back()->withSuccess('Successfully booked a Class.');
 

@@ -44,8 +44,11 @@ class TeacherScheduleController extends Controller
         $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
         
         $this->params['page'] = 'schedule';
-    	$this->params['schedules'] = TeacherSchedule::where('teacher_id', $teacher->id)->get();
-
+        $lastweek = date("Y-m-d H:i", strtotime($this->params['current_time'] ."- 7days") );
+    	$this->params['schedules'] = TeacherSchedule::where('teacher_id', $teacher->id)
+        ->where('start', '>', $lastweek)
+        ->get();
+        // dd($this->params['schedules']);
     	return view('teacher.schedule')->with($this->params);
     }
 

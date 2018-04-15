@@ -29,7 +29,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <table class="table list-table table-striped responsive-utilities jambo_table bulk_action">
+                        <table class="table class-table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
                                     <th>
@@ -82,14 +82,59 @@
                                     'style'=> 'display: inline;')) !!}
                                         <button class="btn btn-warning btn-xs"><i class="fa fa-close"></i> Cancel</button>
                                     {!! Form::close() !!}
+
                                     @endif
+
+                                    {!! Form::open(array( 'url' => 'admin/classes/'.$class->id, 'method'=> 'DELETE', 'class' => 'delete-form-class',
+                                    'style'=> 'display: inline;')) !!}
+                                    
+                                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+
+                                    {!! Form::close() !!}
                                     </td>
                                 </tr>
                                 @endforeach
                             @endif
                             </tbody>
-
                         </table>
+                        <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_0_paginate">
+                            @if($classes->currentPage()!= 1)
+                            <a href="{{ url('/admin/classes?page=1' ) }}" class="first paginate_button paginate_button_disabled" id="DataTables_Table_0_first">First</a>
+                            <a href="{{ url('/admin/classes?page='.($classes->currentPage() - 1) ) }}" class="previous paginate_button paginate_button_disabled" id="DataTables_Table_0_previous">Previous</a>
+                            @endif
+                            <span>
+                                @if($classes->lastPage() < 3)
+                                @for($i = 1; $i <= $classes->lastPage(); $i++ )
+                                <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                @endfor
+                                
+                                @else
+
+                                    @if( $classes->currentPage() > ($classes->lastPage() - 2 ) )
+
+                                        @for($i = ($classes->currentPage() - 1); $i <= $classes->lastPage(); $i++ )
+                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                        @endfor
+
+                                    @elseif($classes->currentPage() > 3)
+
+                                        @for($i = $classes->currentPage() - 1 ; $i <= ($classes->currentPage() + 1); $i++ )
+                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                        @endfor
+
+                                    @else
+                                        @for($i = 1; $i <= 4; $i++ )
+                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                        @endfor
+                                    @endif
+                                @endif
+                            </span>
+                            @if($classes->currentPage() < $classes->lastPage())
+                            <a href="{{ url('/admin/classes?page='.($classes->currentPage() + 1) ) }}" class="next paginate_button" id="DataTables_Table_0_next">Next</a>
+                            <a href="{{ url('/admin/classes?page='.$classes->lastPage() ) }}" class="last paginate_button" id="DataTables_Table_0_last">Last</a>
+                            @endif
+
+                        </div>
                     </div>
 
                 </div>
@@ -151,6 +196,18 @@
     </div>
     
     <script type="text/javascript">
+        $(document).ready(function () {
+                var oTable = $('.class-table').dataTable({
+                    "oLanguage": {
+                        "sSearch": "Search for class info:"
+                    },
+
+                    "dom"    : 'rft',
+                    
+                });
+        });
+
+        // Evaluation Button
         $('.btn-view-evaluation').click(function(){
             var class_id = $(this).attr('class-id');
             var date_value = $(this).attr('date-value');

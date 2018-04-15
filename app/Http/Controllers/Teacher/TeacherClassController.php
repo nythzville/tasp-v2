@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 use App\Teacher;
+use App\TeacherSchedule;
 use App\ClassPeriod;
 use App\Student;
 
@@ -105,16 +106,45 @@ class TeacherClassController extends Controller
         return view('teacher.classperiod')->with($this->params);
     }
 
-    public function weekly_class(){
+    public function weekly_class(Request $request){
 
     	$teacher = Teacher::find($this->teacher->id);
         $this->params['teacher'] = $teacher;
         $this->params['user'] = $this->user;
+        $this->params['pending_evaluation_classes'] = $teacher->getPendingEvaluationClasses();
 
+
+        $week = $request->get('week');
+        if($week){
+
+            $mul = ($week * 7);
+            $date = Date("Y-m-d");
+
+            $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
+            
+            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $this->params['week'] = $week;
+            $this->params['date'] = $date;
+        }else{
+
+            $date = Date("Y-m-d");
+            $date = Date("Y-m-d", strtotime( $date ));
+            $until = Date("Y-m-d", strtotime( $date . ' +6 day'));
+            $this->params['week'] = 0;
+            $this->params['date'] = $date;      
+        }
+
+        $teacher_scheds = TeacherSchedule::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher_id', $teacher->id)->where('status', 'OPEN')->get();
+
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->where('teacher', $teacher->id)->where('status', 'BOOKED')->get();
+
+        $this->params['classPeriods'] = $classPeriods;
+        // $this->params['teachers'] = $teachers;
+        $this->params['teacher'] = $teacher;
+        $this->params['teacher_scheds'] = $teacher_scheds;
         $this->params['page'] = 'weekly_classes';
-    	$this->params['classes'] = ClassPeriod::where('teacher', $teacher->id)->get();
 
-
+        // dd($this->params['classes']);
     	return view('teacher.weeklyclasses')->with($this->params);
     }
 
@@ -219,8 +249,8 @@ class TeacherClassController extends Controller
             if($class->status == "BOOKED"){
                 
                 $student = Student::find($class->getStudent->id);
-                $student->available_class = ($student->available_class - 1);
-                $student->save();
+                // $student->available_class = ($student->available_class - 1);
+                // $student->save();
 
                 $course = $student->getCourse($class->teacher);
                 $course->regular_classes_completed = (intval($course->regular_classes_completed) + 1);
