@@ -27,6 +27,22 @@
                     </div>
 
                     <div class="x_content">
+                        @if(session('success'))
+                                <div class="alert alert-success">
+                                <ul>
+                                    <li><?php echo  session('success'); ?></li>
+                                </ul>
+                                </div>
+                            @endif
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                         <table class="table list-table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>

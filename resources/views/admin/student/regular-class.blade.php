@@ -14,7 +14,7 @@
                     <div class="x_title">
                         <h2>Teacher {{ $teacher->firstname }}'s <small> Schedule</small></h2> 
                         <ul class="nav navbar-right panel_toolbox">
-                            @if(date("Y-m-d") < date("Y-m-d", strtotime($date)))
+                            @if(date("Y-m-d") < date("Y-m-d", strtotime($date_start)))
                             <li><a href="{{ url()->current() }}?week={{ ($week - 1 ) }}"><i class="fa fa-chevron-left"></i> Prev</a>
                             @endif
 
@@ -55,14 +55,18 @@
                             <td width="20%">Time</td>
                             
                             <?php
-                            $today = date("Y-m-d", strtotime($date));
-                            $next_week = date("Y-m-d",strtotime($today .'+6 day'));
 
-                            $week_start = date('Y-m-d', strtotime('monday this week'));
-                            $week_end = date('Y-m-d', strtotime('sunday this week'));
+                            // $today = date("Y-m-d", strtotime($date));
+                            // $next_week = date("Y-m-d",strtotime($today .'+6 day'));
 
-                            $d = $today;
-                            while($d <= $next_week ){
+                            // $week_start = date('Y-m-d', strtotime('monday this week'));
+                            // $week_end = date('Y-m-d', strtotime('sunday this week'));
+                            // $d = $week_start;
+                            // $d = $today;
+                            // while($d <= $next_week ){
+
+                            $d = $date_start;
+                            while($d <= $date_end ){
                               
                               echo '<td>';
                               echo '<a  href="#">'.date("l",strtotime($d)).'<br/>'.date("m /d / Y",strtotime($d)).'</a>';
@@ -87,8 +91,12 @@
                               </table>
                             </td>
                           <?php
-                          $d = $today;
-                          while($d <= $next_week ){
+                          $d = $date_start;
+                          // while($d <= $next_week ){
+                          // while($d <= $week_end ){
+                          while($d <= $date_end ){
+
+
                           ?>
                           
                           <td class="days">

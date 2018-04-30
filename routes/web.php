@@ -109,7 +109,7 @@ Route::group(['prefix' => 'student', 'namespace'=> 'Student', 'middleware' => 's
 	Route::post('/crop_image', 'ProfileController@crop_image');
 
 	Route::get('/profile', 'ProfileController@index');
-	Route::get('/progress_report', 'ProfileController@progress_report');
+	Route::get('/progress_report/{id}', 'ProfileController@progress_report');
 
 
 	Route::get('/teachers', 'StudentTeacherController@index');
@@ -161,7 +161,9 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 	// Student 
 	Route::post('/students/{id}/available_class', 'AdminStudentController@update_available_class');
 	Route::Resource('/students', 'AdminStudentController');
-	Route::Resource('/students/{id}/booking', 'AdminStudentController@booking');
+	Route::get('/students/{id}/select_booking_date', 'AdminStudentController@select_booking_date');
+	Route::get('/students/{id}/book_by_date/{date}', 'AdminStudentController@book_by_date');
+
 
 	// Teacher
 	Route::get('/teachers/ranking', 'AdminTeacherController@ranking');
@@ -203,6 +205,10 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 
 	// Route::get('/users', 'AdminUserController@index');
 
+	// Progress Report
+	Route::get('/students/{student_id}/progress_report/{id}', 'AdminStudentController@progress_report_get');
+	Route::post('/students/{student_id}/progress_report/{id}', 'AdminStudentController@progress_report');
+
 	// Book Regular Class
 	Route::get('/students/{id}/book', 'AdminStudentController@book');
 	Route::get('/students/{student_id}/teachers/{teacher_id}/book', 'AdminStudentController@book_by_teacher');
@@ -214,6 +220,9 @@ Route::group(['prefix' => 'admin', 'namespace'=> 'Admin', 'middleware' => 'admin
 
 // Routes for Teacher
 Route::group(['prefix' => 'teacher', 'namespace'=> 'Teacher', 'middleware' => 'teacher'], function () {
+
+	Route::get('/student/{student_id}/progress_report/{id}', 'TeacherStudentController@progress_report_get');
+	Route::post('/student/{student_id}/progress_report/{id}', 'TeacherStudentController@progress_report');
 
 	Route::get('/classes/weekly', 'TeacherClassController@weekly_class');	
 
@@ -230,7 +239,7 @@ Route::group(['prefix' => 'teacher', 'namespace'=> 'Teacher', 'middleware' => 't
 
 	Route::Resource('/classes', 'TeacherClassController');
 	Route::get('/student/{id}', 'TeacherStudentController@show');
-	Route::post('/student/{id}/progress-report', 'TeacherStudentController@progress_report');
+	
 
 
 	/* Profile Routes */
@@ -276,6 +285,10 @@ Route::group(['prefix' => 'agent', 'namespace'=> 'Agent', 'middleware' => 'agent
 	Route::get('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_by_teacher');
 	Route::post('/students/{student_id}/teachers/{teacher_id}/book', 'AgentStudentController@book_regular_class');
 
+	Route::get('/students/{id}/select_booking_date', 'AgentStudentController@select_booking_date');
+	Route::get('/students/{id}/book_by_date/{date}', 'AgentStudentController@book_by_date');
+
+	Route::get('/students/{student_id}/progress_report/{id}', 'AgentStudentController@progress_report_get');
 
 
 	/* News Routes */

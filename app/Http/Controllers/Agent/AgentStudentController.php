@@ -71,13 +71,22 @@ class AgentStudentController extends Controller
 
         $classes = ClassPeriod::where('student' , $id)
         ->where('status' , '<>', 'CANCELLED')
-        ->orderBy('start','ASC')
+        ->orderBy('start','DESC')
+        ->limit(20)
         ->get();
 
         $completed_classes = ClassPeriod::where('student' , $id)
         ->where('status' , 'COMPLETED')
-        ->orderBy('start','ASC')
+        ->orderBy('start','DESC')
+        ->limit(20)
         ->get();
+
+        $courses_with_pr = Course::where('student_id',$id)
+        ->where('regular_classes_completed','>=', 20)
+        ->where('report','!=', NULL)
+        ->get();
+
+        $this->params['courses_with_pr'] = $courses_with_pr;
         $this->params['completed_classes'] = $completed_classes;
         $this->params['classes'] = $classes;
         $this->params['agent'] = $agent;
@@ -239,6 +248,101 @@ class AgentStudentController extends Controller
         $student->save();
 
         return redirect()->back()->withSuccess('Available Classes Updated!');
+
+    }
+
+    /*
+    * Progress Report
+    *
+    */
+   
+
+    public function progress_report_get($id, $course_id){
+        $user = Auth::user();
+        $student = Student::find($id);
+        $course = Course::find($course_id);
+        $teacher = $course->getTeacher();
+
+        $this->params['user'] = $this->user;
+
+        if (!$course) {
+            return redirect('teacher/student/'.$student->id)->withErrors('Progress Report not found!');
+        }
+        $progress_report = $course->report;
+        if ($progress_report) {
+            $student->progress_report = json_decode($progress_report); 
+            
+        }
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
+        $this->params['user'] = $user;
+        $this->params['student'] = $student;
+        $this->params['teacher'] = $teacher;
+        $this->params['course'] = $course;
+        $this->params['page'] = "PROGRESS_REPORT";
+
+
+        // dd($this->params);
+        return view('agent.student-progress-report')->with($this->params);
+
+    }
+
+    /* Select date for booking by date */
+    public function select_booking_date($id)
+    {
+        $student = Student::find($id);
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
+        $this->params['student'] = $student;
+        $this->params['booking_calendar'] = true;
+
+        return view('agent.student-select-booking-date')->with($this->params);   
+    }
+
+    /* Book by date */
+    public function book_by_date($id, $date)
+    {
+        $student = Student::find($id);
+        $agent = Agent::find($this->agent->id);
+        $this->params['agent'] = $agent;
+
+        $this->params['student'] = $student;
+
+        $date = Date("Y-m-d", strtotime( $date ));
+        $until = Date("Y-m-d", strtotime( $date . ' +1 day'));
+        $this->params['date'] = $date;
+
+        $teachers = Teacher::all();
+
+        $classPeriods = ClassPeriod::where('start', '>=', $date )->where('end', '<=', $until )->orderBy('teacher', 'desc')->where('status', 'BOOKED')->orderBy('start', 'ASC')->get();
+
+        $this->params['classPeriods'] = $classPeriods;
+        $this->params['teachers'] = $teachers;
+
+        // Get 3rd saturday of the month
+        $current_month = date("m", strtotime($date));        
+        $current_year = date("Y", strtotime($date));        
+        // $days_count = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+        $days_count = date('t', strtotime($date));
+        $month_start = Date("Y-m-d", mktime(0,0,0, $current_month, 1, $current_year ) );
+      
+        $count = 0;
+        $third_sat = 0;
+        for ($i=1; $i < $days_count; $i++) { 
+            if(date('l', strtotime($month_start. "+".$i." day")) == 'Saturday'){
+                $count++;
+            }
+            if ($count == 3) {
+                $third_sat = date('Y-m-d', strtotime($month_start. "+".$i." day"));
+                break;
+            }
+        }
+        // If date picked is 3rd saturday
+        if ( date($date) == date($third_sat)) {
+            return redirect()->back()->withErrors('Cannot book on the third saturday of the month!');
+        }
+
+        return view('agent.student-book-by-date')->with($this->params);   
 
     }
 
@@ -425,6 +529,8 @@ class AgentStudentController extends Controller
         return view('agent.student-booking')->with($this->params);
     }
 
+
+    /* Booking by Teacher */
     public function book_by_teacher(Request $request, $student_id, $teacher_id)
     {
         $agent = Agent::find($this->agent->id);
@@ -436,19 +542,23 @@ class AgentStudentController extends Controller
             $mul = ($week * 7);
             $date = Date("Y-m-d");
 
-            $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
-            
+            // $date = Date("Y-m-d", strtotime( $date. '+'.$mul.' day' ));
             // $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
+            // $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = $week;
             $this->params['date'] = $date;
+            $date = $this->params['date_start'] = date('Y-m-d', strtotime('sunday last week +'.$mul.' days'));
+            $until = $this->params['date_end'] = date('Y-m-d', strtotime('saturday this week +'.$mul.' days'));
         }else{
 
             $date = Date("Y-m-d");
-            $date = Date("Y-m-d", strtotime( $date ));
-            $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
+            // $date = Date("Y-m-d", strtotime( $date ));
+            // $until = Date("Y-m-d", strtotime( $date . ' +7 day'));
             $this->params['week'] = 0;
-            $this->params['date'] = $date;      
+            $this->params['date'] = $date;
+            $date = $this->params['date_start'] = date('Y-m-d', strtotime('sunday last week'));
+            $until = $this->params['date_end'] = date('Y-m-d', strtotime('saturday this week'));
+
         }
 
         $student = Student::find($student_id);
@@ -521,6 +631,11 @@ class AgentStudentController extends Controller
             
         }
 
+        // if 25th day of month
+        if (date('d') == 25) {
+            return redirect()->back()->withErrors('Cannot book a class during 25th day of the month!');    
+        }
+
         $start = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('from-time')));
         $end = date("Y-m-d H:i:s", strtotime($request->get('schedule-date')." ". $request->get('to-time')));
 
@@ -538,6 +653,15 @@ class AgentStudentController extends Controller
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
         }
         
+        // get conflict if current student book same schedule
+        $conflict_class_2 = ClassPeriod::where('start', $start)
+        ->where('end', $end)->where('student', $student->id)->where('status', '<>', 'CANCELLED')->first();
+        
+        if($conflict_class_2){
+            return redirect()->back()
+                    ->withErrors(['Sorry! The selected schedule for student with id [ '.$conflict_class_2->getStudent['student_id'].' ] was already booked with Teacher '.$conflict_class_2->getTeacher['firstname'].'.']);
+        }
+
        // if class type is TRIAL 
         if($request->get('type') == "TRIAL"){
             // Limit Trial Class 1 per teacher
@@ -569,6 +693,26 @@ class AgentStudentController extends Controller
             $course->name = 'EA English Course';
             $course->status = 'Active';
             $course->save();
+        }
+
+        // If class already reach 20 then add another
+
+        if ($course->regular_classes_completed >= 20) {
+            if (empty($course->report)) {
+                return redirect()->back()
+                    ->withErrors(["The student already reach 20 classes! Wait for the teacher to finish your progress report before booking another class."]);
+
+            }else{
+                $course->status = 'Closed';
+                $course->save();
+
+                $course = new Course;
+                $course->student_id  = $student->id;
+                $course->teacher_id  = $request->get('tutor_id');
+                $course->name = 'EA English Course';
+                $course->status = 'Active';
+                $course->save();
+            }
         }
 
         $classPeriod = new ClassPeriod;

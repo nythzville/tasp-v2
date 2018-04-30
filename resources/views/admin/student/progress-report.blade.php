@@ -1,4 +1,4 @@
-@extends('layouts.teacher.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <!-- page content -->
@@ -36,11 +36,11 @@
                         @endif
                         <!-- -->
                         @if($page == "EVALUATE_TRIAL")
-                        {!! Form::open(array('url' => 'teacher/classes/'.$class->id.'/evaluate_trial', 'id' => 'progress-report-form', 'method' => 'POST')) !!}
+                        {!! Form::open(array('url' => 'admin/classes/'.$class->id.'/evaluate_trial', 'id' => 'progress-report-form', 'method' => 'POST')) !!}
                         
 
                         @else
-                        {!! Form::open(array('url' => 'teacher/student/'.$student->id.'/progress_report/'.$course->id, 'id' => 'progress-report-form', 'method' => 'POST')) !!}
+                        {!! Form::open(array('url' => 'admin/students/'.$student->id.'/progress_report/'.$course->id, 'id' => 'progress-report-form', 'method' => 'POST')) !!}
 
                         @endif
                         <table class="table progress-report">

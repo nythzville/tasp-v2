@@ -20,6 +20,13 @@
                             </ul>
                             </div>
                         @endif
+                      @if($errors->any())
+                          <div class="alert alert-danger">
+                          <ul>
+                              <li>{{ $errors->first() }}</li>
+                          </ul>
+                          </div>
+                      @endif
                         <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
 
                             <div class="profile_img">
@@ -127,7 +134,10 @@
                             <h4>Actions</h4>
                             <ul class="list-unstyled user_data">
                                 <li>
-                                <a href="{{ url('admin/students/'.$student->id.'/book') }}" class="btn btn-success btn-xs"><i class="fa fa-calendar m-right-xs"></i> Book a Class</a>
+                                <a href="{{ url('admin/students/'.$student->id.'/book') }}" class="btn btn-success btn-xs"><i class="fa fa-calendar m-right-xs"></i> Book by Teacher</a>
+                                </li>
+                                <li>
+                                <a href="{{ url('admin/students/'.$student->id.'/select_booking_date') }}" class="btn btn-success btn-xs"><i class="fa fa-calendar m-right-xs"></i> Book by Date</a>
                                 </li>
                                 
                                 </li>
@@ -155,6 +165,9 @@
                                     </li>
                                    
                                     <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Completed Classes</a>
+                                    </li>
+
+                                    <li role="presentation" class=""><a href="#tab_content3" role="tab" id="progress-report-tab1" data-toggle="tab" aria-expanded="false">Progress Reports</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
@@ -232,10 +245,32 @@
                                             @endforeach
                                         @endif
                                         </tbody>
-
                                     </table>
-                                                                      
+                                    </div>
 
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="home-tab">
+                                        <h5>Progress Reports</h5>
+                                        <!-- start user projects -->
+                                        <table class="data table table-striped no-margin">
+                                            <thead>
+                                                <tr>
+                                                    <th>Teacher</th>
+                                                    <th>Date</th>
+                                                    <th>Select</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach($courses_with_pr as $course)
+                                                <tr>
+                                                    
+                                                    <td class=" ">{{ $course->getTeacher()? $course->getTeacher()->firstname : 'no teacher' }}</td>
+                                                    <td class=" ">{{ date("m/d/Y", strtotime($course->updated_at)) }}</td>
+                                                    <td class=" "><a target="_blank" href="{{ url('admin/students/'.$course->student_id.'/progress_report/'.$course->id) }}" class="btn btn-xs btn-success">View</a></td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>                      
                                     </div>
                                  
                                 </div>

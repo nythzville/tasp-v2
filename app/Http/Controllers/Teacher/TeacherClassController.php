@@ -231,11 +231,7 @@ class TeacherClassController extends Controller
         if ( $validator->fails() ) {
             $messages = $validator->messages()->getMessages();
             $this->params['error'] = true;
-            foreach ($messages as $field_name => $message) {
-                $this->params['msg'] .= '<br/>'.$message[0];
-            }
-            return view('teacher.classperiod', $this->params);
-            // dd($messages);
+            return redirect()->back()->withErrors('Input fields are not completed! ');
         }
 
         $evaluation = $request->all();
@@ -244,6 +240,7 @@ class TeacherClassController extends Controller
         $evaluation_json = json_encode($evaluation);
         // dd($evaluation_json);
 
+        $last_class = false;
         if($class->evaluation == null){
 
             if($class->status == "BOOKED"){
@@ -255,6 +252,10 @@ class TeacherClassController extends Controller
                 $course = $student->getCourse($class->teacher);
                 $course->regular_classes_completed = (intval($course->regular_classes_completed) + 1);
                 $course->save();
+
+                if ($course->regular_classes_completed == 20) {
+                    $last_class = true;
+                }
             }
         }       
 
@@ -263,7 +264,11 @@ class TeacherClassController extends Controller
 
         $class->save();
 
-        // $this->params['msg'] = 'Evaluation Successfully Saved!';
-        return redirect()->back()->withSuccess('Evaluation Successfully Saved');
+        if ($last_class == true) {
+            return redirect()->back()->withSuccess('Evaluation Successfully Saved! And You can now fill the student Progress Report. <a href="'.url('teacher/student/'.$class->getStudent->id.'?progress_report').'">Click here.</>');
+        }else{
+            return redirect()->back()->withSuccess('Evaluation Successfully Saved!');
+
+        }
     }
 }

@@ -131,7 +131,13 @@ class StudentClassController extends Controller
             ->orderBy('teachers_rank.rank', 'ASC')
             ->get();
         $this->params['teachers'] = $teachers;
+
+        if (date('d') == 25) {
+            return redirect()->back()->withErrors('Cannot book a class during 25th day of the month!');    
+        }
+
         return view('student.booking')->with($this->params);   
+
     }
 
 
@@ -186,9 +192,9 @@ class StudentClassController extends Controller
             }
         }
         // If date picked is 3rd saturday
-        if ( date($date) == date($third_sat)) {
-            return redirect()->back()->withErrors('Cannot book on the third saturday of the month!');
-        }
+        // if ( date($date) == date($third_sat)) {
+        //     return redirect()->back()->withErrors('Cannot book on the third saturday of the month!');
+        // }
 
         return view('student.bookbydate')->with($this->params);   
     }
@@ -201,6 +207,10 @@ class StudentClassController extends Controller
         $this->params['user'] = $this->user;
         $this->params['classes_today'] = $student->getClassesToday();
         
+        // if 25th day of month
+        if (date('d') == 25) {
+            return redirect()->back()->withErrors('Cannot book a class during 25th day of the month!');    
+        }
 
         $week = $request->get('week');
         if($week){
@@ -323,14 +333,15 @@ class StudentClassController extends Controller
                     ->withErrors(['Cannot book a class! You must book 30 minutes earlier.']);
         }
 
+        // get conflict with same schedule with same teacher
         $conflict_class = ClassPeriod::where('start', $start)
         ->where('end', $end)->where('teacher', $request->get('tutor_id'))->where('status', '<>', 'CANCELLED')->first();
-
         if($conflict_class){
             return redirect()->back()
                     ->withErrors(['Sorry! The seleted class schedule is already booked!']);
         }
 
+        // get conflict if current student book same schedule
         $conflict_class_2 = ClassPeriod::where('start', $start)
         ->where('end', $end)->where('student', $this->student->id)->where('status', '<>', 'CANCELLED')->first();
         
@@ -353,6 +364,26 @@ class StudentClassController extends Controller
             $course->name = 'EA English Course';
             $course->status = 'Active';
             $course->save();
+        }
+
+        // If class already reach 20 then add another
+
+        if ($course->regular_classes_completed >= 20) {
+            if (empty($course->report)) {
+                return redirect()->back()
+                    ->withErrors(["You already reach 20 classes! Wait for your teacher to finish your progress report before booking another class."]);
+
+            }else{
+                $course->status = 'Closed';
+                $course->save();
+
+                $course = new Course;
+                $course->student_id  = $student->id;
+                $course->teacher_id  = $request->get('tutor_id');
+                $course->name = 'EA English Course';
+                $course->status = 'Active';
+                $course->save();
+            }
         }
 
         $classPeriod = new ClassPeriod;

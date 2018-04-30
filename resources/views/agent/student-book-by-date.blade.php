@@ -1,4 +1,4 @@
-@extends('layouts.student.app')
+@extends('layouts.agent.app')
 
 @section('content')
     <!-- page content -->
@@ -7,7 +7,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Book a Class in <small> {{ $date }}</small></h2>
+                        <h2>Book by Date <small> for {{ $student->firstname }} [ {{ $student->student_id }} ] - Date {{ $date }}</small></h2>
                         
                         <div class="clearfix"></div>
                     </div>
@@ -124,6 +124,11 @@
                                                         $booked = false;
                                                         $owned = false;
 
+                                                        $bookby = $student->getUser;
+                                                        $student_id = "";
+                                                        $student_link = "";
+
+
                                                         foreach ($classPeriods as $classPeriod) {
                                                             if ( date('H:i', $time ) == date('H:i', strtotime($classPeriod->start))
                                                                 // && date('H:i a', $time ) <= date('H:i a', strtotime($classPeriod->end) )
@@ -131,6 +136,8 @@
                                                             ) {
 
                                                                 $booked = true;
+                                                                $student_id = $classPeriod->getStudent->student_id;
+                                                                $student_link = url('admin/students/'.$classPeriod->getStudent->id);
                                                                 if($classPeriod->student == $student->id){
                                                                   $owned = true;
                                                                   $bookby = $classPeriod->getAuthor;
@@ -142,15 +149,8 @@
                                                         }
 
                                                         if( $booked == true){
-                                                            $status = "<td width='300' date='".$date."' from='".date('H:i', $time )."' to='".date('H:i', $time + (60 * 30 ))."' teacher-id='".$teacher->id."'";
-
-                                                            $status .= " class='booked ".($owned? 'owned': '')."'>";
-                                                            $status .= "<span class='booked-text'>BOOKED with</span><br/>";
-                                                            if ($owned) {
-                                                              $status .= "YOU";
-                                                            }else{
-                                                              $status .= "Other student";
-                                                            }
+                                                            $status = "<td width='300' date='".$date."' from='".date('H:i', $time )."' to='".date('H:i', $time + (60 * 30 ))."' teacher-id='".$teacher->id."' class='booked'><span class='booked-text'>BOOKED with</span><br/>";
+                                                            $status .= $student_id ;
                                                             $status .= "</td>";
 
                                                         }else{
@@ -195,8 +195,7 @@
                     <div class="modal-body">
                         <div id="testmodal" style="padding: 5px 20px;">
                             <!-- <form id="booking-form" class="form-horizontal calender" role="form"> -->
-                                {{ Form::open(array('action' => 'Student\StudentClassController@store', 
-                                'id' => 'booking-form', 'class' => 'form-horizontal calendar', 'role' => 'form')) }}
+                                {{ Form::open(array('url' => '/admin/students', 'id' => 'booking-form', 'class' => 'form-horizontal calendar', 'role' => 'form')) }}
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Tutor</label>
                                     <div class="col-sm-9">
@@ -220,6 +219,16 @@
                                         <input type="time" class="form-control" id="to-time" name="to-time" readonly="">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                   <label class="col-sm-3 control-label">Class Type</label>
+                                    <div class="col-sm-9">
+                                      <select name="type" class="form-control">
+                                        <option value="REGULAR">Regular</option>
+                                        <option value="TRIAL">Trial</option>
+                                      </select>
+                                  </div>
+                                </div>
                                 {{ Form::close() }}
                         </div>
                     </div>
@@ -231,31 +240,6 @@
             </div>
         </div>
         <script type="text/javascript">
-            // Disable same schedule
-            $('td.owned').each(function(owned_index, owned_item){
-              var from_base = $(owned_item).attr('from');
-              var to_base = $(owned_item).attr('to');
-
-              $('td.open').each(function(open_index, open_item){
-                var from = $(open_item).attr('from');
-                var to = $(open_item).attr('to');
-
-                  console.log(from_base);
-                  console.log(from);
-
-                if (( from == from_base ) && (to == to_base)) {
-                  $(open_item).addClass('disabled');
-                  $(open_item).removeClass('open');
-                  $(open_item).css('background-color','#212121');
-                  $(open_item).css('opacity',1);
-                  $(open_item).html('DISABLED');
-
-                }
-              });
-
-            });
-
-
             var current_date = new Date('{{ $current_time }}');
             $('td.open').each(function(index, item){
                 if($(item).hasClass('open')){
@@ -275,6 +259,10 @@
                 var from = $(this).attr('from');
                 var to = $(this).attr('to');
 
+                var base_url = "{{ url('/') }}";
+                var student_id = "{{ $student->id }}";
+
+                $('#booking-form').attr('action', base_url + '/agent/students/' + student_id + '/teachers/' + teacher_id + '/book');
 
                 $('#tutor').val( $("#"+teacher_id+ " a").html() );
                 $('#tutor_id').val(teacher_id);
@@ -302,8 +290,6 @@
             };
 
             const demo = new fixedTable($('#demo'));
-
-
 
         </script>
 

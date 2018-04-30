@@ -55,7 +55,7 @@
                             <ul class="list-unstyled user_data">
 
                                 <li>
-                                    <i class="fa fa-calendar user-profile-icon"></i> <strong>Regular:</strong> {{ $student->getCompletedClassesWithId($teacher->id) }}
+                                    <i class="fa fa-calendar user-profile-icon"></i> <strong>Regular:</strong> {{ $completed_classes_num }}
                                     
                                 </li>
                                 
@@ -85,19 +85,17 @@
                             @endif
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">All Classes</a>
+                                    <li role="presentation" class="{{ isset($_GET['progress_report'])? '':'active' }}"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">All Classes</a>
                                     </li>
                                    
                                     <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Completed Classes</a>
                                     </li>
-                                    @if(($student->progress_report) || ($student->getCompletedClassesWithId($teacher->id) >= 10 ))
-                                    
-                                    <li role="presentation" class=""><a href="#progress-report" role="tab" id="progress-report-tab" data-toggle="tab" aria-expanded="false">Progress Report</a>
+
+                                    <li role="presentation" class="{{ isset($_GET['progress_report'])? 'active':'' }}"><a href="#progress-report" role="tab" id="progress-report-tab" data-toggle="tab" aria-expanded="false">Progress Report</a>
                                     </li>
-                                    @endif
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
-                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade {{ isset($_GET['progress_report'])? '':'active' }} in" id="tab_content1" aria-labelledby="profile-tab">
                                         <table class="table ">
                                             <thead>
                                                 <tr class="headings">
@@ -175,12 +173,15 @@
 
                                     </table>
                                     </div>
-                                    @if(($student->progress_report) || ($student->getCompletedClassesWithId($teacher->id) >= 10 ))
+                                    
 
-                                    <div role="tabpanel" class="tab-pane fade in" id="progress-report" aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade {{ isset($_GET['progress_report'])? 'active':'' }} in" id="progress-report" aria-labelledby="profile-tab">
+
                                         
+
+                                        @if(($student->progress_report) || ($completed_classes_num >= 20))
                                         <!-- -->
-                                        {!! Form::open(array('url' => 'teacher/student/'.$student->id.'/progress-report', 'id' => 'progress-report-form', 'method' => 'POST')) !!}
+                                        {!! Form::open(array('url' => 'teacher/student/'.$student->id.'/progress_report/'.$current_course->id, 'id' => 'progress-report-form', 'method' => 'POST')) !!}
                                         <table class="table progress-report">
                                             <tbody>
                                                 <tr>
@@ -369,8 +370,32 @@
                                         </div>
                                         {!! Form::close() !!}
                                         <!-- -->
+
+                                        @else
+                                        <h5>Progress Reports</h5>
+                                        <!-- start user projects -->
+                                        <table class="data table table-striped no-margin">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Select</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach($courses_with_pr as $course)
+                                                <tr>
+                                                    
+                                                    <td class=" ">{{ date("m/d/Y", strtotime($course->updated_at)) }}</td>
+                                                    <td class=" "><a target="_blank" href="{{ url('teacher/student/'.$course->student_id.'/progress_report/'.$course->id) }}" class="btn btn-xs btn-success">View</a></td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        @endif
+
                                     </div>
-                                    @endif
+
                                 </div>
                             </div>
                         </div>

@@ -1,17 +1,36 @@
 @extends('layouts.admin.app')
 
 @section('content')
+
     <!-- page content -->
     <div class="right_col" role="main">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="page-title">
+                  <div class="title_left">
+                    <h3>Classes List</h3>
+                  </div>
+
+                  <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        {!! Form::open(['url' => url()->current(), 'method' => 'GET' ]) !!}
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="s" placeholder="Search for class..." value="{{ isset($s)? $s : '' }}">
+                            <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default" type="button">Go!</button>
+                            </span>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                  </div>
+                </div>
                 <div class="x_panel">
+
                     <div class="x_title">
                         <h2>Classes <small></small></h2>
                         
                         <div class="clearfix"></div>
                     </div>
-
                     <div class="x_content">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -99,13 +118,13 @@
                         </table>
                         <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_0_paginate">
                             @if($classes->currentPage()!= 1)
-                            <a href="{{ url('/admin/classes?page=1' ) }}" class="first paginate_button paginate_button_disabled" id="DataTables_Table_0_first">First</a>
-                            <a href="{{ url('/admin/classes?page='.($classes->currentPage() - 1) ) }}" class="previous paginate_button paginate_button_disabled" id="DataTables_Table_0_previous">Previous</a>
+                            <a href="{{ url('/admin/classes?page=1' ) }}{{ isset($s)? '&s='.$s : '' }}" class="first paginate_button paginate_button_disabled" id="DataTables_Table_0_first">First</a>
+                            <a href="{{ $classes->previousPageUrl() }}{{ isset($s)? '&s='.$s : '' }}" class="previous paginate_button paginate_button_disabled" id="DataTables_Table_0_previous">Previous</a>
                             @endif
                             <span>
                                 @if($classes->lastPage() < 3)
                                 @for($i = 1; $i <= $classes->lastPage(); $i++ )
-                                <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                <a href="{{ $classes->url( $i ) }}{{ isset($s)? '&s='.$s : '' }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
                                 @endfor
                                 
                                 @else
@@ -113,25 +132,25 @@
                                     @if( $classes->currentPage() > ($classes->lastPage() - 2 ) )
 
                                         @for($i = ($classes->currentPage() - 1); $i <= $classes->lastPage(); $i++ )
-                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                            <a href="{{ $classes->url( $i ) }}{{ isset($s)? '&s='.$s : '' }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
                                         @endfor
 
                                     @elseif($classes->currentPage() > 3)
 
                                         @for($i = $classes->currentPage() - 1 ; $i <= ($classes->currentPage() + 1); $i++ )
-                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                            <a href="{{ $classes->url( $i ) }}{{ isset($s)? '&s='.$s : '' }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
                                         @endfor
 
                                     @else
                                         @for($i = 1; $i <= 4; $i++ )
-                                            <a href="{{ url('/admin/classes?page='.$i ) }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
+                                            <a href="{{ $classes->url( $i ) }}{{ isset($s)? '&s='.$s : '' }}" class="{{ ($i == $classes->currentPage())? 'paginate_active' : 'paginate_button'}}">{{ $i }}</a>
                                         @endfor
                                     @endif
                                 @endif
                             </span>
                             @if($classes->currentPage() < $classes->lastPage())
-                            <a href="{{ url('/admin/classes?page='.($classes->currentPage() + 1) ) }}" class="next paginate_button" id="DataTables_Table_0_next">Next</a>
-                            <a href="{{ url('/admin/classes?page='.$classes->lastPage() ) }}" class="last paginate_button" id="DataTables_Table_0_last">Last</a>
+                            <a href="{{ $classes->nextPageUrl() }}{{ isset($s)? '&s='.$s : '' }}" class="next paginate_button" id="DataTables_Table_0_next">Next</a>
+                            <a href="{{ url('/admin/classes?page='.$classes->lastPage() ) }}{{ isset($s)? '&s='.$s : '' }}" class="last paginate_button" id="DataTables_Table_0_last">Last</a>
                             @endif
 
                         </div>
@@ -202,7 +221,7 @@
                         "sSearch": "Search for class info:"
                     },
 
-                    "dom"    : 'rft',
+                    "dom"    : 'rt',
                     
                 });
         });

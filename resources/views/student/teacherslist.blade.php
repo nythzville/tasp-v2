@@ -41,6 +41,20 @@
                             </ul>
                         </div>
                         <div class="clearfix"></div>
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                            <ul>
+                                <li>{{session('success')}}</li>
+                            </ul>
+                            </div>
+                        @endif
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                            <ul>
+                                <li>{{ $errors->first() }}</li>
+                            </ul>
+                            </div>
+                        @endif
                         @if(isset($teachers))
 
                         @foreach($teachers as $teacher)

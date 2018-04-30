@@ -45,19 +45,33 @@ class AdminClassController extends Controller
             $classes = ClassPeriod::where('type', 'TRIAL')->where('status', '<>', 'CANCELLED')->latest()->paginate(10);
             
         }else{
-            $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->latest()->paginate(10);
-            // $query = ClassPeriod::all();
+
+            $s = $request->get('s');
+            if ($s) {
+                $student_ids = Student::where('firstname', 'LIKE', '%'.$s.'%' )
+                ->orWhere('lastname', 'LIKE', '%'.$s.'%' )
+                ->pluck('id')
+                ->toArray();
+
+                if (!$student_ids) {
+                    $student_ids = [0];
+                }
+                $classes = ClassPeriod::where('student', $student_ids)
+                ->where('status', '<>', 'CANCELLED')
+                ->paginate(10);
+              
+                $this->params['s'] = $s;
+                // $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->latest()->paginate(10);
+            }else{
+                $classes = ClassPeriod::where('status', '<>', 'CANCELLED')->latest()->paginate(10);
+
+            }
 
         }
-
-    	// $classes = ClassPeriod::where('type','REGULAR')->get();
-    	
-        // $classes = $query->get();
-        $this->params['classes'] = $classes;
-
-        // echo $classes->lastPage();
-        return view('admin.classperiod.list')->with($this->params);
         // dd($classes);
+        $this->params['classes'] = $classes;
+        return view('admin.classperiod.list')->with($this->params);
+        
     }
 
     public function create()
@@ -238,7 +252,11 @@ class AdminClassController extends Controller
 
         $class->status      = 'CANCELLED';
         $class->save();
-        
+
+        $student = Student::find($class->getStudent['id']);
+        $student->available_class = intval($student->available_class) + 1;
+        $student->save();
+
         return redirect()->back()->withSuccess('Class Successfully Cancelled!');
 
     }

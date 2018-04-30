@@ -12,6 +12,7 @@ use App\Student;
 use App\teacher;
 use App\User;
 use App\ClassPeriod;
+use App\Course;
 
 use Validator;
 use Auth;
@@ -62,11 +63,19 @@ class ProfileController extends Controller
         ->where('status', 'COMPLETED')
         ->count();
         
+        $courses_with_pr = Course::where('student_id',$this->student->id)
+        ->where('regular_classes_completed','>=', 20)
+        ->where('report','!=', NULL)
+        ->get();
+        $this->params['courses_with_pr'] = $courses_with_pr;
+
+
         $this->params['completed_class_count'] = $completed_class_count;
         $this->params['classes_today'] = $classes_today;
         $this->params['student'] = $this->student;
         $this->params['user'] = $this->user;
-        
+            
+        // dd($this->params);
     	return view('student.profile')->with($this->params);	
     }
 
@@ -147,15 +156,30 @@ class ProfileController extends Controller
         }
 
     }
-    public function progress_report(){
-        $student =  Student::find($this->params['student']->id); 
-        $progress_report = $student->getCourse()->report;
+    public function progress_report($id){
+        $user = Auth::user();
+        $student = Student::find($this->student->id);
+        $course = Course::find($id);
+        if (!$course) {
+            return redirect('student/profile')->withErrors('Progress Report not found!');
+        }
+        $progress_report = $course->report;
 
         if (!empty($progress_report)) {
+            $today = date($this->params['current_time']);
+            $until = date("Y-m-d +1 day");
+            $classes_today = ClassPeriod::where('student' , $student->id)
             
+            ->where('start' , '>=', $today)
+            ->where('end' , '<=', $until)
+            ->where('status' , '<>', 'CANCELLED')
+            ->get();
+
             $student->progress_report = json_decode($progress_report); 
+            $this->params['user'] = $user;
             $this->params['student'] = $student;
-            $this->params['teacher'] = $student->getCourse()->getTeacher(); 
+            $this->params['teacher'] = $course->getTeacher(); 
+            $this->params['classes_today'] = $classes_today;;
 
 
         }else{

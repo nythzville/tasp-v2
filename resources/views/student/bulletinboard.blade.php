@@ -15,6 +15,21 @@
             </div>
         </div>
         <div class="row">
+            @if(session('success'))
+                <div class="alert alert-success">
+                <ul>
+                    <li>{{session('success')}}</li>
+                </ul>
+                </div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-danger">
+                <ul>
+                    <li>{{ $errors->first() }}</li>
+                </ul>
+                </div>
+            @endif
+            
             @foreach($news as $s_news)
             @if($news[0]->id == $s_news->id)
                 <div class="col-md-12 col-sm-12 col-xs-12">

@@ -1,4 +1,4 @@
-@extends('layouts.student.app')
+@extends('layouts.agent.app')
 
 @section('content')
 <!-- page content -->
@@ -18,20 +18,6 @@
                 </div>
 
                 <div class="x_content">
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                        <ul>
-                            <li>{{session('success')}}</li>
-                        </ul>
-                        </div>
-                    @endif
-                    @if($errors->any())
-                        <div class="alert alert-danger">
-                        <ul>
-                            <li>{{ $errors->first() }}</li>
-                        </ul>
-                        </div>
-                    @endif
                     <table class="table progress-report">
                         <tbody>
                             <tr>
